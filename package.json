@@ -1,0 +1,37 @@
+{
+  "name": "fulltack-challenge-junglegaming",
+  "version": "1.0.0",
+  "description": "Sistema de Gestão de Tarefas Colaborativo - Desafio Jungle Gaming",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "clean": "turbo run clean",
+    "test": "turbo run test"
+  },
+  "keywords": [
+    "monorepo",
+    "turborepo",
+    "nestjs",
+    "react",
+    "microservices"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^24.6.2",
+    "concurrently": "^9.2.1",
+    "eslint": "^9.36.0",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "prettier": "^3.6.2",
+    "turbo": "^2.5.8",
+    "typescript": "^5.9.3"
+  },
+  "packageManager": "pnpm@9.12.3"
+}
