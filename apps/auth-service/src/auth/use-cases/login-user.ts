@@ -1,25 +1,29 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 
-import { UserRepository } from '../domain/user.repository';
-
-interface Input { email: string; password: string };
+import { UserRepository } from '@/auth/domain/user.repository';
+import type { LoginUserData, UserResponse } from '@/types/auth';
 
 @Injectable()
 export class LoginUserUseCase {
   constructor(private readonly users: UserRepository) { }
 
-  async execute(input: Input) {
-    const user = await this.users.findByEmail(input.email);
+  async execute({ email, password }: LoginUserData): Promise<UserResponse> {
+    const user = await this.users.findByEmail(email);
 
-    if (!user) throw new UnauthorizedException('Invalid credentials');
+    if (!user) {
+      throw new UnauthorizedException('Invalid credentials')
+    };
 
-    const isValidPassword = await bcrypt.compare(input.password, user.password);
+    const isValidPassword = await bcrypt.compare(password, user.password);
 
-    if (!isValidPassword) throw new UnauthorizedException('Invalid credentials');
+    if (!isValidPassword) {
+      throw new UnauthorizedException('Invalid credentials')
+    };
 
-    const { password, ...rest } = user;
-    return rest;
+    const { password: _password, ...userWithoutPassword } = user;
+
+    return { ...userWithoutPassword };
   }
 }
 

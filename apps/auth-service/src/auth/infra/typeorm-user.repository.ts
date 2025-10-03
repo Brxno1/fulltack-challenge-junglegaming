@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import type { Repository } from 'typeorm';
 
-import { User } from '../../entities/user.entity';
-import { UserRepository } from '../domain/user.repository';
+import { UserRepository } from '@/auth/domain/user.repository';
+import { User } from '@/entities/user.entity';
+import type { CreateUserData } from '@/types/auth';
 
 @Injectable()
 export class DatabaseUserRepository extends UserRepository {
@@ -24,7 +25,7 @@ export class DatabaseUserRepository extends UserRepository {
     return this.repo.findOne({ where: { id } });
   }
 
-  save(user: Partial<User>): Promise<User> {
+  save(user: CreateUserData): Promise<User> {
     return this.repo.save(user);
   }
 }
