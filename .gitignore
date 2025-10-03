@@ -121,4 +121,5 @@ playwright/.cache/
 
 # Development notes
 NOTES.md
-DEV-STANDARDS.md
+.cursorrules
+.env
