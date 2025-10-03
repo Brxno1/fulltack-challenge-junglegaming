@@ -12,7 +12,6 @@ import { UserRepository } from './domain/user.repository';
 import { DatabaseUserRepository } from './infra/typeorm-user.repository';
 import { RegisterUserUseCase } from './use-cases/register-user';
 import { LoginUserUseCase } from './use-cases/login-user';
-import { RefreshTokenUseCase } from './use-cases/refresh-token';
 import { TokenService } from './token.service';
 
 @Module({
@@ -36,7 +35,6 @@ import { TokenService } from './token.service';
     JwtStrategy,
     RegisterUserUseCase,
     LoginUserUseCase,
-    RefreshTokenUseCase,
     TokenService,
     { provide: UserRepository, useClass: DatabaseUserRepository },
   ],

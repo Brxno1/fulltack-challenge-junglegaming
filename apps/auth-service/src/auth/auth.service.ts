@@ -1,38 +1,31 @@
 import { Injectable } from '@nestjs/common';
-import { LoginDto, RefreshDto, RegisterDto } from './dto/auth.dtos';
 import { RegisterUserUseCase } from './use-cases/register-user';
 import { LoginUserUseCase } from './use-cases/login-user';
-import { RefreshTokenUseCase } from './use-cases/refresh-token';
 import { TokenService } from './token.service';
+import type { AuthResponse, CreateUserData, LoginUserData } from '@/types/auth';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly registerUc: RegisterUserUseCase,
-    private readonly loginUc: LoginUserUseCase,
-    private readonly refreshUc: RefreshTokenUseCase,
-    private readonly tokens: TokenService,
+    private readonly registerUser: RegisterUserUseCase,
+    private readonly loginUser: LoginUserUseCase,
+    private readonly tokenService: TokenService,
   ) { }
 
-  async register({ username, email, password }: RegisterDto) {
-    const user = await this.registerUc.execute({ username, email, password });
-    const tokens = await this.tokens.generate(user.id, user.email);
-
+  async register(data: CreateUserData): Promise<AuthResponse> {
+    const user = await this.registerUser.execute(data);
+    const tokens = await this.tokenService.generate(user.id, user.email);
     return { user, ...tokens };
   }
 
-  async login({ email, password }: LoginDto) {
-    const user = await this.loginUc.execute({ email, password });
-    const tokens = await this.tokens.generate(user.id, user.email);
-
+  async login(data: LoginUserData): Promise<AuthResponse> {
+    const user = await this.loginUser.execute(data);
+    const tokens = await this.tokenService.generate(user.id, user.email);
     return { user, ...tokens };
   }
 
-  async refresh({ refreshToken }: RefreshDto) {
-    const user = await this.refreshUc.execute({ refreshToken });
-    const tokens = await this.tokens.generate(user.id, user.email);
-
-    return { user, ...tokens };
+  async refresh(refreshToken: string): Promise<AuthResponse> {
+    return this.tokenService.refresh(refreshToken);
   }
 }
 
