@@ -1,12 +1,12 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 
-import { UserRepository } from '@/auth/domain/user.repository';
-import type { LoginUserData, UserResponse } from '@/types/auth';
+import { UsersRepository } from '../repositories/user';
+import type { LoginUserData, UserResponse } from '../../types';
 
 @Injectable()
 export class LoginUserUseCase {
-  constructor(private readonly users: UserRepository) { }
+  constructor(private readonly users: UsersRepository) { }
 
   async execute({ email, password }: LoginUserData): Promise<UserResponse> {
     const user = await this.users.findByEmail(email);
