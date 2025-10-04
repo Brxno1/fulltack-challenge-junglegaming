@@ -1,8 +1,9 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
-import type { JwtPayload } from '@/infra/jwt/jwt.strategy';
-import type { TokenPair } from '@/types';
+import type { TokenPair } from '../../types/auth.types'
+import { Injectable, UnauthorizedException } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
+import { JwtService } from '@nestjs/jwt'
+
+import type { JwtPayload } from '@/infra/jwt/jwt.strategy'
 
 @Injectable()
 export class TokenService {
@@ -18,7 +19,7 @@ export class TokenService {
         secret: this.config.get<string>('JWT_SECRET'),
         expiresIn: this.config.get<string>('JWT_EXPIRES_IN') || '15m',
       },
-    );
+    )
 
     const refreshToken = await this.jwt.signAsync(
       { sub: userId, email, type: 'refresh' },
@@ -26,21 +27,20 @@ export class TokenService {
         secret: this.config.get<string>('JWT_SECRET'),
         expiresIn: this.config.get<string>('REFRESH_TOKEN_EXPIRES_IN') || '7d',
       },
-    );
+    )
 
-    return { accessToken, refreshToken };
+    return { accessToken, refreshToken }
   }
 
   async verifyRefresh(refreshToken: string): Promise<JwtPayload> {
     try {
-      const payload = await this.jwt.verifyAsync<JwtPayload>(refreshToken,
-        { secret: this.config.get<string>('JWT_SECRET') }
-      );
+      const payload = await this.jwt.verifyAsync<JwtPayload>(refreshToken, {
+        secret: this.config.get<string>('JWT_SECRET'),
+      })
 
-      return payload;
+      return payload
     } catch {
-      throw new UnauthorizedException('Invalid refresh token');
+      throw new UnauthorizedException('Invalid refresh token')
     }
   }
-
 }

@@ -5,14 +5,9 @@ const project = resolve(process.cwd(), "tsconfig.json");
 /** @type {import("eslint").Linter.Config} */
 module.exports = {
   extends: [
-    "eslint:recommended",
-    "@typescript-eslint/recommended",
+    "@rocketseat/eslint-config/library",
   ],
-  plugins: ["@typescript-eslint", "simple-import-sort"],
-  globals: {
-    React: true,
-    JSX: true,
-  },
+  plugins: ["simple-import-sort"],
   env: {
     node: true,
   },

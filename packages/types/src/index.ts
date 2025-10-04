@@ -1,4 +1,3 @@
-// Auth Types
 export interface User {
   id: string;
   email: string;
@@ -24,19 +23,18 @@ export interface AuthResponse {
   refreshToken: string;
 }
 
-// Task Types
 export enum TaskStatus {
   TODO = 'TODO',
   IN_PROGRESS = 'IN_PROGRESS',
   REVIEW = 'REVIEW',
-  DONE = 'DONE'
+  DONE = 'DONE',
 }
 
 export enum TaskPriority {
   LOW = 'LOW',
   MEDIUM = 'MEDIUM',
   HIGH = 'HIGH',
-  URGENT = 'URGENT'
+  URGENT = 'URGENT',
 }
 
 export interface Task {
@@ -69,7 +67,6 @@ export interface UpdateTaskRequest {
   assignedUserIds?: string[];
 }
 
-// Comment Types
 export interface Comment {
   id: string;
   content: string;
@@ -84,7 +81,6 @@ export interface CreateCommentRequest {
   taskId: string;
 }
 
-// Notification Types
 export interface Notification {
   id: string;
   userId: string;
@@ -95,14 +91,12 @@ export interface Notification {
   createdAt: Date;
 }
 
-// WebSocket Events
 export interface WebSocketEvent {
   type: 'task:created' | 'task:updated' | 'comment:new';
   data: any;
   userId?: string;
 }
 
-// API Response Types
 export interface ApiResponse<T = any> {
   success: boolean;
   data?: T;
@@ -118,7 +112,6 @@ export interface PaginatedResponse<T> {
   totalPages: number;
 }
 
-// Query Types
 export interface PaginationQuery {
   page?: number;
   limit?: number;
@@ -129,4 +122,34 @@ export interface TaskFilters extends PaginationQuery {
   priority?: TaskPriority;
   assignedTo?: string;
   search?: string;
+}
+
+export interface UserResponse {
+  id: string
+  email: string
+  username: string
+  createdAt: Date
+  updatedAt: Date
+}
+
+export interface CreateUserData {
+  email: string
+  username: string
+  password: string
+}
+
+export interface LoginUserData {
+  email: string
+  password: string
+}
+
+export interface AuthResponse {
+  user: UserResponse
+  accessToken: string
+  refreshToken: string
+}
+
+export interface TokenPair {
+  accessToken: string
+  refreshToken: string
 }

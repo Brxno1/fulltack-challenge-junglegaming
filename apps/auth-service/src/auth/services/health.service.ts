@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common'
 
 @Injectable()
 export class HealthService {
-  constructor() { }
+  constructor() {}
 
   async getHealth(): Promise<{ status: string }> {
     return {

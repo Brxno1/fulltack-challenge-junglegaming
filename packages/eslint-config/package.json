@@ -1,15 +1,21 @@
 {
   "name": "@jungle/eslint-config",
-  "version": "1.0.0",
+  "version": "0.0.0",
+  "type": "module",
   "private": true,
-  "main": "index.js",
-  "dependencies": {
-    "eslint": "^9.36.0",
-    "@typescript-eslint/eslint-plugin": "^8.11.0",
-    "@typescript-eslint/parser": "^8.11.0",
-    "eslint-plugin-simple-import-sort": "^12.1.1"
+  "exports": {
+    "./library": "./library.cjs",
+    "./node": "./node.cjs",
+    "./react": "./react.cjs"
   },
   "devDependencies": {
-    "typescript": "^5.9.3"
+    "@rocketseat/eslint-config": "^2.2.2",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "@jungle/tsconfig": "workspace:*"
+  },
+  "eslintConfig": {
+    "extends": [
+      "./library.cjs"
+    ]
   }
 }

@@ -1,18 +1,16 @@
-import { applyDecorators } from '@nestjs/common';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { applyDecorators } from '@nestjs/common'
 
 export function applySwaggerDocs(
   operation: () => any,
   responses: () => any[],
-  bodyExample?: any
+  bodyExample?: any,
 ) {
-  const decorators = [
-    operation(),
-    ...responses()
-  ];
+  const decorators = [operation(), ...responses()]
 
   if (bodyExample) {
-    decorators.push(bodyExample);
+    decorators.push(bodyExample)
   }
 
-  return applyDecorators(...decorators);
+  return applyDecorators(...decorators)
 }

@@ -121,5 +121,6 @@ playwright/.cache/
 
 # Development notes
 NOTES.md
+ARCHITECTURE_PATTERNS.md
 .cursorrules
 .env

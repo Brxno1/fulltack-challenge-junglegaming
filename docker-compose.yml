@@ -2,13 +2,22 @@ services:
   auth-service:
     container_name: auth-service
     build:
-      context: ./apps/auth-service
-      target: development
+      context: .
+      dockerfile: ./apps/auth-service/Dockerfile
     ports:
       - "3002:3002"
     volumes:
-      - ./apps/auth-service:/app
-      - /app/node_modules
+      # Mount source code for hot reload
+      - ./apps/auth-service:/challenge/apps/auth-service
+      # Mount packages for workspace dependencies
+      - ./packages:/challenge/packages
+      # Mount root package files
+      - ./package.json:/challenge/package.json
+      - ./pnpm-lock.yaml:/challenge/pnpm-lock.yaml
+      - ./pnpm-workspace.yaml:/challenge/pnpm-workspace.yaml
+      # Exclude node_modules to use container's installed packages
+      - /challenge/node_modules
+      - /challenge/apps/auth-service/node_modules
     environment:
       - DB_HOST=db
       - DB_PORT=5432
