@@ -1,13 +1,18 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
 import { AuthService } from '@/auth/services/auth.service';
 import type { LoginUserDto, RefreshTokenDto, RegisterUserDto } from '../dtos/auth.dtos';
-import type { AuthResponse } from '@/types';
+import { AuthResponse } from '@/types';
+import { AuthDocs, applySwaggerDocs } from '../docs';
+import { AuthBodyExamples } from '../docs/body-examples';
 
+@ApiTags('Authentication')
 @Controller('/auth')
 export class AuthController {
   constructor(private readonly auth: AuthService) { }
 
+  @applySwaggerDocs(AuthDocs.register.operation, AuthDocs.register.responses, AuthBodyExamples.register)
   @HttpCode(HttpStatus.CREATED)
   @Post('/register')
   async register(@Body() body: RegisterUserDto): Promise<AuthResponse> {
@@ -18,6 +23,7 @@ export class AuthController {
     });
   }
 
+  @applySwaggerDocs(AuthDocs.login.operation, AuthDocs.login.responses, AuthBodyExamples.login)
   @HttpCode(HttpStatus.OK)
   @Post('/login')
   async login(@Body() body: LoginUserDto): Promise<AuthResponse> {
@@ -27,6 +33,7 @@ export class AuthController {
     });
   }
 
+  @applySwaggerDocs(AuthDocs.refresh.operation, AuthDocs.refresh.responses, AuthBodyExamples.refresh)
   @HttpCode(HttpStatus.OK)
   @Post('/refresh')
   async refresh(@Body() body: RefreshTokenDto): Promise<AuthResponse> {
