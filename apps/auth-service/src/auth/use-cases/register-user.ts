@@ -1,4 +1,4 @@
-import type { CreateUserData, UserResponse } from '@jungle/types'
+import type { CreateUserData, UserResponse } from '../../types/auth.types'
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 import * as bcrypt from 'bcrypt'
 
@@ -7,7 +7,7 @@ import { UsersRepository } from '../repositories/user'
 
 @Injectable()
 export class RegisterUserUseCase {
-  constructor(private readonly users: UsersRepository) {}
+  constructor(private readonly users: UsersRepository) { }
 
   async execute({
     email,

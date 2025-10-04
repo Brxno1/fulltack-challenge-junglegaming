@@ -1,4 +1,4 @@
-import type { AuthResponse, CreateUserData, LoginUserData } from '@jungle/types'
+import type { AuthResponse, CreateUserData, LoginUserData } from '../../types/auth.types'
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 
 import { AUTH_ERROR_MESSAGES } from '../constants/error-messages'
@@ -14,7 +14,7 @@ export class AuthService {
     private readonly loginUser: LoginUserUseCase,
     private readonly tokenService: TokenService,
     private readonly users: UsersRepository,
-  ) {}
+  ) { }
 
   async register(data: CreateUserData): Promise<AuthResponse> {
     const user = await this.registerUser.execute(data)

@@ -1,8 +1,8 @@
-import type { AuthResponse } from '@jungle/types'
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 
 import { AuthService } from '@/auth/services/auth.service'
+import { AuthResponse } from '@/types/auth.types'
 
 import { applySwaggerDocs, AuthDocs } from '../docs'
 import { AuthBodyExamples } from '../docs/body-examples'
@@ -15,7 +15,7 @@ import type {
 @ApiTags('Authentication')
 @Controller('/auth')
 export class AuthController {
-  constructor(private readonly auth: AuthService) {}
+  constructor(private readonly auth: AuthService) { }
 
   @applySwaggerDocs(
     AuthDocs.register.operation,

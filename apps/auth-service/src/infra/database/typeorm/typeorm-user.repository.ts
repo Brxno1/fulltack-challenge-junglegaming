@@ -1,4 +1,4 @@
-import type { CreateUserData } from '@jungle/types'
+import type { CreateUserData } from '../../../types/auth.types'
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import type { Repository } from 'typeorm'

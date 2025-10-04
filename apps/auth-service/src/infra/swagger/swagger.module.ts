@@ -1,12 +1,11 @@
 import { INestApplication } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
 import {
   DocumentBuilder,
   SwaggerModule as NestSwaggerModule,
 } from '@nestjs/swagger'
 
 export class SwaggerConfig {
-  static setup(app: INestApplication, configService: ConfigService): void {
+  static setup(app: INestApplication): void {
     const config = new DocumentBuilder()
       .setTitle('Auth Service API')
       .setDescription(
@@ -52,9 +51,6 @@ export class SwaggerConfig {
         showRequestHeaders: true,
         showCommonExtensions: true,
         tryItOutEnabled: true,
-        requestInterceptor: (req) => {
-          return req
-        },
       },
     })
   }

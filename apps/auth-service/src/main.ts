@@ -16,7 +16,7 @@ async function bootstrap() {
   app.useGlobalPipes(appConfig.createValidationPipe())
 
   if (appConfig.isDevelopment) {
-    SwaggerConfig.setup(app, configService)
+    SwaggerConfig.setup(app)
   }
 
   const port = appConfig.port

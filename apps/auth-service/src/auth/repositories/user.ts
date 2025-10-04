@@ -1,4 +1,4 @@
-import type { CreateUserData } from '@jungle/types'
+import type { CreateUserData } from '../../types/auth.types'
 
 import type { User } from '../entities/user.entity'
 

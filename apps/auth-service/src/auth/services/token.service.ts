@@ -1,4 +1,4 @@
-import type { TokenPair } from '@jungle/types'
+import type { TokenPair } from '../../types/auth.types'
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
@@ -10,7 +10,7 @@ export class TokenService {
   constructor(
     private readonly jwt: JwtService,
     private readonly config: ConfigService,
-  ) {}
+  ) { }
 
   async generate(userId: string, email: string): Promise<TokenPair> {
     const accessToken = await this.jwt.signAsync(

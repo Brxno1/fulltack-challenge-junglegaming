@@ -8,7 +8,7 @@ export class RegisterUserDto {
     format: 'email',
   })
   @IsEmail()
-  email: string
+  email!: string
 
   @ApiProperty({
     example: 'johndoe',
@@ -17,7 +17,7 @@ export class RegisterUserDto {
   })
   @IsString()
   @MinLength(3)
-  username: string
+  username!: string
 
   @ApiProperty({
     example: 'password123',
@@ -27,7 +27,7 @@ export class RegisterUserDto {
   })
   @IsString()
   @MinLength(6)
-  password: string
+  password!: string
 }
 
 export class LoginUserDto {
@@ -37,7 +37,7 @@ export class LoginUserDto {
     format: 'email',
   })
   @IsEmail()
-  email: string
+  email!: string
 
   @ApiProperty({
     example: 'password123',
@@ -46,7 +46,7 @@ export class LoginUserDto {
   })
   @IsString()
   @MinLength(6)
-  password: string
+  password!: string
 }
 
 export class RefreshTokenDto {
@@ -57,5 +57,5 @@ export class RefreshTokenDto {
   })
   @IsString()
   @IsNotEmpty()
-  refreshToken: string
+  refreshToken!: string
 }
