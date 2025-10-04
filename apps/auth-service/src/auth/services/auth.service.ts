@@ -4,6 +4,7 @@ import { LoginUserUseCase } from '../use-cases/login-user';
 import { TokenService } from './token.service';
 import { UsersRepository } from '../repositories/user';
 import type { AuthResponse, CreateUserData, LoginUserData } from '../../types';
+import { AUTH_ERROR_MESSAGES } from '../constants/error-messages';
 
 @Injectable()
 export class AuthService {
@@ -32,7 +33,7 @@ export class AuthService {
 
       const user = await this.users.findById(payload.sub);
 
-      if (!user) throw new UnauthorizedException('User not found');
+      if (!user) throw new UnauthorizedException(AUTH_ERROR_MESSAGES.USER_NOT_FOUND);
 
       const { password, ...userWithoutPassword } = user;
 
@@ -40,7 +41,7 @@ export class AuthService {
 
       return { user: userWithoutPassword, ...tokens };
     } catch {
-      throw new UnauthorizedException('Invalid refresh token');
+      throw new UnauthorizedException(AUTH_ERROR_MESSAGES.INVALID_TOKEN);
     }
   }
 }

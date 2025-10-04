@@ -3,6 +3,7 @@ import * as bcrypt from 'bcrypt';
 
 import { UsersRepository } from '../repositories/user';
 import type { CreateUserData, UserResponse } from '../../types';
+import { AUTH_ERROR_MESSAGES } from '../constants/error-messages';
 
 @Injectable()
 export class RegisterUserUseCase {
@@ -12,7 +13,7 @@ export class RegisterUserUseCase {
     const exists = await this.users.findByEmail(email);
 
     if (exists) {
-      throw new UnauthorizedException('Registration failed')
+      throw new UnauthorizedException(AUTH_ERROR_MESSAGES.REGISTRATION_FAILED);
     };
 
     const passwordHash = await bcrypt.hash(password, 10);

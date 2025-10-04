@@ -3,6 +3,7 @@ import * as bcrypt from 'bcrypt';
 
 import { UsersRepository } from '../repositories/user';
 import type { LoginUserData, UserResponse } from '../../types';
+import { AUTH_ERROR_MESSAGES } from '../constants/error-messages';
 
 @Injectable()
 export class LoginUserUseCase {
@@ -12,13 +13,13 @@ export class LoginUserUseCase {
     const user = await this.users.findByEmail(email);
 
     if (!user) {
-      throw new UnauthorizedException('Invalid credentials')
+      throw new UnauthorizedException(AUTH_ERROR_MESSAGES.INVALID_CREDENTIALS);
     };
 
     const isValidPassword = await bcrypt.compare(password, user.password);
 
     if (!isValidPassword) {
-      throw new UnauthorizedException('Invalid credentials')
+      throw new UnauthorizedException(AUTH_ERROR_MESSAGES.INVALID_CREDENTIALS);
     };
 
     const { password: _password, ...userWithoutPassword } = user;

@@ -1,21 +1,31 @@
 import { NestFactory } from '@nestjs/core';
+import { Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+
 import { AppModule } from './app.module';
-import { ValidationPipe, Logger } from '@nestjs/common';
+import { AppConfigService } from './infra/config/app.config';
+import { SwaggerConfig } from './infra/swagger/swagger.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const logger = new Logger('AuthService');
 
-  app.useGlobalPipes(new ValidationPipe({
-    whitelist: true,
-    forbidNonWhitelisted: true,
-    transform: true
-  }));
+  const configService = app.get(ConfigService);
+  const appConfig = new AppConfigService(configService);
 
-  const port = process.env.PORT ?? 3002;
+  app.useGlobalPipes(appConfig.createValidationPipe());
+
+  if (appConfig.isDevelopment) {
+    SwaggerConfig.setup(app, configService);
+  }
+
+  const port = appConfig.port;
   await app.listen(port);
 
   logger.log(`🚀 Auth Service running on port ${port}`);
+  if (appConfig.isDevelopment) {
+    logger.log(`📚 Swagger docs available at http://localhost:${port}/api/docs`);
+  }
 }
 
 bootstrap();
