@@ -4,4 +4,4 @@ export const AUTH_ERROR_MESSAGES = {
   INVALID_TOKEN: 'Authentication failed',
   TOKEN_EXPIRED: 'Authentication failed',
   REGISTRATION_FAILED: 'Authentication failed',
-} as const;
+} as const

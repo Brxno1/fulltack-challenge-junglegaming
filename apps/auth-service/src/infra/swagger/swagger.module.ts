@@ -1,12 +1,16 @@
-import { ConfigService } from '@nestjs/config';
-import { DocumentBuilder, SwaggerModule as NestSwaggerModule } from '@nestjs/swagger';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
+import {
+  DocumentBuilder,
+  SwaggerModule as NestSwaggerModule,
+} from '@nestjs/swagger'
 
 export class SwaggerConfig {
   static setup(app: INestApplication, configService: ConfigService): void {
     const config = new DocumentBuilder()
       .setTitle('Auth Service API')
-      .setDescription(`
+      .setDescription(
+        `
         Authentication microservice for Jungle Gaming Challenge.
         
         This service handles user authentication, registration, and token management.
@@ -17,24 +21,29 @@ export class SwaggerConfig {
         - JWT token generation and refresh
         - Secure password hashing
         - Input validation
-      `)
+      `,
+      )
       .setVersion('1.0')
-      .setContact('Jungle Gaming Team', 'https://junglegaming.io', 'dev@junglegaming.io')
+      .setContact(
+        'Jungle Gaming Team',
+        'https://junglegaming.io',
+        'dev@junglegaming.io',
+      )
       .setLicense('MIT', 'https://opensource.org/licenses/MIT')
       .addBearerAuth(
         {
           type: 'http',
           scheme: 'bearer',
           bearerFormat: 'JWT',
-          description: 'Enter JWT token'
+          description: 'Enter JWT token',
         },
-        'JWT'
+        'JWT',
       )
       .addServer('http://localhost:3002', 'Development')
       .addServer('https://api.junglegaming.io', 'Production')
-      .build();
+      .build()
 
-    const document = NestSwaggerModule.createDocument(app, config);
+    const document = NestSwaggerModule.createDocument(app, config)
     NestSwaggerModule.setup('api/docs', app, document, {
       swaggerOptions: {
         persistAuthorization: true,
@@ -44,9 +53,9 @@ export class SwaggerConfig {
         showCommonExtensions: true,
         tryItOutEnabled: true,
         requestInterceptor: (req) => {
-          return req;
-        }
+          return req
+        },
       },
-    });
+    })
   }
 }

@@ -1,9 +1,11 @@
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { AuthResponseSchema } from '@/types';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger'
+
+import { AuthResponseSchema } from './auth.schemas'
 
 export const AuthDocs = {
   register: {
-    operation: (): MethodDecorator => ApiOperation({ summary: 'Register a new user' }),
+    operation: (): MethodDecorator =>
+      ApiOperation({ summary: 'Register a new user' }),
     responses: (): MethodDecorator[] => [
       ApiResponse({
         status: 201,
@@ -15,15 +17,18 @@ export const AuthDocs = {
             email: 'user@example.com',
             username: 'johndoe',
             createdAt: '2025-10-04T17:02:45.549Z',
-            updatedAt: '2025-10-04T17:02:45.549Z'
+            updatedAt: '2025-10-04T17:02:45.549Z',
           },
           accessToken: 'eyJhbGciOi...',
-          refreshToken: 'eyJhbGciOi...'
-        }
+          refreshToken: 'eyJhbGciOi...',
+        },
       }),
       ApiResponse({ status: 400, description: 'Invalid input data' }),
-      ApiResponse({ status: 401, description: 'Registration failed - user already exists' })
-    ]
+      ApiResponse({
+        status: 401,
+        description: 'Registration failed - user already exists',
+      }),
+    ],
   },
 
   login: {
@@ -39,19 +44,20 @@ export const AuthDocs = {
             email: 'user@example.com',
             username: 'johndoe',
             createdAt: '2025-10-04T17:02:45.549Z',
-            updatedAt: '2025-10-04T17:02:45.549Z'
+            updatedAt: '2025-10-04T17:02:45.549Z',
           },
           accessToken: 'eyJhbGciOi...',
-          refreshToken: 'eyJhbGciOi...'
-        }
+          refreshToken: 'eyJhbGciOi...',
+        },
       }),
       ApiResponse({ status: 400, description: 'Invalid input data' }),
-      ApiResponse({ status: 401, description: 'Invalid credentials' })
-    ]
+      ApiResponse({ status: 401, description: 'Invalid credentials' }),
+    ],
   },
 
   refresh: {
-    operation: (): MethodDecorator => ApiOperation({ summary: 'Refresh access token' }),
+    operation: (): MethodDecorator =>
+      ApiOperation({ summary: 'Refresh access token' }),
     responses: (): MethodDecorator[] => [
       ApiResponse({
         status: 200,
@@ -63,13 +69,13 @@ export const AuthDocs = {
             email: 'user@example.com',
             username: 'johndoe',
             createdAt: '2025-10-04T17:02:45.549Z',
-            updatedAt: '2025-10-04T17:02:45.549Z'
+            updatedAt: '2025-10-04T17:02:45.549Z',
           },
           accessToken: 'eyJhbGciOi...',
-          refreshToken: 'eyJhbGciOi...'
-        }
+          refreshToken: 'eyJhbGciOi...',
+        },
       }),
-      ApiResponse({ status: 401, description: 'Invalid refresh token' })
-    ]
-  }
-};
+      ApiResponse({ status: 401, description: 'Invalid refresh token' }),
+    ],
+  },
+}

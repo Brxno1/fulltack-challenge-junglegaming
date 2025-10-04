@@ -1,8 +1,8 @@
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { Module } from '@nestjs/common'
+import { ConfigModule, ConfigService } from '@nestjs/config'
+import { TypeOrmModule } from '@nestjs/typeorm'
 
-import { User } from '@/auth/entities/user.entity';
+import { User } from '@/auth/entities/user.entity'
 
 @Module({
   imports: [
@@ -25,4 +25,4 @@ import { User } from '@/auth/entities/user.entity';
   ],
   exports: [TypeOrmModule],
 })
-export class DatabaseModule { }
+export class DatabaseModule {}
