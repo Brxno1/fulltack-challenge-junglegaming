@@ -1,33 +1,23 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { User } from '../entities/user.entity';
-import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
-import { JwtStrategy } from './jwt.strategy';
-import { UserRepository } from './domain/user.repository';
-import { DatabaseUserRepository } from './infra/typeorm-user.repository';
+import { User } from './entities/user.entity';
+import { AuthController } from '../infra/http/controllers/auth.controller';
+import { AuthService } from './services/auth.service';
+import { JwtStrategy } from '../infra/jwt/jwt.strategy';
+import { JwtConfigModule } from '../infra/jwt/jwt.module';
+import { UsersRepository } from './repositories/user';
+import { DatabaseUserRepository } from '../infra/database/typeorm/typeorm-user.repository';
 import { RegisterUserUseCase } from './use-cases/register-user';
 import { LoginUserUseCase } from './use-cases/login-user';
-import { TokenService } from './token.service';
+import { TokenService } from './services/token.service';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
-    ConfigModule,
+    JwtConfigModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
-    JwtModule.registerAsync({
-      global: true,
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        secret: config.get<string>('JWT_SECRET'),
-        signOptions: { expiresIn: config.get<string>('JWT_EXPIRES_IN') || '15m' },
-      }),
-    }),
   ],
   controllers: [AuthController],
   providers: [
@@ -36,10 +26,11 @@ import { TokenService } from './token.service';
     RegisterUserUseCase,
     LoginUserUseCase,
     TokenService,
-    { provide: UserRepository, useClass: DatabaseUserRepository },
+    { provide: UsersRepository, useClass: DatabaseUserRepository },
   ],
   exports: [AuthService],
 })
+
 export class AuthModule { }
 
 

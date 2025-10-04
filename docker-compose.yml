@@ -1,7 +1,4 @@
-version: "3.8"
-
 services:
-  # Auth Service
   auth-service:
     container_name: auth-service
     build:
@@ -19,6 +16,7 @@ services:
       - DB_PASSWORD=${POSTGRES_PASSWORD}
       - DB_NAME=${POSTGRES_DB}
     env_file:
+      - ./.env
       - ./apps/auth-service/.env
     depends_on:
       - db
@@ -26,7 +24,6 @@ services:
       - challenge-network
     restart: unless-stopped
 
-  # Postgres Database
   db:
     image: postgres:17.5-alpine3.21
     container_name: db
@@ -40,7 +37,6 @@ services:
     env_file:
       - ./.env
 
-  # RabbitMQ
   rabbitmq:
     image: rabbitmq:3.13-management-alpine
     container_name: rabbitmq
