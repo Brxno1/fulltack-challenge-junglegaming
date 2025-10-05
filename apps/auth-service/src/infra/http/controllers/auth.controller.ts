@@ -15,7 +15,7 @@ import type {
 @ApiTags('Authentication')
 @Controller('/auth')
 export class AuthController {
-  constructor(private readonly auth: AuthService) { }
+  constructor(private readonly auth: AuthService) {}
 
   @applySwaggerDocs(
     AuthDocs.register.operation,

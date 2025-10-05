@@ -13,19 +13,17 @@ async function bootstrap() {
   const configService = app.get(ConfigService)
   const appConfig = new AppConfigService(configService)
 
+  const port = appConfig.port
+  await app.listen(port)
+
   app.useGlobalPipes(appConfig.createValidationPipe())
 
   if (appConfig.isDevelopment) {
     SwaggerConfig.setup(app)
-  }
-
-  const port = appConfig.port
-  await app.listen(port)
-
-  logger.log(`🚀 Auth Service running on port ${port}`)
-  if (appConfig.isDevelopment) {
     logger.log(`📚 Swagger docs available at http://localhost:${port}/api/docs`)
   }
+
+  logger.log(`🚀 Auth Service running on port ${port}`)
 }
 
 bootstrap()

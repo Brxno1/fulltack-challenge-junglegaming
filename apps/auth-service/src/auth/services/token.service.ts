@@ -1,16 +1,18 @@
-import type { TokenPair } from '../../types/auth.types'
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 
+import { AUTH_ERROR_MESSAGES } from '@/auth/constants/error-messages'
 import type { JwtPayload } from '@/infra/jwt/jwt.strategy'
+
+import type { TokenPair } from '../../types/auth.types'
 
 @Injectable()
 export class TokenService {
   constructor(
     private readonly jwt: JwtService,
     private readonly config: ConfigService,
-  ) { }
+  ) {}
 
   async generate(userId: string, email: string): Promise<TokenPair> {
     const accessToken = await this.jwt.signAsync(
@@ -38,9 +40,13 @@ export class TokenService {
         secret: this.config.get<string>('JWT_SECRET'),
       })
 
+      if (payload.type !== 'refresh') {
+        throw new UnauthorizedException(AUTH_ERROR_MESSAGES.INVALID_TOKEN)
+      }
+
       return payload
     } catch {
-      throw new UnauthorizedException('Invalid refresh token')
+      throw new UnauthorizedException(AUTH_ERROR_MESSAGES.INVALID_TOKEN)
     }
   }
 }
