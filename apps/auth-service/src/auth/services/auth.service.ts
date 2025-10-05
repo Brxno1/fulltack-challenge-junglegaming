@@ -1,6 +1,10 @@
-import type { AuthResponse, CreateUserData, LoginUserData } from '../../types/auth.types'
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 
+import type {
+  AuthResponse,
+  CreateUserData,
+  LoginUserData,
+} from '../../types/auth.types'
 import { AUTH_ERROR_MESSAGES } from '../constants/error-messages'
 import { UsersRepository } from '../repositories/user'
 import { LoginUserUseCase } from '../use-cases/login-user'
@@ -14,16 +18,20 @@ export class AuthService {
     private readonly loginUser: LoginUserUseCase,
     private readonly tokenService: TokenService,
     private readonly users: UsersRepository,
-  ) { }
+  ) {}
 
-  async register(data: CreateUserData): Promise<AuthResponse> {
-    const user = await this.registerUser.execute(data)
+  async register({
+    email,
+    username,
+    password,
+  }: CreateUserData): Promise<AuthResponse> {
+    const user = await this.registerUser.execute({ email, username, password })
     const tokens = await this.tokenService.generate(user.id, user.email)
     return { user, ...tokens }
   }
 
-  async login(data: LoginUserData): Promise<AuthResponse> {
-    const user = await this.loginUser.execute(data)
+  async login({ email, password }: LoginUserData): Promise<AuthResponse> {
+    const user = await this.loginUser.execute({ email, password })
     const tokens = await this.tokenService.generate(user.id, user.email)
     return { user, ...tokens }
   }

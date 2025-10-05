@@ -23,12 +23,6 @@ export class SwaggerConfig {
       `,
       )
       .setVersion('1.0')
-      .setContact(
-        'Jungle Gaming Team',
-        'https://junglegaming.io',
-        'dev@junglegaming.io',
-      )
-      .setLicense('MIT', 'https://opensource.org/licenses/MIT')
       .addBearerAuth(
         {
           type: 'http',
@@ -39,7 +33,6 @@ export class SwaggerConfig {
         'JWT',
       )
       .addServer('http://localhost:3002', 'Development')
-      .addServer('https://api.junglegaming.io', 'Production')
       .build()
 
     const document = NestSwaggerModule.createDocument(app, config)
