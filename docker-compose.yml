@@ -7,28 +7,54 @@ services:
     ports:
       - "3002:3002"
     volumes:
-      # Mount source code for hot reload
       - ./apps/auth-service:/challenge/apps/auth-service
-      # Mount packages for workspace dependencies
       - ./packages:/challenge/packages
-      # Mount root package files
       - ./package.json:/challenge/package.json
       - ./pnpm-lock.yaml:/challenge/pnpm-lock.yaml
       - ./pnpm-workspace.yaml:/challenge/pnpm-workspace.yaml
-      # Exclude node_modules to use container's installed packages
-      - /challenge/node_modules
-      - /challenge/apps/auth-service/node_modules
     environment:
-      - DB_HOST=db
-      - DB_PORT=5432
-      - DB_USERNAME=${POSTGRES_USER}
-      - DB_PASSWORD=${POSTGRES_PASSWORD}
-      - DB_NAME=${POSTGRES_DB}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
     env_file:
       - ./.env
       - ./apps/auth-service/.env
     depends_on:
       - db
+    networks:
+      - challenge-network
+    restart: unless-stopped
+
+  tasks-service:
+    container_name: tasks-service
+    build:
+      context: .
+      dockerfile: ./apps/tasks-service/Dockerfile
+    ports:
+      - "3003:3003"
+    volumes:
+      - ./apps/tasks-service:/challenge/apps/tasks-service
+      - ./packages:/challenge/packages
+      - ./package.json:/challenge/package.json
+      - ./pnpm-lock.yaml:/challenge/pnpm-lock.yaml
+      - ./pnpm-workspace.yaml:/challenge/pnpm-workspace.yaml
+
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - PORT=${TASKS_SERVICE_PORT}
+      - RABBITMQ_URL=${RABBITMQ_URL}
+    env_file:
+      - ./.env
+      - ./apps/tasks-service/.env
+    depends_on:
+      - db
+      - rabbitmq
     networks:
       - challenge-network
     restart: unless-stopped
