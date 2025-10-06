@@ -14,43 +14,43 @@ import { TaskPriority, TaskStatus } from '@/tasks/constants/task.enums'
 export class CreateTaskDto {
   @IsString()
   @IsNotEmpty()
-  title!: string
+  title: string
 
   @IsOptional()
   @IsString()
-  description?: string
+  description: string
 
   @IsOptional()
   @IsString()
-  deadline?: string
+  deadline: string
 
   @IsEnum(TaskPriority)
-  priority!: TaskPriority
+  priority: TaskPriority
 
   @IsEnum(TaskStatus)
-  status!: TaskStatus
+  status: TaskStatus
 }
 
 export class UpdateTaskDto {
   @IsOptional()
   @IsString()
-  title?: string
+  title: string
 
   @IsOptional()
   @IsString()
-  description?: string
+  description: string
 
   @IsOptional()
   @IsString()
-  deadline?: string
+  deadline: string
 
   @IsOptional()
   @IsEnum(TaskPriority)
-  priority?: TaskPriority
+  priority: TaskPriority
 
   @IsOptional()
   @IsEnum(TaskStatus)
-  status?: TaskStatus
+  status: TaskStatus
 }
 
 export class ListTasksQueryDto {
@@ -58,12 +58,12 @@ export class ListTasksQueryDto {
   @IsInt()
   @Min(1)
   @Transform(({ value }) => Number(value))
-  page?: number
+  page: number
 
   @IsOptional()
   @IsInt()
   @Min(1)
   @Max(100)
   @Transform(({ value }) => Number(value))
-  size?: number
+  size: number
 }

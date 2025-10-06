@@ -2,11 +2,11 @@ import { Body, Controller, Get, Post, Query } from '@nestjs/common'
 
 import { TaskService } from '@/tasks/task.service'
 
-import { CreateTaskDto, ListTasksQueryDto } from '../dtos/tasks.dtos'
+import { CreateTaskDto, ListTasksQueryDto } from './dtos/tasks.dtos'
 
 @Controller('/tasks')
 export class TasksController {
-  constructor(private readonly taskService: TaskService) {}
+  constructor(private readonly taskService: TaskService) { }
 
   @Get()
   async list(@Query() query: ListTasksQueryDto) {

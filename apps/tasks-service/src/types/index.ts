@@ -1,5 +1,5 @@
 import { TaskPriority, TaskStatus } from '@/tasks/constants/task.enums'
-import { Task } from '@/tasks/entities/task.entity'
+import { Task } from '@/tasks/entities/tasks.entity'
 
 export interface PaginatedResult {
   tasks: Task[]
