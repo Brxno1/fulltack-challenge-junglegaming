@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 
-import { Task } from '@/tasks/entities/task.entity'
+import { Task } from '@/tasks/entities/tasks.entity'
 import {
   TasksRepository,
   UpdateTaskData,
@@ -14,7 +14,7 @@ export class TypeormTasksRepository implements TasksRepository {
   constructor(
     @InjectRepository(Task)
     private readonly task: Repository<Task>,
-  ) {}
+  ) { }
 
   findById(id: string): Promise<Task | null> {
     return this.task.findOne({ where: { id } })

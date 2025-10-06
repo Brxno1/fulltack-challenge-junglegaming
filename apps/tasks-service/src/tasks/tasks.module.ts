@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common'
 
 import { DatabaseModule } from '@/infra/database/database.module'
 import { TypeormTasksRepository } from '@/infra/database/typeorm/typeorm-tasks-repository'
-import { TasksController } from '@/infra/http/controllers/tasks.controller'
+import { TasksController } from '@/tasks/tasks.controller'
 
 import { TasksRepository } from './repositories/tasks.repository'
 import { TaskService } from './task.service'
@@ -20,4 +20,4 @@ import { ListTasksUseCase } from './use-cases/list-tasks'
   ],
   exports: [],
 })
-export class TasksModule { }
+export class TasksModule {}

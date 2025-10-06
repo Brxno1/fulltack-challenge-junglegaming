@@ -11,26 +11,26 @@ import { TaskPriority, TaskStatus } from '../constants/task.enums'
 @Entity('tasks')
 export class Task {
   @PrimaryGeneratedColumn('uuid')
-  id!: string
+  id: string
 
   @Column()
-  title!: string
+  title: string
 
   @Column({ type: 'text', nullable: true })
-  description?: string | null
+  description: string | null
 
   @Column({ type: 'timestamp', nullable: true })
-  deadline?: Date | null
+  deadline: Date | null
 
   @Column({ type: 'varchar', length: 16 })
-  priority!: TaskPriority
+  priority: TaskPriority
 
   @Column({ type: 'varchar', length: 16 })
-  status!: TaskStatus
+  status: TaskStatus
 
   @CreateDateColumn()
-  createdAt!: Date
+  createdAt: Date
 
   @UpdateDateColumn()
-  updatedAt!: Date
+  updatedAt: Date
 }

@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 
 import { AppController } from './app.controller'
+import { HealthModule } from './health/health.module'
 import { TasksModule } from './tasks/tasks.module'
 
 @Module({
@@ -10,6 +11,7 @@ import { TasksModule } from './tasks/tasks.module'
       isGlobal: true,
     }),
     TasksModule,
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [],

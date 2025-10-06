@@ -1,4 +1,4 @@
-import type { Task } from '@/tasks/entities/task.entity'
+import type { Task } from '@/tasks/entities/tasks.entity'
 import type { CreateTaskData, ListTasksParams, PaginatedResult } from '@/types'
 
 export type UpdateTaskData = Partial<CreateTaskData>
