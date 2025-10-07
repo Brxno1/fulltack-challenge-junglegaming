@@ -1,4 +1,3 @@
-
 services:
   auth-service:
     container_name: auth-service
@@ -9,10 +8,10 @@ services:
     ports:
       - "3002:3002"
     volumes:
-      - .:/app
-      - ./packages:/app/packages
-      - /app/node_modules
-      - /app/apps/auth-service/node_modules
+      - .:/challenge
+      - ./packages:/challenge/packages
+      - /challenge/node_modules
+      - /challenge/apps/auth-service/node_modules
     environment:
       - NODE_ENV=development
       - PORT=3002
@@ -21,6 +20,7 @@ services:
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=${DB_NAME}
+      - CHOKIDAR_USEPOLLING=1
     env_file:
       - ./.env
       - ./apps/auth-service/.env
@@ -36,13 +36,14 @@ services:
     build:
       context: .
       dockerfile: ./apps/tasks-service/Dockerfile
+      target: development
     ports:
       - "3003:3003"
     volumes:
-      - .:/app
-      - ./packages:/app/packages
-      - /app/node_modules
-      - /app/apps/tasks-service/node_modules
+      - .:/challenge
+      - ./packages:/challenge/packages
+      - /challenge/node_modules
+      - /challenge/apps/tasks-service/node_modules
     environment:
       - NODE_ENV=development
       - PORT=3003
@@ -52,6 +53,7 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=${DB_NAME}
       - RABBITMQ_URL=${RABBITMQ_URL}
+      - CHOKIDAR_USEPOLLING=1
     env_file:
       - ./.env
       - ./apps/tasks-service/.env
