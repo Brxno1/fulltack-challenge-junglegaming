@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm'
@@ -19,18 +20,22 @@ export class Task {
   @Column({ type: 'text', nullable: true })
   description: string | null
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Index()
+  @Column({ type: 'timestamptz', nullable: true })
   deadline: Date | null
 
+  @Index()
   @Column({ type: 'varchar', length: 16 })
   priority: TaskPriority
 
+  @Index()
   @Column({ type: 'varchar', length: 16 })
   status: TaskStatus
 
-  @CreateDateColumn()
+  @Index()
+  @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamptz' })
   updatedAt: Date
 }

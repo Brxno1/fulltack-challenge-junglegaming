@@ -2,6 +2,9 @@ import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
+import { TaskAssignment } from '@/tasks/entities/task-assignment.entity'
+import { TaskAuditLog } from '@/tasks/entities/task-audit-log.entity'
+import { TaskComment } from '@/tasks/entities/task-comment.entity'
 import { Task } from '@/tasks/entities/tasks.entity'
 
 @Module({
@@ -17,12 +20,12 @@ import { Task } from '@/tasks/entities/tasks.entity'
         username: config.get<string>('DB_USERNAME'),
         password: config.get<string>('DB_PASSWORD'),
         database: config.get<string>('DB_NAME'),
-        entities: [Task],
+        entities: [Task, TaskComment, TaskAuditLog, TaskAssignment],
         synchronize: config.get<string>('NODE_ENV') === 'development',
       }),
     }),
-    TypeOrmModule.forFeature([Task]),
+    TypeOrmModule.forFeature([Task, TaskComment, TaskAuditLog, TaskAssignment]),
   ],
   exports: [TypeOrmModule],
 })
-export class DatabaseModule { }
+export class DatabaseModule {}

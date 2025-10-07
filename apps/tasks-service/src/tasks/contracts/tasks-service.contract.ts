@@ -1,4 +1,4 @@
-import type {
+import {
   CreateTaskData,
   ListTasksParams,
   PaginatedTasks,
@@ -6,8 +6,8 @@ import type {
   UpdateTaskData,
 } from '@/types'
 
-export abstract class TasksRepository {
-  abstract findById(id: string): Promise<Task | null>
+export abstract class TasksServiceContract {
+  abstract findById(id: string): Promise<Task>
 
   abstract list(params: ListTasksParams): Promise<PaginatedTasks>
 
