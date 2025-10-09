@@ -38,31 +38,37 @@ export class TasksController {
 
   @HttpCode(201)
   @Post()
-  async create(@Body() body: CreateTaskDto) {
-    return this.taskService.create({
-      title: body.title,
-      description: body.description ?? null,
-      deadline: body.deadline ? new Date(body.deadline) : null,
-      priority: body.priority,
-      status: body.status,
+  async create(@Body() body: CreateTaskDto): Promise<{ id: string }> {
+    const { title, description, deadline, priority, status } = body
+
+    const { id } = await this.taskService.create({
+      title,
+      description,
+      deadline,
+      priority,
+      status,
     })
+
+    return { id }
   }
 
   @HttpCode(204)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() body: UpdateTaskDto) {
-    return this.taskService.update(id, {
-      title: body.title,
-      description: body.description ?? null,
-      deadline: body.deadline ? new Date(body.deadline) : null,
-      priority: body.priority,
-      status: body.status,
+    const { title, description, deadline, priority, status } = body
+
+    await this.taskService.update(id, {
+      title,
+      description,
+      deadline,
+      priority,
+      status,
     })
   }
 
   @HttpCode(204)
   @Delete(':id')
   async delete(@Param('id') id: string) {
-    return this.taskService.delete(id)
+    await this.taskService.delete(id)
   }
 }

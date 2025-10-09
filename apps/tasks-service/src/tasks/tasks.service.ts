@@ -1,6 +1,12 @@
 import { Injectable } from '@nestjs/common'
 
-import { CreateTaskData, ListTasksParams, Task, UpdateTaskData } from '@/types'
+import type {
+  CreateTaskData,
+  ListTasksParams,
+  PaginatedTasks,
+  Task,
+  UpdateTaskData,
+} from '@/types'
 
 import { TasksServiceContract } from './contracts/tasks-service.contract'
 import { CreateTaskUseCase } from './use-cases/create-task'
@@ -20,19 +26,46 @@ export class TasksService implements TasksServiceContract {
   ) {}
 
   async findById(id: string): Promise<Task> {
-    return this.getTaskByIdUseCase.execute(id)
+    const task = await this.getTaskByIdUseCase.execute(id)
+
+    return task
   }
 
-  async list(params: ListTasksParams) {
-    return this.listTasksUseCase.execute(params)
+  async list(params: ListTasksParams): Promise<PaginatedTasks> {
+    const { page, size } = params
+
+    const { tasks, total } = await this.listTasksUseCase.execute({
+      page,
+      size,
+    })
+
+    return { tasks, total }
   }
 
-  async create(data: CreateTaskData) {
-    return this.createTaskUseCase.execute(data)
+  async create(data: CreateTaskData): Promise<{ id: string }> {
+    const { title, description, deadline, priority, status } = data
+
+    const { id } = await this.createTaskUseCase.execute({
+      title,
+      description,
+      deadline,
+      priority,
+      status,
+    })
+
+    return { id }
   }
 
   async update(id: string, data: UpdateTaskData): Promise<void> {
-    return this.updateTaskUseCase.execute(id, data)
+    const { title, description, deadline, priority, status } = data
+
+    await this.updateTaskUseCase.execute(id, {
+      title,
+      description,
+      deadline,
+      priority,
+      status,
+    })
   }
 
   async delete(id: string): Promise<void> {
