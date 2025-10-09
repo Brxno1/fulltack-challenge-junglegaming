@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 
-import { UpdateTaskData } from '@/types'
+import type { UpdateTaskData } from '@/types'
 
 import { TasksRepository } from '../repositories/tasks.repository'
 
@@ -9,6 +9,14 @@ export class UpdateTaskUseCase {
   constructor(private readonly tasks: TasksRepository) {}
 
   async execute(id: string, data: UpdateTaskData): Promise<void> {
-    await this.tasks.update(id, data)
+    const { title, description, deadline, priority, status } = data
+
+    await this.tasks.update(id, {
+      title,
+      description,
+      deadline,
+      priority,
+      status,
+    })
   }
 }

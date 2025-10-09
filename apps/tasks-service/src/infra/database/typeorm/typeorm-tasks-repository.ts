@@ -23,8 +23,8 @@ export class TypeormTasksRepository implements TasksRepository {
   }
 
   async create(data: CreateTaskData): Promise<{ id: string }> {
-    const createdTask = await this.task.save(data)
-    return { id: createdTask.id }
+    const { id } = await this.task.save(data)
+    return { id }
   }
 
   async list(params: ListTasksParams): Promise<PaginatedTasks> {

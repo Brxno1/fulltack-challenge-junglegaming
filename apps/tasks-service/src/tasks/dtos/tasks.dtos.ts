@@ -18,16 +18,18 @@ export class CreateTaskDto {
 
   @IsOptional()
   @IsString()
-  description: string
+  description: string | null
 
   @IsOptional()
-  @IsString()
-  deadline: string
+  @Transform(({ value }) => (value ? new Date(value) : null))
+  deadline: Date | null
 
   @IsEnum(TaskPriority)
+  @Transform(({ value }) => value.toUpperCase())
   priority: TaskPriority
 
   @IsEnum(TaskStatus)
+  @Transform(({ value }) => value.toUpperCase())
   status: TaskStatus
 }
 
@@ -38,18 +40,21 @@ export class UpdateTaskDto {
 
   @IsOptional()
   @IsString()
-  description: string
+  @Transform(({ value }) => value ?? null)
+  description: string | null
 
   @IsOptional()
-  @IsString()
-  deadline: string
+  @Transform(({ value }) => (value ? new Date(value) : null))
+  deadline: Date | null
 
   @IsOptional()
   @IsEnum(TaskPriority)
+  @Transform(({ value }) => value.toUpperCase())
   priority: TaskPriority
 
   @IsOptional()
   @IsEnum(TaskStatus)
+  @Transform(({ value }) => value.toUpperCase())
   status: TaskStatus
 }
 
