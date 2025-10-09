@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
+import { RefreshTokenBlacklist } from '@/auth/entities/refresh-token-blacklist.entity'
 import { User } from '@/auth/entities/user.entity'
 
 @Module({
@@ -17,11 +18,12 @@ import { User } from '@/auth/entities/user.entity'
         username: config.get<string>('DB_USERNAME'),
         password: config.get<string>('DB_PASSWORD'),
         database: config.get<string>('DB_NAME'),
-        entities: [User],
+        schema: 'public',
+        entities: [User, RefreshTokenBlacklist],
         synchronize: config.get<string>('NODE_ENV') === 'development',
       }),
     }),
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, RefreshTokenBlacklist]),
   ],
   exports: [TypeOrmModule],
 })

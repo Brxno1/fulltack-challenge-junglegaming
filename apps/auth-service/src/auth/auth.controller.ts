@@ -1,59 +1,46 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common'
-import { ApiTags } from '@nestjs/swagger'
+import { Body, Controller, Post } from '@nestjs/common'
 
-import { AuthService } from '@/auth/services/auth.service'
 import { AuthResponse } from '@/types/auth.types'
 
-import { applySwaggerDocs, AuthDocs } from '../infra/http/docs'
-import { AuthBodyExamples } from '../infra/http/docs/body-examples'
+import { AuthServiceContract } from './contracts/auht-service.contract'
 import type {
   LoginUserDto,
   RefreshTokenDto,
   RegisterUserDto,
 } from './dtos/auth.dtos'
 
-@ApiTags('Authentication')
 @Controller('/auth')
 export class AuthController {
-  constructor(private readonly auth: AuthService) {}
+  constructor(private readonly auth: AuthServiceContract) {}
 
-  @applySwaggerDocs(
-    AuthDocs.register.operation,
-    AuthDocs.register.responses,
-    AuthBodyExamples.register,
-  )
-  @HttpCode(HttpStatus.CREATED)
   @Post('/register')
   async register(@Body() body: RegisterUserDto): Promise<AuthResponse> {
-    return this.auth.register({
-      username: body.username,
-      email: body.email,
-      password: body.password,
+    const { username, email, password } = body
+    const { user, accessToken, refreshToken } = await this.auth.register({
+      username,
+      email,
+      password,
     })
+
+    return { user, accessToken, refreshToken }
   }
 
-  @applySwaggerDocs(
-    AuthDocs.login.operation,
-    AuthDocs.login.responses,
-    AuthBodyExamples.login,
-  )
-  @HttpCode(HttpStatus.OK)
   @Post('/login')
   async login(@Body() body: LoginUserDto): Promise<AuthResponse> {
-    return this.auth.login({
+    const { user, accessToken, refreshToken } = await this.auth.login({
       email: body.email,
       password: body.password,
     })
+
+    return { user, accessToken, refreshToken }
   }
 
-  @applySwaggerDocs(
-    AuthDocs.refresh.operation,
-    AuthDocs.refresh.responses,
-    AuthBodyExamples.refresh,
-  )
-  @HttpCode(HttpStatus.OK)
   @Post('/refresh')
   async refresh(@Body() body: RefreshTokenDto): Promise<AuthResponse> {
-    return this.auth.refresh(body.refreshToken)
+    const { user, refreshToken, accessToken } = await this.auth.refresh(
+      body.refreshToken,
+    )
+
+    return { user, refreshToken, accessToken }
   }
 }

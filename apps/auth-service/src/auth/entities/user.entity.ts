@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm'
@@ -9,20 +10,22 @@ import {
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  id!: string
+  id: string
 
   @Column({ unique: true })
-  email!: string
+  @Index()
+  email: string
 
   @Column()
-  username!: string
+  username: string
 
   @Column()
-  password!: string
+  password: string
 
-  @CreateDateColumn()
-  createdAt!: Date
+  @Index()
+  @CreateDateColumn({ type: 'timestamptz' })
+  createdAt: Date
 
-  @UpdateDateColumn()
-  updatedAt!: Date
+  @UpdateDateColumn({ type: 'timestamptz' })
+  updatedAt: Date
 }
