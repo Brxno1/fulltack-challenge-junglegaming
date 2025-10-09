@@ -28,4 +28,4 @@ import { Task } from '@/tasks/entities/tasks.entity'
   ],
   exports: [TypeOrmModule],
 })
-export class DatabaseModule {}
+export class DatabaseModule { }

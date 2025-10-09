@@ -43,9 +43,10 @@ export class TasksService implements TasksServiceContract {
   }
 
   async create(data: CreateTaskData): Promise<{ id: string }> {
-    const { title, description, deadline, priority, status } = data
+    const { createdBy, title, description, deadline, priority, status } = data
 
     const { id } = await this.createTaskUseCase.execute({
+      createdBy,
       title,
       description,
       deadline,

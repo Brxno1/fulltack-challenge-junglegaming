@@ -3,31 +3,34 @@ import {
   CreateDateColumn,
   Entity,
   Index,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm'
 
-import { Task } from './tasks.entity'
+import { Task } from '@/tasks/entities/tasks.entity'
 
 @Entity('task_comments')
-@Index(['task', 'createdAt'])
 export class TaskComment {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
   @Index()
+  @Column({ type: 'uuid' })
+  taskId: string
+
   @ManyToOne(() => Task, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'taskId' })
   task: Task
 
   @Index()
-  @Column({ type: 'uuid', nullable: true })
-  userId: string | null
+  @Column({ type: 'uuid' })
+  userId: string
 
   @Column({ type: 'text' })
   content: string
 
-  @Index()
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date
 
