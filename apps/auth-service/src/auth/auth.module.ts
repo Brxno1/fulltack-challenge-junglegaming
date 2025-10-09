@@ -2,19 +2,24 @@ import { Module } from '@nestjs/common'
 import { PassportModule } from '@nestjs/passport'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
+import { TypeormRefreshTokenBlacklistRepository } from '../infra/database/typeorm/typeorm-refresh-token-blacklist.repository'
 import { TypeormUserRepository } from '../infra/database/typeorm/typeorm-user.repository'
 import { JwtConfigModule } from '../infra/jwt/jwt.module'
+import { TokenService } from '../infra/jwt/token.service'
 import { AuthController } from './auth.controller'
+import { AuthService } from './auth.service'
+import { AuthServiceContract } from './contracts/auht-service.contract'
+import { RefreshTokenBlacklist } from './entities/refresh-token-blacklist.entity'
 import { User } from './entities/user.entity'
+import { RefreshTokenBlacklistRepository } from './repositories/refresh-token-blacklist'
 import { UsersRepository } from './repositories/user'
-import { AuthService } from './services/auth.service'
-import { TokenService } from './services/token.service'
+import { RefreshTokenBlacklistService } from './services/refresh-token-blacklist.service'
 import { LoginUserUseCase } from './use-cases/login-user'
 import { RegisterUserUseCase } from './use-cases/register-user'
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, RefreshTokenBlacklist]),
     JwtConfigModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
   ],
@@ -24,8 +29,14 @@ import { RegisterUserUseCase } from './use-cases/register-user'
     RegisterUserUseCase,
     LoginUserUseCase,
     TokenService,
+    RefreshTokenBlacklistService,
+    { provide: AuthServiceContract, useClass: AuthService },
     { provide: UsersRepository, useClass: TypeormUserRepository },
+    {
+      provide: RefreshTokenBlacklistRepository,
+      useClass: TypeormRefreshTokenBlacklistRepository,
+    },
   ],
   exports: [AuthService],
 })
-export class AuthModule { }
+export class AuthModule {}

@@ -10,6 +10,7 @@ import { JwtConfigModule } from './infra/jwt/jwt.module'
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: ['../../.env', '.env'],
     }),
     DatabaseModule,
     AuthModule,

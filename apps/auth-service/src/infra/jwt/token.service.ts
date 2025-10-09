@@ -3,15 +3,16 @@ import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 
 import { AUTH_ERROR_MESSAGES } from '@/auth/constants/error-messages'
+import { RefreshTokenBlacklistService } from '@/auth/services/refresh-token-blacklist.service'
 import type { JwtPayload } from '@/infra/jwt/jwt.strategy'
-
-import type { TokenPair } from '../../types/auth.types'
+import type { TokenPair } from '@/types/auth.types'
 
 @Injectable()
 export class TokenService {
   constructor(
     private readonly jwt: JwtService,
     private readonly config: ConfigService,
+    private readonly blacklistService: RefreshTokenBlacklistService,
   ) {}
 
   async generate(userId: string, email: string): Promise<TokenPair> {
@@ -36,6 +37,13 @@ export class TokenService {
 
   async verifyRefresh(refreshToken: string): Promise<JwtPayload> {
     try {
+      const isBlacklisted =
+        await this.blacklistService.isBlacklisted(refreshToken)
+
+      if (isBlacklisted) {
+        throw new UnauthorizedException(AUTH_ERROR_MESSAGES.INVALID_TOKEN)
+      }
+
       const payload = await this.jwt.verifyAsync<JwtPayload>(refreshToken, {
         secret: this.config.get<string>('JWT_SECRET'),
       })
@@ -48,5 +56,12 @@ export class TokenService {
     } catch {
       throw new UnauthorizedException(AUTH_ERROR_MESSAGES.INVALID_TOKEN)
     }
+  }
+
+  async invalidateRefreshToken(refreshToken: string): Promise<void> {
+    const expiresAt = new Date()
+    expiresAt.setDate(expiresAt.getDate() + 7)
+
+    await this.blacklistService.addToBlacklist(refreshToken, expiresAt)
   }
 }
