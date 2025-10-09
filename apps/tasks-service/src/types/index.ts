@@ -1,6 +1,8 @@
 import { TaskPriority, TaskStatus } from '@/tasks/constants/task.enums'
 
+// Tasks
 export interface Task {
+  createdBy: string
   id: string
   title: string
   description: string | null
@@ -20,6 +22,7 @@ export interface ListTasksParams {
 }
 
 export interface CreateTaskData {
+  createdBy: string
   title: string
   description?: string | null
   deadline?: Date | null
@@ -28,3 +31,30 @@ export interface CreateTaskData {
 }
 
 export type UpdateTaskData = Partial<CreateTaskData>
+
+// Tasks comments
+export interface TaskComment {
+  id: string
+  taskId: string
+  userId: string
+  content: string
+  createdAt: Date
+  updatedAt: Date
+}
+
+export interface PaginatedTaskComments {
+  comments: TaskComment[]
+  total: number
+}
+
+export interface ListTaskCommentsParams {
+  taskId: string
+  page: number
+  size: number
+}
+
+export interface CreateTaskCommentData {
+  taskId: string
+  userId: string
+  content: string
+}

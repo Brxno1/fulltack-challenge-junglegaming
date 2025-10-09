@@ -15,6 +15,11 @@ export class Task {
   id: string
 
   @Column()
+  @Index()
+  @Column({ type: 'uuid' })
+  createdBy: string
+
+  @Column()
   title: string
 
   @Column({ type: 'text', nullable: true })

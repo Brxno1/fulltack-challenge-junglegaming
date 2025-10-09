@@ -3,7 +3,7 @@ import {
   Controller,
   Delete,
   Get,
-  HttpCode,
+  Headers,
   Param,
   Patch,
   Post,
@@ -21,7 +21,6 @@ import {
 export class TasksController {
   constructor(private readonly taskService: TasksServiceContract) {}
 
-  @HttpCode(200)
   @Get()
   async list(@Query() query: ListTasksQueryDto) {
     return this.taskService.list({
@@ -30,18 +29,20 @@ export class TasksController {
     })
   }
 
-  @HttpCode(200)
   @Get(':id')
   async findById(@Param('id') id: string) {
     return this.taskService.findById(id)
   }
 
-  @HttpCode(201)
   @Post()
-  async create(@Body() body: CreateTaskDto): Promise<{ id: string }> {
+  async create(
+    @Headers('x-user-id') userId: string,
+    @Body() body: CreateTaskDto,
+  ): Promise<{ id: string }> {
     const { title, description, deadline, priority, status } = body
 
     const { id } = await this.taskService.create({
+      createdBy: userId,
       title,
       description,
       deadline,
@@ -52,7 +53,6 @@ export class TasksController {
     return { id }
   }
 
-  @HttpCode(204)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() body: UpdateTaskDto) {
     const { title, description, deadline, priority, status } = body
@@ -66,7 +66,6 @@ export class TasksController {
     })
   }
 
-  @HttpCode(204)
   @Delete(':id')
   async delete(@Param('id') id: string) {
     await this.taskService.delete(id)

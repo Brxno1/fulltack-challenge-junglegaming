@@ -16,7 +16,7 @@ export class TypeormTasksRepository implements TasksRepository {
   constructor(
     @InjectRepository(Task)
     private readonly task: Repository<Task>,
-  ) {}
+  ) { }
 
   findById(id: string): Promise<Task | null> {
     return this.task.findOne({ where: { id } })
