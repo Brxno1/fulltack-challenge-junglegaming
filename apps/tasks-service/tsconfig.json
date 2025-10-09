@@ -1,5 +1,5 @@
 {
-  "extends": "../../packages/tsconfig/node.json",
+  "extends": "@jungle/tsconfig/node.json",
   "compilerOptions": {
     "outDir": "./dist",
     "baseUrl": "./",

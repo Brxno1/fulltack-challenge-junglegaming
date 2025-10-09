@@ -2,12 +2,12 @@ import { Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { NestFactory } from '@nestjs/core'
 
-import { AppModule } from './app.module'
 import { AppConfigService } from './infra/config/app.config'
 import { SwaggerConfig } from './infra/swagger/swagger.module'
+import { MainModule } from './main.module'
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule)
+  const app = await NestFactory.create(MainModule)
   const logger = new Logger('AuthService')
 
   const configService = app.get(ConfigService)

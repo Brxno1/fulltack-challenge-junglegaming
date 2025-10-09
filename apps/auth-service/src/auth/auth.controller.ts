@@ -4,13 +4,13 @@ import { ApiTags } from '@nestjs/swagger'
 import { AuthService } from '@/auth/services/auth.service'
 import { AuthResponse } from '@/types/auth.types'
 
-import { applySwaggerDocs, AuthDocs } from '../docs'
-import { AuthBodyExamples } from '../docs/body-examples'
+import { applySwaggerDocs, AuthDocs } from '../infra/http/docs'
+import { AuthBodyExamples } from '../infra/http/docs/body-examples'
 import type {
   LoginUserDto,
   RefreshTokenDto,
   RegisterUserDto,
-} from '../dtos/auth.dtos'
+} from './dtos/auth.dtos'
 
 @ApiTags('Authentication')
 @Controller('/auth')

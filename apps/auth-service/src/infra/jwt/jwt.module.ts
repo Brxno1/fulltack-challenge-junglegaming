@@ -2,11 +2,12 @@ import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { JwtModule } from '@nestjs/jwt'
 
+import { JwtStrategy } from './jwt.strategy'
 @Module({
   imports: [
     ConfigModule,
     JwtModule.registerAsync({
-      global: true,
+      global: false,
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
@@ -17,6 +18,7 @@ import { JwtModule } from '@nestjs/jwt'
       }),
     }),
   ],
-  exports: [JwtModule],
+  providers: [JwtStrategy],
+  exports: [JwtModule, JwtStrategy],
 })
 export class JwtConfigModule {}

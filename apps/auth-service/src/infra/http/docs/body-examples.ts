@@ -5,7 +5,7 @@ import {
   LoginUserDto,
   RefreshTokenDto,
   RegisterUserDto,
-} from '../dtos/auth.dtos'
+} from '../../../auth/dtos/auth.dtos'
 
 export function ApiBodyWithExample(dto: any, example: any) {
   return ApiBody({

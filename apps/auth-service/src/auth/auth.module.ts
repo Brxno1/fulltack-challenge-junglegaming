@@ -2,10 +2,9 @@ import { Module } from '@nestjs/common'
 import { PassportModule } from '@nestjs/passport'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
-import { DatabaseUserRepository } from '../infra/database/typeorm/typeorm-user.repository'
-import { AuthController } from '../infra/http/controllers/auth.controller'
+import { TypeormUserRepository } from '../infra/database/typeorm/typeorm-user.repository'
 import { JwtConfigModule } from '../infra/jwt/jwt.module'
-import { JwtStrategy } from '../infra/jwt/jwt.strategy'
+import { AuthController } from './auth.controller'
 import { User } from './entities/user.entity'
 import { UsersRepository } from './repositories/user'
 import { AuthService } from './services/auth.service'
@@ -22,12 +21,11 @@ import { RegisterUserUseCase } from './use-cases/register-user'
   controllers: [AuthController],
   providers: [
     AuthService,
-    JwtStrategy,
     RegisterUserUseCase,
     LoginUserUseCase,
     TokenService,
-    { provide: UsersRepository, useClass: DatabaseUserRepository },
+    { provide: UsersRepository, useClass: TypeormUserRepository },
   ],
   exports: [AuthService],
 })
-export class AuthModule {}
+export class AuthModule { }
