@@ -13,7 +13,7 @@ export class CreateTaskCommentUseCase {
     private readonly taskCommentsRepository: TaskCommentsRepository,
     private readonly tasksRepository: TasksRepository,
     private readonly eventPublisher: TaskCommentEventsContract,
-  ) { }
+  ) {}
 
   async execute(input: CreateTaskCommentData): Promise<{ id: string }> {
     const { taskId, userId, content } = input
@@ -30,7 +30,6 @@ export class CreateTaskCommentUseCase {
     })
 
     await this.eventPublisher.publishTaskCommentCreated({
-      type: 'task.comment.created',
       commentId: id,
       taskId,
       userId,

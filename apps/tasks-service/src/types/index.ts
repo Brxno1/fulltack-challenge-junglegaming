@@ -61,7 +61,6 @@ export interface CreateTaskCommentData {
 
 // RabbitMQ Events
 export interface TaskCreatedEvent {
-  type: 'task.created'
   taskId: string
   createdBy: string
   title: string
@@ -71,7 +70,6 @@ export interface TaskCreatedEvent {
 }
 
 export interface TaskUpdatedEvent {
-  type: 'task.updated'
   taskId: string
   updatedBy: string
   changes: Partial<{
@@ -85,7 +83,6 @@ export interface TaskUpdatedEvent {
 }
 
 export interface TaskCommentCreatedEvent {
-  type: 'task.comment.created'
   commentId: string
   taskId: string
   userId: string
@@ -98,8 +95,36 @@ export type TaskEvent =
   | TaskUpdatedEvent
   | TaskCommentCreatedEvent
 
-export const TASK_EVENT_TYPES = {
-  TASK_CREATED: 'task.created',
-  TASK_UPDATED: 'task.updated',
-  TASK_COMMENT_CREATED: 'task.comment.created',
-} as const
+export enum TASK_EVENT_TYPES {
+  TASK_CREATED = 'task.created',
+  TASK_UPDATED = 'task.updated',
+  TASK_COMMENT_CREATED = 'task.comment.created',
+}
+
+export type TaskEventType = TASK_EVENT_TYPES
+
+// Outbox Events
+export enum OutboxEventStatus {
+  PENDING = 'pending',
+  PUBLISHED = 'published',
+  FAILED = 'failed',
+}
+
+export interface OutboxEvent {
+  id: string
+  aggregateId: string
+  type: TaskEventType
+  data: TaskEvent
+  status: OutboxEventStatus
+  retryCount: number
+  errorMessage: string | null
+  createdAt: Date
+  updatedAt: Date
+  publishedAt: Date | null
+}
+
+export interface CreateOutboxEventData {
+  aggregateId: string
+  type: TaskEventType
+  data: TaskEvent
+}

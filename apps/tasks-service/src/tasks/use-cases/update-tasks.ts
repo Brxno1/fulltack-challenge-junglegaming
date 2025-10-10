@@ -1,22 +1,41 @@
 import { Injectable } from '@nestjs/common'
 
-import type { UpdateTaskData } from '@/types'
+import { TASK_EVENT_TYPES, type UpdateTaskData } from '@/types'
 
-import { TasksRepository } from '../repositories/tasks.repository'
+import { TransactionManager } from '../repositories/transaction-manager.repository'
 
 @Injectable()
 export class UpdateTaskUseCase {
-  constructor(private readonly tasks: TasksRepository) {}
+  constructor(private readonly transactionManager: TransactionManager) {}
 
-  async execute(id: string, data: UpdateTaskData): Promise<void> {
+  async execute(taskId: string, data: UpdateTaskData): Promise<void> {
     const { title, description, deadline, priority, status } = data
 
-    await this.tasks.update(id, {
-      title,
-      description,
-      deadline,
-      priority,
-      status,
+    return this.transactionManager.runInTransaction(async (repositories) => {
+      await repositories.tasks.update(taskId, {
+        title,
+        description,
+        deadline,
+        priority,
+        status,
+      })
+
+      await repositories.outbox.create({
+        aggregateId: taskId,
+        type: TASK_EVENT_TYPES.TASK_UPDATED,
+        data: {
+          taskId,
+          updatedBy: String(new Date()),
+          changes: {
+            title,
+            description,
+            deadline,
+            priority,
+            status,
+          },
+          updatedAt: new Date(),
+        },
+      })
     })
   }
 }
