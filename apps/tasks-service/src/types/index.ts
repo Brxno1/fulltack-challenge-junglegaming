@@ -61,6 +61,7 @@ export interface CreateTaskCommentData {
 
 // RabbitMQ Events
 export interface TaskCreatedEvent {
+  type: 'task.created'
   taskId: string
   createdBy: string
   title: string
@@ -70,13 +71,21 @@ export interface TaskCreatedEvent {
 }
 
 export interface TaskUpdatedEvent {
+  type: 'task.updated'
   taskId: string
   updatedBy: string
-  changes: Record<string, unknown>
+  changes: Partial<{
+    title: string
+    description: string | null
+    deadline: Date | null
+    priority: TaskPriority
+    status: TaskStatus
+  }>
   updatedAt: Date
 }
 
 export interface TaskCommentCreatedEvent {
+  type: 'task.comment.created'
   commentId: string
   taskId: string
   userId: string
@@ -88,3 +97,9 @@ export type TaskEvent =
   | TaskCreatedEvent
   | TaskUpdatedEvent
   | TaskCommentCreatedEvent
+
+export const TASK_EVENT_TYPES = {
+  TASK_CREATED: 'task.created',
+  TASK_UPDATED: 'task.updated',
+  TASK_COMMENT_CREATED: 'task.comment.created',
+} as const

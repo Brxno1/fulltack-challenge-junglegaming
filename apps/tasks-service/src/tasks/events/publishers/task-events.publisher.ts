@@ -1,7 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common'
 
-import { RabbitMQService } from '@/infra/messaging/rabbitmq/rabbitmq.service'
+import { MessagingRepository } from '@/tasks/repositories/messaging.repository'
 import type { TaskCreatedEvent, TaskUpdatedEvent } from '@/types'
+import { TASK_EVENT_TYPES } from '@/types'
 
 import { TaskEventsContract } from '../contracts/task-events.contract'
 
@@ -10,13 +11,13 @@ export class TaskEventsPublisher implements TaskEventsContract {
   private readonly logger = new Logger(TaskEventsPublisher.name)
   private readonly exchange = 'tasks'
 
-  constructor(private readonly rabbitMQService: RabbitMQService) { }
+  constructor(private readonly messagingRepository: MessagingRepository) {}
 
   async publishTaskCreated(event: TaskCreatedEvent): Promise<void> {
     try {
-      await this.rabbitMQService.publishEvent(
+      await this.messagingRepository.publishEvent(
         this.exchange,
-        'task.created',
+        TASK_EVENT_TYPES.TASK_CREATED,
         event,
       )
       this.logger.log(`Published task.created event for task ${event.taskId}`)
@@ -28,9 +29,9 @@ export class TaskEventsPublisher implements TaskEventsContract {
 
   async publishTaskUpdated(event: TaskUpdatedEvent): Promise<void> {
     try {
-      await this.rabbitMQService.publishEvent(
+      await this.messagingRepository.publishEvent(
         this.exchange,
-        'task.updated',
+        TASK_EVENT_TYPES.TASK_UPDATED,
         event,
       )
       this.logger.log(`Published task.updated event for task ${event.taskId}`)
