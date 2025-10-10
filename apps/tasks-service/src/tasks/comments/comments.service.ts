@@ -6,7 +6,7 @@ import type {
   PaginatedTaskComments,
 } from '@/types'
 
-import { TasksCommentsContract } from '../contracts/comments-service.contract'
+import { TasksCommentsContract } from '../contracts/tasks-comments-service.contract'
 import { CreateTaskCommentUseCase } from '../use-cases/create-task-comment'
 import { ListTaskCommentsUseCase } from '../use-cases/list-task-comments'
 
@@ -15,7 +15,7 @@ export class TasksComments implements TasksCommentsContract {
   constructor(
     private readonly createTaskCommentUseCase: CreateTaskCommentUseCase,
     private readonly listTaskCommentsUseCase: ListTaskCommentsUseCase,
-  ) {}
+  ) { }
 
   async create(data: CreateTaskCommentData): Promise<{ id: string }> {
     const { taskId, userId, content } = data

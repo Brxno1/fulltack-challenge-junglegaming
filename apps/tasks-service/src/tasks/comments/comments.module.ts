@@ -3,8 +3,9 @@ import { Module } from '@nestjs/common'
 import { DatabaseModule } from '@/infra/database/database.module'
 import { TypeormTaskCommentsRepository } from '@/infra/database/typeorm/typeorm-task-comments-repository'
 import { TypeormTasksRepository } from '@/infra/database/typeorm/typeorm-tasks-repository'
+import { EventsModule } from '@/tasks/events/events.module'
 
-import { TasksCommentsContract } from '../contracts/comments-service.contract'
+import { TasksCommentsContract } from '../contracts/tasks-comments-service.contract'
 import { TaskCommentsRepository } from '../repositories/task-comments.repository'
 import { TasksRepository } from '../repositories/tasks.repository'
 import { CreateTaskCommentUseCase } from '../use-cases/create-task-comment'
@@ -13,7 +14,7 @@ import { TasksCommentsController } from './comments.controller'
 import { TasksComments } from './comments.service'
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, EventsModule],
   controllers: [TasksCommentsController],
   providers: [
     CreateTaskCommentUseCase,
@@ -33,4 +34,4 @@ import { TasksComments } from './comments.service'
   ],
   exports: [TasksCommentsContract],
 })
-export class TasksCommentsModule {}
+export class TasksCommentsModule { }

@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common'
 
 import { DatabaseModule } from '@/infra/database/database.module'
 import { TypeormTasksRepository } from '@/infra/database/typeorm/typeorm-tasks-repository'
+import { EventsModule } from '@/tasks/events/events.module'
 import { TasksRepository } from '@/tasks/repositories/tasks.repository'
 import { TasksController } from '@/tasks/tasks.controller'
 import { TasksService } from '@/tasks/tasks.service'
@@ -14,7 +15,7 @@ import { UpdateTaskUseCase } from '@/tasks/use-cases/update-tasks'
 import { TasksServiceContract } from './contracts/tasks-service.contract'
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, EventsModule],
   controllers: [TasksController],
   providers: [
     GetTaskByIdUseCase,
