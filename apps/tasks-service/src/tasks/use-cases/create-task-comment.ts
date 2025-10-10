@@ -1,42 +1,42 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 
 import { TASK_COMMENT_MESSAGES } from '@/tasks/constants/task-comment.constants'
-import type { CreateTaskCommentData } from '@/types'
+import { type CreateTaskCommentData, TASK_EVENT_TYPES } from '@/types'
 
-import { TaskCommentEventsContract } from '../events/contracts/task-comment-events.contract'
-import { TaskCommentsRepository } from '../repositories/task-comments.repository'
-import { TasksRepository } from '../repositories/tasks.repository'
+import { TransactionManager } from '../repositories/transaction-manager.repository'
 
 @Injectable()
 export class CreateTaskCommentUseCase {
-  constructor(
-    private readonly taskCommentsRepository: TaskCommentsRepository,
-    private readonly tasksRepository: TasksRepository,
-    private readonly eventPublisher: TaskCommentEventsContract,
-  ) {}
+  constructor(private readonly transactionManager: TransactionManager) {}
 
   async execute(input: CreateTaskCommentData): Promise<{ id: string }> {
     const { taskId, userId, content } = input
 
-    const task = await this.tasksRepository.findById(taskId)
-    if (!task) {
-      throw new NotFoundException(TASK_COMMENT_MESSAGES.TASK_NOT_FOUND)
-    }
+    return this.transactionManager.runInTransaction(async (repositories) => {
+      const task = await repositories.tasks.findById(taskId)
+      if (!task) {
+        throw new NotFoundException(TASK_COMMENT_MESSAGES.TASK_NOT_FOUND)
+      }
 
-    const { id } = await this.taskCommentsRepository.create({
-      taskId,
-      userId,
-      content,
+      const { id } = await repositories.taskComments.create({
+        taskId,
+        userId,
+        content,
+      })
+
+      await repositories.outbox.create({
+        aggregateId: id,
+        type: TASK_EVENT_TYPES.TASK_COMMENT_CREATED,
+        data: {
+          commentId: id,
+          taskId,
+          userId,
+          content,
+          createdAt: new Date(),
+        },
+      })
+
+      return { id }
     })
-
-    await this.eventPublisher.publishTaskCommentCreated({
-      commentId: id,
-      taskId,
-      userId,
-      content,
-      createdAt: new Date(),
-    })
-
-    return { id }
   }
 }

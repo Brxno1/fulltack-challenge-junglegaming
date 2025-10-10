@@ -19,7 +19,7 @@ export class RabbitMQMessagingRepository implements MessagingRepository {
   ): Promise<void> {
     try {
       this.client.emit(routingKey, message)
-      this.logger.log(`Published message to ${exchange}.${routingKey}`)
+      this.logger.log(`Published message to ${exchange} (${routingKey})`)
     } catch (error) {
       this.logger.error('Failed to publish message', error)
       throw error

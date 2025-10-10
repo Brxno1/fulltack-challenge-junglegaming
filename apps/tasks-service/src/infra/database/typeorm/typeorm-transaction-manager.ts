@@ -3,6 +3,7 @@ import { InjectDataSource } from '@nestjs/typeorm'
 import { DataSource } from 'typeorm'
 
 import { OutboxEvent } from '@/tasks/entities/outbox-event.entity'
+import { TaskComment } from '@/tasks/entities/task-comment.entity'
 import { Task } from '@/tasks/entities/tasks.entity'
 import {
   TransactionManager,
@@ -10,6 +11,7 @@ import {
 } from '@/tasks/repositories/transaction-manager.repository'
 
 import { TypeormOutboxRepository } from './typeorm-outbox-repository'
+import { TypeormTaskCommentsRepository } from './typeorm-task-comments-repository'
 import { TypeormTasksRepository } from './typeorm-tasks-repository'
 
 @Injectable()
@@ -23,6 +25,9 @@ export class TypeormTransactionManager implements TransactionManager {
       const transactionRepositories: TransactionRepositories = {
         tasks: new TypeormTasksRepository(manager.getRepository(Task)),
         outbox: new TypeormOutboxRepository(manager.getRepository(OutboxEvent)),
+        taskComments: new TypeormTaskCommentsRepository(
+          manager.getRepository(TaskComment),
+        ),
       }
 
       return operation(transactionRepositories)
