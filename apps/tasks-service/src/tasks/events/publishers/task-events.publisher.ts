@@ -20,9 +20,14 @@ export class TaskEventsPublisher implements TaskEventsContract {
         TASK_EVENT_TYPES.TASK_CREATED,
         event,
       )
-      this.logger.log(`Published task.created event for task ${event.taskId}`)
+      this.logger.log(
+        `Published ${TASK_EVENT_TYPES.TASK_CREATED} event for task ${event.taskId}`,
+      )
     } catch (error) {
-      this.logger.error('Failed to publish task.created event', error)
+      this.logger.error(
+        `Failed to publish ${TASK_EVENT_TYPES.TASK_CREATED} event`,
+        error,
+      )
       throw error
     }
   }
@@ -34,9 +39,14 @@ export class TaskEventsPublisher implements TaskEventsContract {
         TASK_EVENT_TYPES.TASK_UPDATED,
         event,
       )
-      this.logger.log(`Published task.updated event for task ${event.taskId}`)
+      this.logger.log(
+        `Published ${TASK_EVENT_TYPES.TASK_UPDATED} event for task ${event.taskId}`,
+      )
     } catch (error) {
-      this.logger.error('Failed to publish task.updated event', error)
+      this.logger.error(
+        `Failed to publish ${TASK_EVENT_TYPES.TASK_UPDATED} event`,
+        error,
+      )
       throw error
     }
   }

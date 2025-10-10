@@ -23,10 +23,13 @@ export class TaskCommentEventsPublisher implements TaskCommentEventsContract {
         event,
       )
       this.logger.log(
-        `Published task.comment.created event for comment ${event.commentId}`,
+        `Published ${TASK_EVENT_TYPES.TASK_COMMENT_CREATED} event for comment ${event.commentId}`,
       )
     } catch (error) {
-      this.logger.error('Failed to publish task.comment.created event', error)
+      this.logger.error(
+        `Failed to publish ${TASK_EVENT_TYPES.TASK_COMMENT_CREATED} event`,
+        error,
+      )
       throw error
     }
   }

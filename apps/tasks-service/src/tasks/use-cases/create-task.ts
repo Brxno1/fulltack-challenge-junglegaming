@@ -1,39 +1,42 @@
 import { Injectable } from '@nestjs/common'
 
-import type { CreateTaskData } from '@/types'
+import { type CreateTaskData, TASK_EVENT_TYPES } from '@/types'
 
-import { TaskEventsContract } from '../events/contracts/task-events.contract'
-import { TasksRepository } from '../repositories/tasks.repository'
+import { TransactionManager } from '../repositories/transaction-manager.repository'
 
 @Injectable()
 export class CreateTaskUseCase {
-  constructor(
-    private readonly tasks: TasksRepository,
-    private readonly eventsPublisher: TaskEventsContract,
-  ) {}
+  constructor(private readonly transactionManager: TransactionManager) {}
 
-  async execute(input: CreateTaskData): Promise<{ id: string }> {
+  async execute(input: CreateTaskData) {
     const { createdBy, title, description, deadline, priority, status } = input
 
-    const { id } = await this.tasks.create({
-      createdBy,
-      title,
-      description,
-      deadline,
-      priority,
-      status,
-    })
+    return this.transactionManager.runInTransaction(
+      async ({ tasks, outbox }) => {
+        const { id } = await tasks.create({
+          createdBy,
+          title,
+          description,
+          deadline,
+          priority,
+          status,
+        })
 
-    await this.eventsPublisher.publishTaskCreated({
-      type: 'task.created',
-      taskId: id,
-      createdBy,
-      title,
-      priority,
-      status,
-      createdAt: new Date(),
-    })
+        await outbox.create({
+          aggregateId: id,
+          type: TASK_EVENT_TYPES.TASK_CREATED,
+          data: {
+            taskId: id,
+            createdBy,
+            title,
+            priority,
+            status,
+            createdAt: new Date(),
+          },
+        })
 
-    return { id }
+        return { id }
+      },
+    )
   }
 }
