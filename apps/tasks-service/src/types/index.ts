@@ -58,3 +58,33 @@ export interface CreateTaskCommentData {
   userId: string
   content: string
 }
+
+// RabbitMQ Events
+export interface TaskCreatedEvent {
+  taskId: string
+  createdBy: string
+  title: string
+  priority: TaskPriority
+  status: TaskStatus
+  createdAt: Date
+}
+
+export interface TaskUpdatedEvent {
+  taskId: string
+  updatedBy: string
+  changes: Record<string, unknown>
+  updatedAt: Date
+}
+
+export interface TaskCommentCreatedEvent {
+  commentId: string
+  taskId: string
+  userId: string
+  content: string
+  createdAt: Date
+}
+
+export type TaskEvent =
+  | TaskCreatedEvent
+  | TaskUpdatedEvent
+  | TaskCommentCreatedEvent

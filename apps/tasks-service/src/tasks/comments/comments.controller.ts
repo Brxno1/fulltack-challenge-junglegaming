@@ -14,11 +14,11 @@ import {
   TaskIdParamDto,
 } from '@/tasks/dtos/task-comment.dtos'
 
-import { TasksCommentsContract } from '../contracts/comments-service.contract'
+import { TasksCommentsContract } from '../contracts/tasks-comments-service.contract'
 
 @Controller('/tasks/:taskId/comments')
 export class TasksCommentsController {
-  constructor(private readonly TasksComments: TasksCommentsContract) {}
+  constructor(private readonly TasksComments: TasksCommentsContract) { }
 
   @Post()
   async create(
