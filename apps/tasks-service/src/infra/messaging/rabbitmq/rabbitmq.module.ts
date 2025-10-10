@@ -2,8 +2,10 @@ import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { ClientsModule } from '@nestjs/microservices'
 
+import { MessagingRepository } from '@/tasks/repositories/messaging.repository'
+
 import { getRabbitMQClientOptions } from './rabbitmq.config'
-import { RabbitMQService } from './rabbitmq.service'
+import { RabbitMQMessagingRepository } from './rabbitmq-messaging.repository'
 
 @Module({
   imports: [
@@ -18,7 +20,12 @@ import { RabbitMQService } from './rabbitmq.service'
       },
     ]),
   ],
-  providers: [RabbitMQService],
-  exports: [RabbitMQService],
+  providers: [
+    {
+      provide: MessagingRepository,
+      useClass: RabbitMQMessagingRepository,
+    },
+  ],
+  exports: [MessagingRepository],
 })
 export class RabbitMQModule {}

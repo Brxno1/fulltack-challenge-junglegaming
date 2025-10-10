@@ -1,7 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common'
 
-import { RabbitMQService } from '@/infra/messaging/rabbitmq/rabbitmq.service'
+import { MessagingRepository } from '@/tasks/repositories/messaging.repository'
 import type { TaskCommentCreatedEvent } from '@/types'
+import { TASK_EVENT_TYPES } from '@/types'
 
 import { TaskCommentEventsContract } from '../contracts/task-comment-events.contract'
 
@@ -10,15 +11,15 @@ export class TaskCommentEventsPublisher implements TaskCommentEventsContract {
   private readonly logger = new Logger(TaskCommentEventsPublisher.name)
   private readonly exchange = 'tasks'
 
-  constructor(private readonly rabbitMQService: RabbitMQService) { }
+  constructor(private readonly messagingRepository: MessagingRepository) {}
 
   async publishTaskCommentCreated(
     event: TaskCommentCreatedEvent,
   ): Promise<void> {
     try {
-      await this.rabbitMQService.publishEvent(
+      await this.messagingRepository.publishEvent(
         this.exchange,
-        'task.comment.created',
+        TASK_EVENT_TYPES.TASK_COMMENT_CREATED,
         event,
       )
       this.logger.log(

@@ -25,6 +25,7 @@ export class CreateTaskUseCase {
     })
 
     await this.eventsPublisher.publishTaskCreated({
+      type: 'task.created',
       taskId: id,
       createdBy,
       title,
