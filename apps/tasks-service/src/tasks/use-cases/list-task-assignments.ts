@@ -1,7 +1,7 @@
 import type { PaginatedTaskAssignments } from '@jungle/types'
 import { Injectable, NotFoundException } from '@nestjs/common'
 
-import { TASK_ASSIGNMENT_MESSAGES } from '@/tasks/constants/assignment.constants'
+import { TASK_MESSAGES } from '@/tasks/constants/tasks.constants'
 import { TasksRepository } from '@/tasks/repositories/tasks.repository'
 import type { ListTaskAssignmentsParams } from '@/types/task-assignments'
 
@@ -21,7 +21,7 @@ export class ListTaskAssignmentsUseCase {
   }: ListTaskAssignmentsParams): Promise<PaginatedTaskAssignments> {
     const task = await this.tasksRepository.findById(taskId)
     if (!task) {
-      throw new NotFoundException(TASK_ASSIGNMENT_MESSAGES.TASK_NOT_FOUND)
+      throw new NotFoundException(TASK_MESSAGES.TASK_NOT_FOUND)
     }
 
     return this.taskAssignmentsRepository.listByTask({

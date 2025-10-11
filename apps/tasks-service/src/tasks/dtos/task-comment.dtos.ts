@@ -13,7 +13,7 @@ import {
 import {
   TASK_COMMENT_MESSAGES,
   TASK_COMMENT_VALIDATION,
-} from '@/tasks/constants/task-comment.constants'
+} from '@/tasks/constants/tasks.constants'
 
 export class CreateTaskCommentDto {
   @IsString({ message: TASK_COMMENT_MESSAGES.CONTENT_REQUIRED })

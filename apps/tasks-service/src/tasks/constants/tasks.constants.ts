@@ -1,5 +1,8 @@
-export const TASK_COMMENT_MESSAGES = {
+export const TASK_MESSAGES = {
   TASK_NOT_FOUND: 'Task not found',
+} as const
+
+export const TASK_COMMENT_MESSAGES = {
   COMMENT_CREATED: 'Comment created successfully',
   COMMENT_NOT_FOUND: 'Comment not found',
   INVALID_TASK_ID: 'Invalid task ID format',

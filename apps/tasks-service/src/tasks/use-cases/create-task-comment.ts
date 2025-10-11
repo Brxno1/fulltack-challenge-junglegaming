@@ -1,22 +1,24 @@
+import { TASK_EVENT_TYPES } from '@jungle/types'
 import { Injectable, NotFoundException } from '@nestjs/common'
 
-import { TASK_COMMENT_MESSAGES } from '@/tasks/constants/task-comment.constants'
+import { TASK_MESSAGES } from '@/tasks/constants/tasks.constants'
 import { type CreateTaskCommentData } from '@/types/task-comments'
-import { TASK_EVENT_TYPES } from '@jungle/types'
 
 import { TransactionManager } from '../repositories/transaction-manager.repository'
 
 @Injectable()
 export class CreateTaskCommentUseCase {
-  constructor(private readonly transactionManager: TransactionManager) { }
+  constructor(private readonly transactionManager: TransactionManager) {}
 
-  async execute(input: CreateTaskCommentData): Promise<{ id: string }> {
-    const { taskId, userId, content } = input
-
+  async execute({
+    taskId,
+    userId,
+    content,
+  }: CreateTaskCommentData): Promise<{ id: string }> {
     return this.transactionManager.runInTransaction(async (repositories) => {
       const task = await repositories.tasks.findById(taskId)
       if (!task) {
-        throw new NotFoundException(TASK_COMMENT_MESSAGES.TASK_NOT_FOUND)
+        throw new NotFoundException(TASK_MESSAGES.TASK_NOT_FOUND)
       }
 
       const { id } = await repositories.taskComments.create({

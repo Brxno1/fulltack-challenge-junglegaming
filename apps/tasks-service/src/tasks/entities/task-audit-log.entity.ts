@@ -20,8 +20,8 @@ export class TaskAuditLog {
   task: Task
 
   @Index()
-  @Column({ type: 'uuid', nullable: true })
-  userId: string | null
+  @Column({ type: 'varchar' })
+  userId: string
 
   @Column({ type: 'varchar', length: 64 })
   action: string

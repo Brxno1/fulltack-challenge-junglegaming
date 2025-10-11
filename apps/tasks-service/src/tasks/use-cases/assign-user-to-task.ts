@@ -6,25 +6,24 @@ import {
 } from '@nestjs/common'
 
 import { TASK_ASSIGNMENT_MESSAGES } from '@/tasks/constants/assignment.constants'
+import { TASK_MESSAGES } from '@/tasks/constants/tasks.constants'
 import { type CreateTaskAssignmentData } from '@/types/task-assignments'
 
-import { TaskAssignmentsRepository } from '../repositories/task-assignments.repository'
 import { TransactionManager } from '../repositories/transaction-manager.repository'
 
 @Injectable()
 export class AssignUserToTaskUseCase {
-  constructor(
-    private readonly taskAssignmentsRepository: TaskAssignmentsRepository,
-    private readonly transactionManager: TransactionManager,
-  ) {}
+  constructor(private readonly transactionManager: TransactionManager) {}
 
-  async execute(data: CreateTaskAssignmentData): Promise<{ id: string }> {
-    const { taskId, userId, assignedBy } = data
-
+  async execute({
+    taskId,
+    userId,
+    assignedBy,
+  }: CreateTaskAssignmentData): Promise<{ id: string }> {
     return this.transactionManager.runInTransaction(async (repositories) => {
       const existingTask = await repositories.tasks.findById(taskId)
       if (!existingTask) {
-        throw new NotFoundException(TASK_ASSIGNMENT_MESSAGES.TASK_NOT_FOUND)
+        throw new NotFoundException(TASK_MESSAGES.TASK_NOT_FOUND)
       }
 
       if (existingTask.createdBy !== assignedBy) {

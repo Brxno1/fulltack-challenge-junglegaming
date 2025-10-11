@@ -1,6 +1,7 @@
 import { TASK_EVENT_TYPES } from '@jungle/types'
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 
+import { TASK_MESSAGES } from '../constants/tasks.constants'
 import { TransactionManager } from '../repositories/transaction-manager.repository'
 
 @Injectable()
@@ -9,7 +10,31 @@ export class DeleteTaskUseCase {
 
   async execute(taskId: string, actor: string): Promise<void> {
     await this.transactionManager.runInTransaction(async (repositories) => {
+      const existingTask = await repositories.tasks.findById(taskId)
+      if (!existingTask) {
+        throw new NotFoundException(TASK_MESSAGES.TASK_NOT_FOUND)
+      }
+
       await repositories.tasks.delete(taskId)
+
+      // Create audit log for task deletion
+      await repositories.taskAuditLog.create({
+        taskId,
+        userId: actor,
+        action: 'TASK_DELETED',
+        field: null,
+        oldValue: {
+          title: existingTask.title,
+          description: existingTask.description,
+          deadline: existingTask.deadline,
+          priority: existingTask.priority,
+          status: existingTask.status,
+          createdBy: existingTask.createdBy,
+          createdAt: existingTask.createdAt,
+          updatedAt: existingTask.updatedAt,
+        },
+        newValue: null,
+      })
 
       await repositories.outbox.create({
         aggregateId: taskId,
