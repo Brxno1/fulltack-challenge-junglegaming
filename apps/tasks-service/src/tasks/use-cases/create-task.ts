@@ -27,7 +27,7 @@ export class CreateTaskUseCase {
           type: TASK_EVENT_TYPES.TASK_CREATED,
           data: {
             taskId: id,
-            createdBy,
+            actor: createdBy,
             title,
             priority,
             status,

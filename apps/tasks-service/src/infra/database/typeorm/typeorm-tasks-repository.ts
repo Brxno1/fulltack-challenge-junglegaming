@@ -18,8 +18,8 @@ export class TypeormTasksRepository implements TasksRepository {
     private readonly task: Repository<Task>,
   ) {}
 
-  findById(id: string): Promise<Task | null> {
-    return this.task.findOne({ where: { id } })
+  findById(taskId: string): Promise<Task | null> {
+    return this.task.findOne({ where: { id: taskId } })
   }
 
   async create(data: CreateTaskData): Promise<{ id: string }> {
@@ -27,13 +27,13 @@ export class TypeormTasksRepository implements TasksRepository {
     return { id }
   }
 
-  async list(params: ListTasksParams): Promise<PaginatedTasks> {
+  async list({ page, size }: ListTasksParams): Promise<PaginatedTasks> {
     const [tasks, total] = await this.task.findAndCount({
       order: {
         createdAt: 'DESC',
       },
-      skip: (params.page - 1) * params.size,
-      take: params.size,
+      skip: (page - 1) * size,
+      take: size,
     })
 
     return {
@@ -42,11 +42,11 @@ export class TypeormTasksRepository implements TasksRepository {
     }
   }
 
-  async update(id: string, data: UpdateTaskData): Promise<void> {
-    await this.task.update(id, data)
+  async update(taskId: string, data: UpdateTaskData): Promise<void> {
+    await this.task.update(taskId, data)
   }
 
-  async delete(id: string): Promise<void> {
-    await this.task.delete(id)
+  async delete(taskId: string): Promise<void> {
+    await this.task.delete(taskId)
   }
 }

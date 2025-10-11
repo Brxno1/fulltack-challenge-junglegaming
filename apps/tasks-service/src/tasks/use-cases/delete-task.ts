@@ -1,12 +1,26 @@
 import { Injectable } from '@nestjs/common'
 
-import { TasksRepository } from '../repositories/tasks.repository'
+import { TASK_EVENT_TYPES } from '@/types'
+
+import { TransactionManager } from '../repositories/transaction-manager.repository'
 
 @Injectable()
 export class DeleteTaskUseCase {
-  constructor(private readonly tasks: TasksRepository) {}
+  constructor(private readonly transactionManager: TransactionManager) {}
 
-  async execute(id: string): Promise<void> {
-    await this.tasks.delete(id)
+  async execute(taskId: string, actor: string): Promise<void> {
+    await this.transactionManager.runInTransaction(async (repositories) => {
+      await repositories.tasks.delete(taskId)
+
+      await repositories.outbox.create({
+        aggregateId: taskId,
+        type: TASK_EVENT_TYPES.TASK_DELETED,
+        data: {
+          taskId,
+          actor,
+          deletedAt: new Date(),
+        },
+      })
+    })
   }
 }

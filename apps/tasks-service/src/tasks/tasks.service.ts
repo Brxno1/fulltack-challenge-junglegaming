@@ -57,10 +57,14 @@ export class TasksService implements TasksServiceContract {
     return { id }
   }
 
-  async update(id: string, data: UpdateTaskData): Promise<void> {
+  async update(
+    taskId: string,
+    actor: string,
+    data: UpdateTaskData,
+  ): Promise<void> {
     const { title, description, deadline, priority, status } = data
 
-    await this.updateTaskUseCase.execute(id, {
+    await this.updateTaskUseCase.execute(taskId, actor, {
       title,
       description,
       deadline,
@@ -69,7 +73,7 @@ export class TasksService implements TasksServiceContract {
     })
   }
 
-  async delete(id: string): Promise<void> {
-    return this.deleteTaskUseCase.execute(id)
+  async delete(taskId: string, actor: string): Promise<void> {
+    return this.deleteTaskUseCase.execute(taskId, actor)
   }
 }

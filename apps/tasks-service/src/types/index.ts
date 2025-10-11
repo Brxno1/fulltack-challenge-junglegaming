@@ -62,7 +62,7 @@ export interface CreateTaskCommentData {
 // RabbitMQ Events
 export interface TaskCreatedEvent {
   taskId: string
-  createdBy: string
+  actor: string
   title: string
   priority: TaskPriority
   status: TaskStatus
@@ -71,7 +71,7 @@ export interface TaskCreatedEvent {
 
 export interface TaskUpdatedEvent {
   taskId: string
-  updatedBy: string
+  actor: string
   changes: Partial<{
     title: string
     description: string | null
@@ -90,18 +90,51 @@ export interface TaskCommentCreatedEvent {
   createdAt: Date
 }
 
+export interface TaskDeletedEvent {
+  taskId: string
+  actor: string
+  deletedAt: Date
+}
+
 export type TaskEvent =
   | TaskCreatedEvent
   | TaskUpdatedEvent
   | TaskCommentCreatedEvent
+  | TaskDeletedEvent
 
 export enum TASK_EVENT_TYPES {
   TASK_CREATED = 'task.created',
   TASK_UPDATED = 'task.updated',
+  TASK_DELETED = 'task.deleted',
   TASK_COMMENT_CREATED = 'task.comment.created',
 }
 
 export type TaskEventType = TASK_EVENT_TYPES
+
+// Tasks assignments
+export interface CreateTaskAssignmentData {
+  taskId: string
+  userId: string
+  assignedBy: string
+}
+
+export interface TaskAssignment {
+  id: string
+  taskId: string
+  userId: string
+  createdAt: Date
+}
+
+export interface PaginatedTaskAssignments {
+  assignments: TaskAssignment[]
+  total: number
+}
+
+export interface ListTaskAssignmentsParams {
+  taskId: string
+  page: number
+  size: number
+}
 
 // Outbox Events
 export enum OutboxEventStatus {

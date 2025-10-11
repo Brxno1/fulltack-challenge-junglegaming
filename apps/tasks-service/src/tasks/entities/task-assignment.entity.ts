@@ -21,7 +21,11 @@ export class TaskAssignment {
   task: Task
 
   @Index()
-  @Column({ type: 'uuid' })
+  @Column({ type: 'varchar' })
+  taskId: string
+
+  @Index()
+  @Column({ type: 'varchar' })
   userId: string
 
   @CreateDateColumn({ type: 'timestamptz' })

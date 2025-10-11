@@ -14,7 +14,7 @@ export class OutboxProcessor {
     private readonly messaging: MessagingRepository,
   ) {}
 
-  @Cron('*/30 * * * * *')
+  @Cron('*/5 * * * * *')
   async processPendingEvents() {
     this.logger.log('🔄 Starting outbox processing...')
 
