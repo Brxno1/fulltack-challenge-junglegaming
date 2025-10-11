@@ -4,10 +4,10 @@ import { Repository } from 'typeorm'
 
 import { Task } from '@/tasks/entities/tasks.entity'
 import { TasksRepository } from '@/tasks/repositories/tasks.repository'
+import type { PaginatedTasks } from '@jungle/types'
 import type {
   CreateTaskData,
   ListTasksParams,
-  PaginatedTasks,
   UpdateTaskData,
 } from '@/types/tasks'
 

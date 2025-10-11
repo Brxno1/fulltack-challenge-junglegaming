@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common'
 
 import { TASK_ASSIGNMENT_MESSAGES } from '@/tasks/constants/assignment.constants'
-import { TASK_EVENT_TYPES } from '@/types/task-events'
+import { TASK_EVENT_TYPES } from '@jungle/types'
 
 import { TransactionManager } from '../repositories/transaction-manager.repository'
 

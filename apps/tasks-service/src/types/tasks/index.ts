@@ -1,13 +1,15 @@
 import { TaskPriority, TaskStatus } from '@/tasks/constants/task.enums'
 
 export interface Task {
-  createdBy: string
   id: string
   title: string
   description: string | null
   deadline: Date | null
   priority: TaskPriority
   status: TaskStatus
+  createdBy: string
+  createdAt: Date
+  updatedAt: Date
 }
 
 export interface PaginatedTasks {

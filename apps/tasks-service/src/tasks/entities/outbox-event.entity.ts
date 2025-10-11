@@ -7,8 +7,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm'
 
-import { OutboxEventStatus } from '@/types/outbox'
-import { type TaskEvent } from '@/types/task-events'
+import { OutboxEventStatus } from '@jungle/types'
+import { type TaskEvent } from '@jungle/types'
 
 @Entity('outbox_events')
 @Index(['status', 'createdAt'])

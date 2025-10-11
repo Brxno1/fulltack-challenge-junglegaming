@@ -4,11 +4,10 @@ import { Repository } from 'typeorm'
 
 import { TaskAssignment } from '@/tasks/entities/task-assignment.entity'
 import { TaskAssignmentsRepository } from '@/tasks/repositories/task-assignments.repository'
+import type { PaginatedTaskAssignments, TaskAssignment as TaskAssignmentData } from '@jungle/types'
 import type {
   CreateTaskAssignmentData,
   ListTaskAssignmentsParams,
-  PaginatedTaskAssignments,
-  TaskAssignment as TaskAssignmentData,
 } from '@/types/task-assignments'
 
 @Injectable()

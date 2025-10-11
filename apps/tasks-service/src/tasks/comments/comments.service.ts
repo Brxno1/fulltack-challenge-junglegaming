@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common'
 
+import type { PaginatedTaskComments } from '@jungle/types'
 import type {
   CreateTaskCommentData,
   ListTaskCommentsParams,
-  PaginatedTaskComments,
 } from '@/types/task-comments'
 
 import { TasksCommentsContract } from '../contracts/tasks-comments-service.contract'

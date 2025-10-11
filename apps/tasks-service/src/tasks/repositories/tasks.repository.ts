@@ -1,8 +1,7 @@
+import type { PaginatedTasks, Task } from '@jungle/types'
 import type {
   CreateTaskData,
   ListTasksParams,
-  PaginatedTasks,
-  Task,
   UpdateTaskData,
 } from '@/types/tasks'
 

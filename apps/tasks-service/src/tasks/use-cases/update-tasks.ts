@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 
-import { TASK_EVENT_TYPES } from '@/types/task-events'
+import { TASK_EVENT_TYPES } from '@jungle/types'
 import { type UpdateTaskData } from '@/types/tasks'
 
 import { TransactionManager } from '../repositories/transaction-manager.repository'

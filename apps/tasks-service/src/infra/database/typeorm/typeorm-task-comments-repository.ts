@@ -4,10 +4,10 @@ import { Repository } from 'typeorm'
 
 import { TaskComment } from '@/tasks/entities/task-comment.entity'
 import { TaskCommentsRepository } from '@/tasks/repositories/task-comments.repository'
+import type { PaginatedTaskComments } from '@jungle/types'
 import type {
   CreateTaskCommentData,
   ListTaskCommentsParams,
-  PaginatedTaskComments,
 } from '@/types/task-comments'
 
 @Injectable()

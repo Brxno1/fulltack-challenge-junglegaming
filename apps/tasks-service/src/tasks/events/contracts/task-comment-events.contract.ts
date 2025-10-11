@@ -1,4 +1,4 @@
-import type { TaskCommentCreatedEvent } from '@/types/task-events'
+import type { TaskCommentCreatedEvent } from '@jungle/types'
 
 export abstract class TaskCommentEventsContract {
   abstract publishTaskCommentCreated(

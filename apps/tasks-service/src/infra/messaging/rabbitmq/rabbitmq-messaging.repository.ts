@@ -2,7 +2,7 @@ import { Inject, Injectable, Logger } from '@nestjs/common'
 import { ClientProxy } from '@nestjs/microservices'
 
 import { MessagingRepository } from '@/tasks/repositories/messaging.repository'
-import type { TaskEvent } from '@/types/task-events'
+import type { TaskEvent } from '@jungle/types'
 
 @Injectable()
 export class RabbitMQMessagingRepository implements MessagingRepository {

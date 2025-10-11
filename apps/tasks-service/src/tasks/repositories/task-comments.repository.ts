@@ -1,7 +1,7 @@
+import type { PaginatedTaskComments } from '@jungle/types'
 import type {
   CreateTaskCommentData,
   ListTaskCommentsParams,
-  PaginatedTaskComments,
 } from '@/types/task-comments'
 
 export abstract class TaskCommentsRepository {
