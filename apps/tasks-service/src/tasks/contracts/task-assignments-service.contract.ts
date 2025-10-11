@@ -2,7 +2,7 @@ import {
   CreateTaskAssignmentData,
   ListTaskAssignmentsParams,
   PaginatedTaskAssignments,
-} from '@/types'
+} from '@/types/task-assignments'
 
 export abstract class TaskAssignmentsServiceContract {
   abstract assignUser(data: CreateTaskAssignmentData): Promise<{ id: string }>

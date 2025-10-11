@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 
-import type { ListTaskCommentsParams, PaginatedTaskComments } from '@/types'
+import type { ListTaskCommentsParams, PaginatedTaskComments } from '@/types/task-comments'
 
 import { TASK_COMMENT_MESSAGES } from '../constants/task-comment.constants'
 import { TaskCommentsRepository } from '../repositories/task-comments.repository'
@@ -11,7 +11,7 @@ export class ListTaskCommentsUseCase {
   constructor(
     private readonly taskCommentsRepository: TaskCommentsRepository,
     private readonly tasksRepository: TasksRepository,
-  ) {}
+  ) { }
 
   async execute(
     params: ListTaskCommentsParams,

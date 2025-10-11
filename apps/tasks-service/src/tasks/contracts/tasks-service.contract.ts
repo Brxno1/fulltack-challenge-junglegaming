@@ -4,7 +4,7 @@ import {
   PaginatedTasks,
   Task,
   UpdateTaskData,
-} from '@/types'
+} from '@/types/tasks'
 
 export abstract class TasksServiceContract {
   abstract findById(taskId: string): Promise<Task>

@@ -9,16 +9,15 @@ import type {
   ListTaskAssignmentsParams,
   PaginatedTaskAssignments,
   TaskAssignment as TaskAssignmentData,
-} from '@/types'
+} from '@/types/task-assignments'
 
 @Injectable()
 export class TypeormTaskAssignmentsRepository
-  implements TaskAssignmentsRepository
-{
+  implements TaskAssignmentsRepository {
   constructor(
     @InjectRepository(TaskAssignment)
     private readonly taskAssignmentRepository: Repository<TaskAssignment>,
-  ) {}
+  ) { }
 
   async create(data: CreateTaskAssignmentData): Promise<{ id: string }> {
     const { id } = await this.taskAssignmentRepository.save(data)

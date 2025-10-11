@@ -2,7 +2,7 @@ import {
   CreateTaskCommentData,
   ListTaskCommentsParams,
   PaginatedTaskComments,
-} from '@/types'
+} from '@/types/task-comments'
 
 export abstract class TasksCommentsContract {
   abstract create(data: CreateTaskCommentData): Promise<{ id: string }>

@@ -9,14 +9,14 @@ import type {
   ListTasksParams,
   PaginatedTasks,
   UpdateTaskData,
-} from '@/types'
+} from '@/types/tasks'
 
 @Injectable()
 export class TypeormTasksRepository implements TasksRepository {
   constructor(
     @InjectRepository(Task)
     private readonly task: Repository<Task>,
-  ) {}
+  ) { }
 
   findById(taskId: string): Promise<Task | null> {
     return this.task.findOne({ where: { id: taskId } })

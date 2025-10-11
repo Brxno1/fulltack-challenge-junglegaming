@@ -4,7 +4,7 @@ import {
   CreateTaskAssignmentData,
   ListTaskAssignmentsParams,
   PaginatedTaskAssignments,
-} from '@/types'
+} from '@/types/task-assignments'
 
 import { TaskAssignmentsServiceContract } from '../contracts/task-assignments-service.contract'
 import { AssignUserToTaskUseCase } from '../use-cases/assign-user-to-task'
@@ -17,7 +17,7 @@ export class TaskAssignmentsService implements TaskAssignmentsServiceContract {
     private readonly assignUserToTaskUseCase: AssignUserToTaskUseCase,
     private readonly removeUserFromTaskUseCase: RemoveUserFromTaskUseCase,
     private readonly listTaskAssignmentsUseCase: ListTaskAssignmentsUseCase,
-  ) {}
+  ) { }
 
   async assignUser(data: CreateTaskAssignmentData): Promise<{ id: string }> {
     return this.assignUserToTaskUseCase.execute(data)

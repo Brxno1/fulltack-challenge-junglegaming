@@ -6,7 +6,7 @@ import type {
   PaginatedTasks,
   Task,
   UpdateTaskData,
-} from '@/types'
+} from '@/types/tasks'
 
 import { TasksServiceContract } from './contracts/tasks-service.contract'
 import { CreateTaskUseCase } from './use-cases/create-task'
@@ -23,7 +23,7 @@ export class TasksService implements TasksServiceContract {
     private readonly listTasksUseCase: ListTasksUseCase,
     private readonly getTaskByIdUseCase: GetTaskByIdUseCase,
     private readonly deleteTaskUseCase: DeleteTaskUseCase,
-  ) {}
+  ) { }
 
   async findById(id: string): Promise<Task> {
     const task = await this.getTaskByIdUseCase.execute(id)

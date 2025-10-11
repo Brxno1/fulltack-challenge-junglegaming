@@ -3,7 +3,7 @@ import {
   ListTaskAssignmentsParams,
   PaginatedTaskAssignments,
   TaskAssignment,
-} from '@/types'
+} from '@/types/task-assignments'
 
 export abstract class TaskAssignmentsRepository {
   abstract create(data: CreateTaskAssignmentData): Promise<{ id: string }>

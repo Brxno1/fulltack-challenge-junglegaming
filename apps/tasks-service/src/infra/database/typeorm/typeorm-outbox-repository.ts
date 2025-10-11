@@ -8,15 +8,15 @@ import {
   type CreateOutboxEventData,
   type OutboxEvent as OutboxEventData,
   OutboxEventStatus,
-  TaskEventType,
-} from '@/types'
+} from '@/types/outbox'
+import { TaskEventType } from '@/types/task-events'
 
 @Injectable()
 export class TypeormOutboxRepository implements OutboxRepository {
   constructor(
     @InjectRepository(OutboxEvent)
     private readonly outbox: Repository<OutboxEvent>,
-  ) {}
+  ) { }
 
   async create(data: CreateOutboxEventData): Promise<{ id: string }> {
     const outboxEvent = this.outbox.create({

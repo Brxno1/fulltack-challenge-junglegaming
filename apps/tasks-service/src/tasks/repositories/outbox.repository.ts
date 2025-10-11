@@ -1,4 +1,4 @@
-import { CreateOutboxEventData, OutboxEvent } from '@/types'
+import { CreateOutboxEventData, OutboxEvent } from '@/types/outbox'
 
 export abstract class OutboxRepository {
   abstract create(data: CreateOutboxEventData): Promise<{ id: string }>

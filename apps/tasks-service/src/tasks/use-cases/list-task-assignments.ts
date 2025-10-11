@@ -5,7 +5,7 @@ import { TasksRepository } from '@/tasks/repositories/tasks.repository'
 import type {
   ListTaskAssignmentsParams,
   PaginatedTaskAssignments,
-} from '@/types'
+} from '@/types/task-assignments'
 
 import { TaskAssignmentsRepository } from '../repositories/task-assignments.repository'
 
@@ -14,7 +14,7 @@ export class ListTaskAssignmentsUseCase {
   constructor(
     private readonly taskAssignmentsRepository: TaskAssignmentsRepository,
     private readonly tasksRepository: TasksRepository,
-  ) {}
+  ) { }
 
   async execute({
     taskId,

@@ -1,4 +1,4 @@
-import type { TaskCommentCreatedEvent } from '@/types'
+import type { TaskCommentCreatedEvent } from '@/types/task-events'
 
 export abstract class TaskCommentEventsContract {
   abstract publishTaskCommentCreated(
