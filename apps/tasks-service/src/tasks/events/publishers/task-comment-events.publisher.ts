@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common'
 
 import { MessagingRepository } from '@/tasks/repositories/messaging.repository'
-import type { TaskCommentCreatedEvent } from '@/types'
-import { TASK_EVENT_TYPES } from '@/types'
+import type { TaskCommentCreatedEvent } from '@/types/task-events'
+import { TASK_EVENT_TYPES } from '@/types/task-events'
 
 import { TaskCommentEventsContract } from '../contracts/task-comment-events.contract'
 
@@ -11,7 +11,7 @@ export class TaskCommentEventsPublisher implements TaskCommentEventsContract {
   private readonly logger = new Logger(TaskCommentEventsPublisher.name)
   private readonly exchange = 'tasks'
 
-  constructor(private readonly messagingRepository: MessagingRepository) {}
+  constructor(private readonly messagingRepository: MessagingRepository) { }
 
   async publishTaskCommentCreated(
     event: TaskCommentCreatedEvent,

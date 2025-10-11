@@ -1,4 +1,4 @@
-import { TaskCreatedEvent, TaskUpdatedEvent } from '@/types'
+import { TaskCreatedEvent, TaskUpdatedEvent } from '@/types/task-events'
 
 export abstract class TaskEventsContract {
   abstract publishTaskCreated(event: TaskCreatedEvent): Promise<void>

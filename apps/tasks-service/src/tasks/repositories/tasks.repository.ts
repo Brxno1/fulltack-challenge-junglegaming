@@ -4,7 +4,7 @@ import type {
   PaginatedTasks,
   Task,
   UpdateTaskData,
-} from '@/types'
+} from '@/types/tasks'
 
 export abstract class TasksRepository {
   abstract findById(id: string): Promise<Task | null>

@@ -18,12 +18,12 @@ import { TasksCommentsContract } from '../contracts/tasks-comments-service.contr
 
 @Controller('/tasks/:taskId/comments')
 export class TasksCommentsController {
-  constructor(private readonly TasksComments: TasksCommentsContract) { }
+  constructor(private readonly TasksComments: TasksCommentsContract) {}
 
   @Post()
   async create(
     @Param() params: TaskIdParamDto,
-    @Headers('x-user-id') userId: string,
+    @Headers('x-authenticated-user-id') userId: string,
     @Body() body: CreateTaskCommentDto,
   ): Promise<{ id: string }> {
     const { content } = body

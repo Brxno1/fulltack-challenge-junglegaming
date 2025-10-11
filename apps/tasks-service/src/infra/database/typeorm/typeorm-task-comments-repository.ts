@@ -8,14 +8,14 @@ import type {
   CreateTaskCommentData,
   ListTaskCommentsParams,
   PaginatedTaskComments,
-} from '@/types'
+} from '@/types/task-comments'
 
 @Injectable()
 export class TypeormTaskCommentsRepository implements TaskCommentsRepository {
   constructor(
     @InjectRepository(TaskComment)
     private readonly taskCommentRepository: Repository<TaskComment>,
-  ) {}
+  ) { }
 
   async create(data: CreateTaskCommentData): Promise<{ id: string }> {
     const { id } = await this.taskCommentRepository.save(data)

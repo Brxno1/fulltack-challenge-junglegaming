@@ -6,7 +6,7 @@ import type {
   PaginatedTasks,
   Task,
   UpdateTaskData,
-} from '@/types'
+} from '@/types/tasks'
 
 import { TasksServiceContract } from './contracts/tasks-service.contract'
 import { CreateTaskUseCase } from './use-cases/create-task'
@@ -23,7 +23,7 @@ export class TasksService implements TasksServiceContract {
     private readonly listTasksUseCase: ListTasksUseCase,
     private readonly getTaskByIdUseCase: GetTaskByIdUseCase,
     private readonly deleteTaskUseCase: DeleteTaskUseCase,
-  ) {}
+  ) { }
 
   async findById(id: string): Promise<Task> {
     const task = await this.getTaskByIdUseCase.execute(id)
@@ -57,10 +57,14 @@ export class TasksService implements TasksServiceContract {
     return { id }
   }
 
-  async update(id: string, data: UpdateTaskData): Promise<void> {
+  async update(
+    taskId: string,
+    actor: string,
+    data: UpdateTaskData,
+  ): Promise<void> {
     const { title, description, deadline, priority, status } = data
 
-    await this.updateTaskUseCase.execute(id, {
+    await this.updateTaskUseCase.execute(taskId, actor, {
       title,
       description,
       deadline,
@@ -69,7 +73,7 @@ export class TasksService implements TasksServiceContract {
     })
   }
 
-  async delete(id: string): Promise<void> {
-    return this.deleteTaskUseCase.execute(id)
+  async delete(taskId: string, actor: string): Promise<void> {
+    return this.deleteTaskUseCase.execute(taskId, actor)
   }
 }

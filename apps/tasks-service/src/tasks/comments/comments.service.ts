@@ -4,7 +4,7 @@ import type {
   CreateTaskCommentData,
   ListTaskCommentsParams,
   PaginatedTaskComments,
-} from '@/types'
+} from '@/types/task-comments'
 
 import { TasksCommentsContract } from '../contracts/tasks-comments-service.contract'
 import { CreateTaskCommentUseCase } from '../use-cases/create-task-comment'
