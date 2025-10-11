@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common'
 
 import { MessagingRepository } from '@/tasks/repositories/messaging.repository'
-import type { TaskCreatedEvent, TaskUpdatedEvent } from '@/types/task-events'
-import { TASK_EVENT_TYPES } from '@/types/task-events'
+import type { TaskCreatedEvent, TaskUpdatedEvent } from '@jungle/types'
+import { TASK_EVENT_TYPES } from '@jungle/types'
 
 import { TaskEventsContract } from '../contracts/task-events.contract'
 

@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common'
 
-import {
+import type { PaginatedTaskAssignments } from '@jungle/types'
+import type {
   CreateTaskAssignmentData,
   ListTaskAssignmentsParams,
-  PaginatedTaskAssignments,
 } from '@/types/task-assignments'
 
 import { TaskAssignmentsServiceContract } from '../contracts/task-assignments-service.contract'

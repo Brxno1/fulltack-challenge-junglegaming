@@ -1,8 +1,7 @@
-import {
+import type { PaginatedTaskAssignments, TaskAssignment } from '@jungle/types'
+import type {
   CreateTaskAssignmentData,
   ListTaskAssignmentsParams,
-  PaginatedTaskAssignments,
-  TaskAssignment,
 } from '@/types/task-assignments'
 
 export abstract class TaskAssignmentsRepository {

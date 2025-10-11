@@ -1,3 +1,4 @@
+import { TASK_EVENT_TYPES } from '@jungle/types'
 import {
   ConflictException,
   Injectable,
@@ -6,7 +7,6 @@ import {
 
 import { TASK_ASSIGNMENT_MESSAGES } from '@/tasks/constants/assignment.constants'
 import { type CreateTaskAssignmentData } from '@/types/task-assignments'
-import { TASK_EVENT_TYPES } from '@/types/task-events'
 
 import { TaskAssignmentsRepository } from '../repositories/task-assignments.repository'
 import { TransactionManager } from '../repositories/transaction-manager.repository'
@@ -16,7 +16,7 @@ export class AssignUserToTaskUseCase {
   constructor(
     private readonly taskAssignmentsRepository: TaskAssignmentsRepository,
     private readonly transactionManager: TransactionManager,
-  ) { }
+  ) {}
 
   async execute(data: CreateTaskAssignmentData): Promise<{ id: string }> {
     const { taskId, userId, assignedBy } = data

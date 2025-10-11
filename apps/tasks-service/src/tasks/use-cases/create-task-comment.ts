@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 
 import { TASK_COMMENT_MESSAGES } from '@/tasks/constants/task-comment.constants'
 import { type CreateTaskCommentData } from '@/types/task-comments'
-import { TASK_EVENT_TYPES } from '@/types/task-events'
+import { TASK_EVENT_TYPES } from '@jungle/types'
 
 import { TransactionManager } from '../repositories/transaction-manager.repository'
 

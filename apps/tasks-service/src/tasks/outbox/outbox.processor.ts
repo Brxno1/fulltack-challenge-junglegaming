@@ -3,7 +3,7 @@ import { Cron } from '@nestjs/schedule'
 
 import { MessagingRepository } from '@/tasks/repositories/messaging.repository'
 import { OutboxRepository } from '@/tasks/repositories/outbox.repository'
-import { OutboxEvent } from '@/types/outbox'
+import { OutboxEvent } from '@jungle/types'
 
 @Injectable()
 export class OutboxProcessor {
@@ -14,7 +14,7 @@ export class OutboxProcessor {
     private readonly messaging: MessagingRepository,
   ) { }
 
-  @Cron('*/5 * * * * *')
+  @Cron('* * 3 * * *')
   async processPendingEvents() {
     this.logger.log('🔄 Starting outbox processing...')
 

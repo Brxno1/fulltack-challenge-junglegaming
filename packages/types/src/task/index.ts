@@ -12,6 +12,15 @@ export enum TaskPriority {
   URGENT = 'URGENT',
 }
 
+export enum TASK_EVENT_TYPES {
+  TASK_CREATED = 'task.created',
+  TASK_UPDATED = 'task.updated',
+  TASK_DELETED = 'task.deleted',
+  TASK_COMMENT_CREATED = 'task.comment.created',
+  TASK_ASSIGNMENT_CREATED = 'task.assignment.created',
+  TASK_ASSIGNMENT_REMOVED = 'task.assignment.removed',
+}
+
 export interface Task {
   id: string
   title: string
@@ -118,14 +127,5 @@ export type TaskEvent =
   | TaskAssignmentCreatedEvent
   | TaskAssignmentRemovedEvent
   | TaskDeletedEvent
-
-export enum TASK_EVENT_TYPES {
-  TASK_CREATED = 'task.created',
-  TASK_UPDATED = 'task.updated',
-  TASK_DELETED = 'task.deleted',
-  TASK_COMMENT_CREATED = 'task.comment.created',
-  TASK_ASSIGNMENT_CREATED = 'task.assignment.created',
-  TASK_ASSIGNMENT_REMOVED = 'task.assignment.removed',
-}
 
 export type TaskEventType = TASK_EVENT_TYPES

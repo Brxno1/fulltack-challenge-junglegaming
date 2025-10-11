@@ -1,4 +1,4 @@
-import type { TaskEvent } from '@/types/task-events'
+import type { TaskEvent } from '@jungle/types'
 
 export abstract class MessagingRepository {
   abstract publishEvent(

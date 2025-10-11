@@ -4,12 +4,8 @@ import { Repository } from 'typeorm'
 
 import { OutboxEvent } from '@/tasks/entities/outbox-event.entity'
 import { OutboxRepository } from '@/tasks/repositories/outbox.repository'
-import {
-  type CreateOutboxEventData,
-  type OutboxEvent as OutboxEventData,
-  OutboxEventStatus,
-} from '@/types/outbox'
-import { TaskEventType } from '@/types/task-events'
+import { type CreateOutboxEventData } from '@/types/outbox'
+import { type OutboxEvent as OutboxEventData, OutboxEventStatus, TaskEventType } from '@jungle/types'
 
 @Injectable()
 export class TypeormOutboxRepository implements OutboxRepository {

@@ -1,11 +1,9 @@
+import type { PaginatedTaskAssignments } from '@jungle/types'
 import { Injectable, NotFoundException } from '@nestjs/common'
 
 import { TASK_ASSIGNMENT_MESSAGES } from '@/tasks/constants/assignment.constants'
 import { TasksRepository } from '@/tasks/repositories/tasks.repository'
-import type {
-  ListTaskAssignmentsParams,
-  PaginatedTaskAssignments,
-} from '@/types/task-assignments'
+import type { ListTaskAssignmentsParams } from '@/types/task-assignments'
 
 import { TaskAssignmentsRepository } from '../repositories/task-assignments.repository'
 
@@ -14,7 +12,7 @@ export class ListTaskAssignmentsUseCase {
   constructor(
     private readonly taskAssignmentsRepository: TaskAssignmentsRepository,
     private readonly tasksRepository: TasksRepository,
-  ) { }
+  ) {}
 
   async execute({
     taskId,
