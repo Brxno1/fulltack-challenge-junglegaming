@@ -1,9 +1,9 @@
+import { OutboxEvent } from '@jungle/types'
 import { Injectable, Logger } from '@nestjs/common'
 import { Cron } from '@nestjs/schedule'
 
 import { MessagingRepository } from '@/tasks/repositories/messaging.repository'
 import { OutboxRepository } from '@/tasks/repositories/outbox.repository'
-import { OutboxEvent } from '@jungle/types'
 
 @Injectable()
 export class OutboxProcessor {
@@ -12,9 +12,9 @@ export class OutboxProcessor {
   constructor(
     private readonly outbox: OutboxRepository,
     private readonly messaging: MessagingRepository,
-  ) { }
+  ) {}
 
-  @Cron('* * 3 * * *')
+  @Cron('*/10 * * * * *')
   async processPendingEvents() {
     this.logger.log('🔄 Starting outbox processing...')
 
@@ -39,16 +39,16 @@ export class OutboxProcessor {
   }
 
   private async processEvent(event: OutboxEvent) {
-    this.logger.log(`Processing event: ${event.id} type: (${event.type})`)
+    this.logger.log(`📤 Publishing event: ${event.type}`)
 
     try {
       await this.messaging.publishEvent('tasks', event.type, event.data)
 
       await this.outbox.markAsPublished(event.id)
 
-      this.logger.log(`✅ Event ${event.id} published successfully`)
+      this.logger.log(`✅ Event ${event.type} published successfully`)
     } catch (error) {
-      this.logger.error(`❌ Failed to publish event ${event.id}:`, error)
+      this.logger.error(`❌ Failed to publish event ${event.type}:`, error)
 
       await this.outbox.markAsFailed(
         event.id,

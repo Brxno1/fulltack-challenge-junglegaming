@@ -1,3 +1,4 @@
+import { TASK_EVENT_TYPES } from '@jungle/types'
 import {
   ConflictException,
   Injectable,
@@ -5,13 +6,13 @@ import {
 } from '@nestjs/common'
 
 import { TASK_ASSIGNMENT_MESSAGES } from '@/tasks/constants/assignment.constants'
-import { TASK_EVENT_TYPES } from '@jungle/types'
+import { TASK_MESSAGES } from '@/tasks/constants/tasks.constants'
 
 import { TransactionManager } from '../repositories/transaction-manager.repository'
 
 @Injectable()
 export class RemoveUserFromTaskUseCase {
-  constructor(private readonly transactionManager: TransactionManager) { }
+  constructor(private readonly transactionManager: TransactionManager) {}
 
   async execute(
     taskId: string,
@@ -22,7 +23,7 @@ export class RemoveUserFromTaskUseCase {
       const existingTask = await repositories.tasks.findById(taskId)
 
       if (!existingTask) {
-        throw new NotFoundException(TASK_ASSIGNMENT_MESSAGES.TASK_NOT_FOUND)
+        throw new NotFoundException(TASK_MESSAGES.TASK_NOT_FOUND)
       }
 
       if (existingTask.createdBy !== removedBy) {

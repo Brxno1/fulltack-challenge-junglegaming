@@ -1,5 +1,4 @@
 export const TASK_ASSIGNMENT_MESSAGES = {
-  TASK_NOT_FOUND: 'Task not found',
   USER_ASSIGNMENT_NOT_FOUND: 'User assignment not found',
   USER_ALREADY_ASSIGNED: 'User already assigned to this task',
   ONLY_CREATOR_CAN_ASSIGN: 'Only task creator can assign users',

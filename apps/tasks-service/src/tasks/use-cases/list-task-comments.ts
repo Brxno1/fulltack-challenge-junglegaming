@@ -1,9 +1,9 @@
+import type { PaginatedTaskComments } from '@jungle/types'
 import { Injectable, NotFoundException } from '@nestjs/common'
 
-import type { PaginatedTaskComments } from '@jungle/types'
 import type { ListTaskCommentsParams } from '@/types/task-comments'
 
-import { TASK_COMMENT_MESSAGES } from '../constants/task-comment.constants'
+import { TASK_MESSAGES } from '../constants/tasks.constants'
 import { TaskCommentsRepository } from '../repositories/task-comments.repository'
 import { TasksRepository } from '../repositories/tasks.repository'
 
@@ -12,7 +12,7 @@ export class ListTaskCommentsUseCase {
   constructor(
     private readonly taskCommentsRepository: TaskCommentsRepository,
     private readonly tasksRepository: TasksRepository,
-  ) { }
+  ) {}
 
   async execute(
     params: ListTaskCommentsParams,
@@ -21,7 +21,7 @@ export class ListTaskCommentsUseCase {
 
     const task = await this.tasksRepository.findById(taskId)
     if (!task) {
-      throw new NotFoundException(TASK_COMMENT_MESSAGES.TASK_NOT_FOUND)
+      throw new NotFoundException(TASK_MESSAGES.TASK_NOT_FOUND)
     }
 
     return this.taskCommentsRepository.listByTask({
