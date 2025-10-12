@@ -15,9 +15,6 @@ export class DeleteTaskUseCase {
         throw new NotFoundException(TASK_MESSAGES.TASK_NOT_FOUND)
       }
 
-      await repositories.tasks.delete(taskId)
-
-      // Create audit log for task deletion
       await repositories.taskAuditLog.create({
         taskId,
         userId: actor,
@@ -35,6 +32,8 @@ export class DeleteTaskUseCase {
         },
         newValue: null,
       })
+
+      await repositories.tasks.softDelete(taskId)
 
       await repositories.outbox.create({
         aggregateId: taskId,

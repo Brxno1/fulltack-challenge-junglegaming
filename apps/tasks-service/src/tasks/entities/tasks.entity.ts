@@ -14,7 +14,6 @@ export class Task {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @Column()
   @Index()
   @Column({ type: 'uuid' })
   createdBy: string
@@ -43,4 +42,7 @@ export class Task {
 
   @UpdateDateColumn({ type: 'timestamptz' })
   updatedAt: Date
+
+  @Column({ type: 'timestamptz', nullable: true })
+  deletedAt: Date | null
 }

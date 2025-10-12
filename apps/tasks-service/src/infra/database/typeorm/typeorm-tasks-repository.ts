@@ -1,10 +1,10 @@
+import type { PaginatedTasks } from '@jungle/types'
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
+import { IsNull, Repository } from 'typeorm'
 
 import { Task } from '@/tasks/entities/tasks.entity'
 import { TasksRepository } from '@/tasks/repositories/tasks.repository'
-import type { PaginatedTasks } from '@jungle/types'
 import type {
   CreateTaskData,
   ListTasksParams,
@@ -16,10 +16,10 @@ export class TypeormTasksRepository implements TasksRepository {
   constructor(
     @InjectRepository(Task)
     private readonly task: Repository<Task>,
-  ) { }
+  ) {}
 
   findById(taskId: string): Promise<Task | null> {
-    return this.task.findOne({ where: { id: taskId } })
+    return this.task.findOne({ where: { id: taskId, deletedAt: IsNull() } })
   }
 
   async create(data: CreateTaskData): Promise<{ id: string }> {
@@ -29,6 +29,7 @@ export class TypeormTasksRepository implements TasksRepository {
 
   async list({ page, size }: ListTasksParams): Promise<PaginatedTasks> {
     const [tasks, total] = await this.task.findAndCount({
+      where: { deletedAt: IsNull() },
       order: {
         createdAt: 'DESC',
       },
@@ -48,5 +49,9 @@ export class TypeormTasksRepository implements TasksRepository {
 
   async delete(taskId: string): Promise<void> {
     await this.task.delete(taskId)
+  }
+
+  async softDelete(taskId: string): Promise<void> {
+    await this.task.update(taskId, { deletedAt: new Date() })
   }
 }

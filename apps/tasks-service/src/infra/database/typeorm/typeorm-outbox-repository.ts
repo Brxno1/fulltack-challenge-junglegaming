@@ -1,3 +1,8 @@
+import {
+  type OutboxEvent as OutboxEventData,
+  OutboxEventStatus,
+  TaskEventType,
+} from '@jungle/types'
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
@@ -5,20 +10,23 @@ import { Repository } from 'typeorm'
 import { OutboxEvent } from '@/tasks/entities/outbox-event.entity'
 import { OutboxRepository } from '@/tasks/repositories/outbox.repository'
 import { type CreateOutboxEventData } from '@/types/outbox'
-import { type OutboxEvent as OutboxEventData, OutboxEventStatus, TaskEventType } from '@jungle/types'
 
 @Injectable()
 export class TypeormOutboxRepository implements OutboxRepository {
   constructor(
     @InjectRepository(OutboxEvent)
     private readonly outbox: Repository<OutboxEvent>,
-  ) { }
+  ) {}
 
-  async create(data: CreateOutboxEventData): Promise<{ id: string }> {
+  async create({
+    aggregateId,
+    type,
+    data,
+  }: CreateOutboxEventData): Promise<{ id: string }> {
     const outboxEvent = this.outbox.create({
-      aggregateId: data.aggregateId,
-      type: data.type,
-      data: data.data,
+      aggregateId,
+      type,
+      data,
       status: OutboxEventStatus.PENDING,
     })
 
@@ -69,13 +77,13 @@ export class TypeormOutboxRepository implements OutboxRepository {
   }
 
   async cleanupOldPublishedEvents(): Promise<number> {
-    const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+    const threeDaysAgo = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000)
 
     const result = await this.outbox
       .createQueryBuilder()
       .delete()
       .where('status = :status', { status: OutboxEventStatus.PUBLISHED })
-      .andWhere('publishedAt < :date', { date: sevenDaysAgo })
+      .andWhere('publishedAt < :date', { date: threeDaysAgo })
       .execute()
 
     return result.affected || 0

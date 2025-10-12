@@ -1,7 +1,7 @@
-import type { PaginatedTaskAuditLogs } from '@/types/task-audit-log'
 import type {
   CreateTaskAuditLogData,
   ListTaskAuditLogsParams,
+  PaginatedTaskAuditLogs,
 } from '@/types/task-audit-log'
 
 export abstract class TaskAuditLogServiceContract {
