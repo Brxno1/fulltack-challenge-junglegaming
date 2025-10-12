@@ -1,7 +1,11 @@
 import { TASK_EVENT_TYPES } from '@jungle/types'
-import { Injectable, NotFoundException } from '@nestjs/common'
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common'
 
-import { type UpdateTaskData } from '@/types/tasks'
+import type { Task, UpdateTaskData } from '@/types/tasks'
 
 import { TASK_MESSAGES } from '../constants/tasks.constants'
 import { TransactionManager } from '../repositories/transaction-manager.repository'
@@ -15,59 +19,36 @@ export class UpdateTaskUseCase {
     actor: string,
     data: UpdateTaskData,
   ): Promise<void> {
-    const { title, description, deadline, priority, status } = data
-
-    return this.transactionManager.runInTransaction(async (repositories) => {
+    await this.transactionManager.runInTransaction(async (repositories) => {
       const existingTask = await repositories.tasks.findById(taskId)
       if (!existingTask) {
         throw new NotFoundException(TASK_MESSAGES.TASK_NOT_FOUND)
       }
 
-      await repositories.tasks.update(taskId, {
-        title,
-        description,
-        deadline,
-        priority,
-        status,
-      })
+      const validFields = this.extractValidFields(data)
 
-      const hasChanged = (oldValue: unknown, newValue: unknown): boolean => {
-        if (oldValue === newValue) return false
-        if (oldValue === null && newValue === null) return false
-        return true
+      const detectedFieldChanges = this.compareFieldValues(
+        existingTask,
+        validFields,
+      )
+
+      if (Object.keys(validFields).length === 0) {
+        throw new BadRequestException(TASK_MESSAGES.NO_CHANGES_TO_UPDATE)
       }
 
-      const fieldsToCheck = [
-        { field: 'title', oldValue: existingTask.title, newValue: title },
-        {
-          field: 'description',
-          oldValue: existingTask.description,
-          newValue: description,
-        },
-        {
-          field: 'deadline',
-          oldValue: existingTask.deadline,
-          newValue: deadline,
-        },
-        {
-          field: 'priority',
-          oldValue: existingTask.priority,
-          newValue: priority,
-        },
-        { field: 'status', oldValue: existingTask.status, newValue: status },
-      ]
+      await repositories.tasks.update(taskId, validFields)
 
-      for (const { field, oldValue, newValue } of fieldsToCheck) {
-        if (newValue !== undefined && hasChanged(oldValue, newValue)) {
-          await repositories.taskAuditLog.create({
-            taskId,
-            userId: actor,
-            action: 'FIELD_UPDATED',
-            field,
-            oldValue,
-            newValue,
-          })
+      if (detectedFieldChanges) {
+        const auditLogData = {
+          taskId,
+          userId: actor,
+          action: 'FIELD_UPDATED',
+          field: detectedFieldChanges.field,
+          oldValue: detectedFieldChanges.oldValue,
+          newValue: detectedFieldChanges.newValue,
         }
+
+        await repositories.taskAuditLog.create(auditLogData)
       }
 
       await repositories.outbox.create({
@@ -76,16 +57,40 @@ export class UpdateTaskUseCase {
         data: {
           taskId,
           actor,
-          changes: {
-            title,
-            description,
-            deadline,
-            priority,
-            status,
-          },
+          changes: validFields,
           updatedAt: new Date(),
         },
       })
     })
+  }
+
+  private extractValidFields(data: UpdateTaskData): UpdateTaskData {
+    return Object.fromEntries(
+      Object.entries(data).filter(([, value]) => value !== undefined),
+    )
+  }
+
+  private compareFieldValues(
+    existingTask: Task,
+    validFields: UpdateTaskData,
+  ): {
+    field: string
+    oldValue: unknown
+    newValue: unknown
+  } | null {
+    for (const [field, newValue] of Object.entries(validFields)) {
+      const oldValue = existingTask[field as keyof Task]
+      if (this.hasValueChanged(oldValue, newValue)) {
+        return { field, oldValue, newValue }
+      }
+    }
+
+    return null
+  }
+
+  private hasValueChanged(oldValue: unknown, newValue: unknown): boolean {
+    if (oldValue === newValue) return false
+    if (oldValue === null && newValue === null) return false
+    return true
   }
 }

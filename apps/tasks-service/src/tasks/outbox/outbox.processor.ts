@@ -14,7 +14,7 @@ export class OutboxProcessor {
     private readonly messaging: MessagingRepository,
   ) {}
 
-  @Cron('*/10 * * * * *')
+  @Cron('*/30 * * * * *')
   async processPendingEvents() {
     this.logger.log('🔄 Starting outbox processing...')
 
@@ -42,7 +42,7 @@ export class OutboxProcessor {
     this.logger.log(`📤 Publishing event: ${event.type}`)
 
     try {
-      await this.messaging.publishEvent('tasks', event.type, event.data)
+      await this.messaging.publishEvent(event.type, event.data)
 
       await this.outbox.markAsPublished(event.id)
 

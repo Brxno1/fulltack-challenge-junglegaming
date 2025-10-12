@@ -16,7 +16,7 @@ export class TaskComment {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @Index()
+  @Index('IDX_task_comments_taskId')
   @Column({ type: 'uuid' })
   taskId: string
 
@@ -24,7 +24,7 @@ export class TaskComment {
   @JoinColumn({ name: 'taskId' })
   task: Task
 
-  @Index()
+  @Index('IDX_task_comments_userId')
   @Column({ type: 'uuid' })
   userId: string
 

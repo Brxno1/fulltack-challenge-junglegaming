@@ -10,20 +10,20 @@ import {
 import { Task } from './tasks.entity'
 
 @Entity('task_audit_log')
-@Index(['task', 'createdAt'])
+@Index('IDX_task_audit_log_task_createdAt', ['task', 'createdAt'])
 export class TaskAuditLog {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @Index()
+  @Index('IDX_task_audit_log_task')
   @ManyToOne(() => Task, { onDelete: 'CASCADE' })
   task: Task
 
-  @Index()
+  @Index('IDX_task_audit_log_taskId')
   @Column({ type: 'uuid' })
   taskId: string
 
-  @Index()
+  @Index('IDX_task_audit_log_userId')
   @Column({ type: 'varchar' })
   userId: string
 
@@ -39,7 +39,7 @@ export class TaskAuditLog {
   @Column({ type: 'jsonb', nullable: true })
   newValue: unknown | null
 
-  @Index()
+  @Index('IDX_task_audit_log_createdAt')
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date
 }

@@ -10,6 +10,7 @@ import {
 } from 'class-validator'
 
 import { TaskPriority, TaskStatus } from '@/tasks/constants/task.enums'
+import { IsNotPastDate } from '@/tasks/validators/deadline.validator'
 
 export class CreateTaskDto {
   @IsString()
@@ -21,6 +22,7 @@ export class CreateTaskDto {
   description: string | null
 
   @IsOptional()
+  @IsNotPastDate()
   @Transform(({ value }) => (value ? new Date(value) : null))
   deadline: Date | null
 
@@ -44,6 +46,7 @@ export class UpdateTaskDto {
   description: string | null
 
   @IsOptional()
+  @IsNotPastDate()
   @Transform(({ value }) => (value ? new Date(value) : null))
   deadline: Date | null
 
