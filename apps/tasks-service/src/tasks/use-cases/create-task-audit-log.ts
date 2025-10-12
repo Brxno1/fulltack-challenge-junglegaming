@@ -10,7 +10,21 @@ export class CreateTaskAuditLogUseCase {
     private readonly taskAuditLogRepository: TaskAuditLogRepository,
   ) {}
 
-  async execute(data: CreateTaskAuditLogData): Promise<{ id: string }> {
-    return this.taskAuditLogRepository.create(data)
+  async execute({
+    taskId,
+    userId,
+    field,
+    oldValue,
+    newValue,
+    action,
+  }: CreateTaskAuditLogData): Promise<{ id: string }> {
+    return this.taskAuditLogRepository.create({
+      taskId,
+      userId,
+      field,
+      oldValue,
+      newValue,
+      action,
+    })
   }
 }

@@ -7,7 +7,6 @@ import { MessagingModule } from './infra/messaging/messaging.module'
 import { TaskAssignmentsModule } from './tasks/assignments/assignments.module'
 import { TaskAuditLogModule } from './tasks/audit-log/audit-log.module'
 import { TasksCommentsModule } from './tasks/comments/comments.module'
-import { EventsModule } from './tasks/events/events.module'
 import { OutboxModule } from './tasks/outbox/outbox.module'
 import { TasksModule } from './tasks/tasks.module'
 
@@ -19,7 +18,6 @@ import { TasksModule } from './tasks/tasks.module'
     ScheduleModule.forRoot(),
     MessagingModule,
     OutboxModule,
-    EventsModule,
     TasksModule,
     TasksCommentsModule,
     TaskAssignmentsModule,

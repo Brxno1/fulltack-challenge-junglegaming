@@ -1,5 +1,5 @@
 import { TASK_EVENT_TYPES } from '@jungle/types'
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 
 import { type UpdateTaskData } from '@/types/tasks'
 
@@ -20,7 +20,7 @@ export class UpdateTaskUseCase {
     return this.transactionManager.runInTransaction(async (repositories) => {
       const existingTask = await repositories.tasks.findById(taskId)
       if (!existingTask) {
-        throw new Error(TASK_MESSAGES.TASK_NOT_FOUND)
+        throw new NotFoundException(TASK_MESSAGES.TASK_NOT_FOUND)
       }
 
       await repositories.tasks.update(taskId, {

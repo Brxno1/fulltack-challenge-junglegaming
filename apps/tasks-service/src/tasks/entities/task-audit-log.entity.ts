@@ -20,6 +20,10 @@ export class TaskAuditLog {
   task: Task
 
   @Index()
+  @Column({ type: 'uuid' })
+  taskId: string
+
+  @Index()
   @Column({ type: 'varchar' })
   userId: string
 

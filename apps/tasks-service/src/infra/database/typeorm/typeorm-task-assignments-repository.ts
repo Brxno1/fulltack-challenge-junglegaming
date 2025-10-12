@@ -1,10 +1,13 @@
+import type {
+  PaginatedTaskAssignments,
+  TaskAssignment as TaskAssignmentData,
+} from '@jungle/types'
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 
 import { TaskAssignment } from '@/tasks/entities/task-assignment.entity'
 import { TaskAssignmentsRepository } from '@/tasks/repositories/task-assignments.repository'
-import type { PaginatedTaskAssignments, TaskAssignment as TaskAssignmentData } from '@jungle/types'
 import type {
   CreateTaskAssignmentData,
   ListTaskAssignmentsParams,
@@ -12,11 +15,12 @@ import type {
 
 @Injectable()
 export class TypeormTaskAssignmentsRepository
-  implements TaskAssignmentsRepository {
+  implements TaskAssignmentsRepository
+{
   constructor(
     @InjectRepository(TaskAssignment)
     private readonly taskAssignmentRepository: Repository<TaskAssignment>,
-  ) { }
+  ) {}
 
   async create(data: CreateTaskAssignmentData): Promise<{ id: string }> {
     const { id } = await this.taskAssignmentRepository.save(data)

@@ -27,6 +27,7 @@ export class TypeormTaskAuditLogRepository implements TaskAuditLogRepository {
   }: CreateTaskAuditLogData): Promise<{ id: string }> {
     const auditLog = this.taskAuditLogRepository.create({
       task: { id: taskId },
+      taskId,
       userId: userId ?? undefined,
       field: field ?? undefined,
       oldValue,
@@ -43,30 +44,17 @@ export class TypeormTaskAuditLogRepository implements TaskAuditLogRepository {
     page,
     size,
   }: ListTaskAuditLogsParams): Promise<PaginatedTaskAuditLogs> {
-    const query = this.taskAuditLogRepository
-      .createQueryBuilder('log')
-      .leftJoin('log.task', 'task')
-      .select([
-        'log.id',
-        'log.userId',
-        'log.action',
-        'log.field',
-        'log.oldValue',
-        'log.newValue',
-        'log.createdAt',
-        'task.id as taskId',
-      ])
-      .where('task.id = :taskId', { taskId })
-      .orderBy('log.createdAt', 'DESC')
-      .skip((page - 1) * size)
-      .take(size)
-
-    const [auditLogs, total] = await query.getManyAndCount()
+    const [auditLogs, total] = await this.taskAuditLogRepository.findAndCount({
+      where: { taskId },
+      order: { createdAt: 'DESC' },
+      skip: (page - 1) * size,
+      take: size,
+    })
 
     return {
       auditLogs: auditLogs.map((log) => ({
         id: log.id,
-        taskId,
+        taskId: log.taskId,
         userId: log.userId,
         action: log.action,
         field: log.field,

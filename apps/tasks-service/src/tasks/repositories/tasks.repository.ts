@@ -1,4 +1,5 @@
 import type { PaginatedTasks, Task } from '@jungle/types'
+
 import type {
   CreateTaskData,
   ListTasksParams,
@@ -15,4 +16,6 @@ export abstract class TasksRepository {
   abstract update(id: string, data: UpdateTaskData): Promise<void>
 
   abstract delete(id: string): Promise<void>
+
+  abstract softDelete(id: string): Promise<void>
 }
