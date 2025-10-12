@@ -1,3 +1,5 @@
+import { OutboxEventStatus } from '@jungle/types'
+import { type TaskEvent } from '@jungle/types'
 import {
   Column,
   CreateDateColumn,
@@ -7,16 +9,13 @@ import {
   UpdateDateColumn,
 } from 'typeorm'
 
-import { OutboxEventStatus } from '@jungle/types'
-import { type TaskEvent } from '@jungle/types'
-
 @Entity('outbox_events')
-@Index(['status', 'createdAt'])
+@Index('IDX_outbox_events_status_createdAt', ['status', 'createdAt'])
 export class OutboxEvent {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @Index()
+  @Index('IDX_outbox_events_aggregateId')
   @Column({ type: 'uuid' })
   aggregateId: string
 
@@ -28,7 +27,7 @@ export class OutboxEvent {
   @Column({ type: 'jsonb' })
   data: TaskEvent
 
-  @Index()
+  @Index('IDX_outbox_events_status')
   @Column({
     type: 'varchar',
     default: 'pending',

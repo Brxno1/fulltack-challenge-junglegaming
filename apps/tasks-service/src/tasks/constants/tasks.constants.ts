@@ -1,5 +1,8 @@
 export const TASK_MESSAGES = {
   TASK_NOT_FOUND: 'Task not found',
+  NO_CHANGES_TO_UPDATE: 'No changes to update',
+  DEADLINE_CANNOT_BE_IN_PAST: 'Deadline cannot be in the past',
+  INVALID_DEADLINE_FORMAT: 'Invalid deadline format',
 } as const
 
 export const TASK_COMMENT_MESSAGES = {

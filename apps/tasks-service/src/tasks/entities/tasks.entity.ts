@@ -14,7 +14,7 @@ export class Task {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @Index()
+  @Index('IDX_tasks_createdBy')
   @Column({ type: 'uuid' })
   createdBy: string
 
@@ -24,19 +24,19 @@ export class Task {
   @Column({ type: 'text', nullable: true })
   description: string | null
 
-  @Index()
+  @Index('IDX_tasks_deadline')
   @Column({ type: 'timestamptz', nullable: true })
   deadline: Date | null
 
-  @Index()
+  @Index('IDX_tasks_priority')
   @Column({ type: 'varchar', length: 16 })
   priority: TaskPriority
 
-  @Index()
+  @Index('IDX_tasks_status')
   @Column({ type: 'varchar', length: 16 })
   status: TaskStatus
 
-  @Index()
+  @Index('IDX_tasks_createdAt')
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date
 
