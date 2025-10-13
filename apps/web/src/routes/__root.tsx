@@ -1,22 +1,24 @@
-import { createRootRoute, Outlet } from '@tanstack/react-router';
-import { TanStackRouterDevtools } from '@tanstack/router-devtools';
+import * as React from 'react'
+import { Outlet, createRootRoute } from '@tanstack/react-router'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { createQueryClient } from '../lib/query-client'
+import { ThemeProvider } from '@/components/theme/theme-provider'
+
 
 export const Route = createRootRoute({
-  component: () => (
-    <div className="min-h-screen bg-zinc-950 text-white">
-      <div className="container mx-auto py-8">
-        <header className="mb-8">
-          <h1 className="text-center text-4xl font-bold">Jungle Gaming</h1>
-          <p className="mt-2 text-center">
-            Sistema de Gestão de Tarefas Colaborativo
-          </p>
-        </header>
+  component: RootComponent,
+})
 
-        <main className="mx-auto max-w-4xl">
+function RootComponent() {
+  const [queryClient] = React.useState(() => createQueryClient())
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider defaultTheme="system">
+        <main className="min-h-screen">
           <Outlet />
         </main>
-      </div>
-      <TanStackRouterDevtools />
-    </div>
-  ),
-});
+      </ThemeProvider>
+    </QueryClientProvider>
+  )
+}
