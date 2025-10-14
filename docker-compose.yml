@@ -1,4 +1,38 @@
 services:
+  api-gateway:
+    container_name: api-gateway
+    build:
+      context: .
+      dockerfile: ./apps/api-gateway/Dockerfile
+      target: development
+    ports:
+      - "3001:3001"
+    volumes:
+      - .:/challenge
+      - ./packages:/challenge/packages
+      - /challenge/node_modules
+      - /challenge/apps/api-gateway/node_modules
+    environment:
+      - NODE_ENV=development
+      - API_GATEWAY_PORT=3001
+      - AUTH_SERVICE_URL=${AUTH_SERVICE_URL}
+      - TASKS_SERVICE_URL=${TASKS_SERVICE_URL}
+      - FRONTEND_URL=${FRONTEND_URL}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN}
+      - REFRESH_TOKEN_EXPIRES_IN=${REFRESH_TOKEN_EXPIRES_IN}
+      - CHOKIDAR_USEPOLLING=1
+    env_file:
+      - ./.env
+    depends_on:
+      auth-service:
+        condition: service_started
+      tasks-service:
+        condition: service_started
+    networks:
+      - challenge-network
+    restart: unless-stopped
+
   auth-service:
     container_name: auth-service
     build:

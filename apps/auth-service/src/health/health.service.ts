@@ -12,22 +12,31 @@ export interface HealthResponse {
 export class HealthService {
   constructor(@InjectDataSource() private readonly dataSource: DataSource) {}
 
-  private async checkDatabase(): Promise<'connected' | 'disconnected'> {
+  private async checkDatabase(): Promise<{
+    status: 'connected' | 'disconnected'
+    timestamp: string
+  }> {
     try {
       await this.dataSource.query('SELECT 1')
-      return 'connected'
+      return {
+        status: 'connected',
+        timestamp: new Date().toISOString(),
+      }
     } catch {
-      return 'disconnected'
+      return {
+        status: 'disconnected',
+        timestamp: new Date().toISOString(),
+      }
     }
   }
 
   async getHealth(): Promise<HealthResponse> {
-    const database = await this.checkDatabase()
+    const { status, timestamp } = await this.checkDatabase()
 
     return {
       status: 'healthy',
-      database,
-      timestamp: new Date().toISOString(),
+      database: status,
+      timestamp,
     }
   }
 }
