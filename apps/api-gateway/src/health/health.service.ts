@@ -25,7 +25,10 @@ export class HealthService implements HealthServiceContract {
   private async getServiceHealth(
     serviceName: string,
   ): Promise<ServiceHealthInfo> {
-    const response = await this.proxyService.forwardRequest<ServiceHealthInfo>({
+    const response = await this.proxyService.forwardRequest<
+      ServiceHealthInfo,
+      unknown
+    >({
       serviceName,
       method: 'GET',
       path: '/health',
