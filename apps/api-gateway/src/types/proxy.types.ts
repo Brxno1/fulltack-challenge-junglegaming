@@ -1,6 +1,7 @@
 export interface ProxyResponse<T> {
   data: T
   status: number
+  error?: string
   headers: Record<string, string>
 }
 
@@ -16,10 +17,10 @@ export interface ServiceHealthStatus {
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
 
-export interface ProxyRequestOptions {
+export interface ProxyRequestOptions<TData> {
   serviceName: string
   method: HttpMethod
   path: string
-  data?: unknown | undefined
+  data?: TData
   headers?: Record<string, string>
 }

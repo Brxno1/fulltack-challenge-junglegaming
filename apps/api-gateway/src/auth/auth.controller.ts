@@ -1,5 +1,5 @@
 import { AuthResponse } from '@jungle/types'
-import { Body, Controller, Post } from '@nestjs/common'
+import { Body, Controller, HttpCode, Post } from '@nestjs/common'
 
 import { AuthServiceContract } from '@/contracts/auth.service.contract'
 
@@ -14,16 +14,19 @@ export class AuthController {
   constructor(private readonly authService: AuthServiceContract) {}
 
   @Post('/register')
+  @HttpCode(201)
   async register(@Body() registerData: RegisterUserDto): Promise<AuthResponse> {
     return this.authService.register(registerData)
   }
 
   @Post('/login')
+  @HttpCode(200)
   async login(@Body() loginData: LoginUserDto): Promise<AuthResponse> {
     return this.authService.login(loginData)
   }
 
   @Post('/refresh')
+  @HttpCode(200)
   async refresh(@Body() body: RefreshTokenDto): Promise<AuthResponse> {
     return this.authService.refreshTokens(body.refreshToken)
   }

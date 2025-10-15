@@ -5,13 +5,13 @@ import {
 } from '@/types'
 
 export abstract class ProxyServiceContract {
-  abstract forwardRequest<T>({
+  abstract forwardRequest<TResponse, TData>({
     serviceName,
     method,
     path,
     data,
     headers,
-  }: ProxyRequestOptions): Promise<ProxyResponse<T>>
+  }: ProxyRequestOptions<TData>): Promise<ProxyResponse<TResponse>>
 
   abstract checkServiceHealth(
     serviceName: string,
