@@ -11,5 +11,3 @@ export const HTTP_METHODS = {
   POST: 'POST',
   GET: 'GET',
 } as const
-
-export { AUTH_ERROR_MESSAGES } from '@jungle/constants'

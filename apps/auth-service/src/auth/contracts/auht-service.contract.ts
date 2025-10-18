@@ -1,8 +1,4 @@
-import type {
-  AuthResponse,
-  CreateUserData,
-  LoginUserData,
-} from '@/types/auth.types'
+import type { AuthResponse, CreateUserData, LoginUserData } from '@jungle/types'
 
 export abstract class AuthServiceContract {
   abstract register(user: CreateUserData): Promise<AuthResponse>

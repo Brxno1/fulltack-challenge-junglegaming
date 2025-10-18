@@ -1,8 +1,16 @@
-export interface ProxyResponse<T> {
-  data: T
+export interface ProxyResponse<TData> {
+  data: TData
   status: number
   error?: string
   headers: Record<string, string>
+}
+
+export interface ProxyRequestOptions {
+  serviceName: string
+  method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
+  path: string
+  data?: unknown
+  headers?: Record<string, string>
 }
 
 export interface ServiceConfig {
@@ -13,14 +21,4 @@ export interface ServiceConfig {
 
 export interface ServiceHealthStatus {
   [serviceName: string]: 'healthy' | 'unhealthy'
-}
-
-export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
-
-export interface ProxyRequestOptions<TData> {
-  serviceName: string
-  method: HttpMethod
-  path: string
-  data?: TData
-  headers?: Record<string, string>
 }

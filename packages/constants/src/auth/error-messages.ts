@@ -5,4 +5,8 @@ export const AUTH_ERROR_MESSAGES = {
   TOKEN_EXPIRED: 'Token has expired',
   USER_ALREADY_EXISTS: 'Registration failed',
   REGISTRATION_FAILED: 'Registration failed',
+  PERMISSION_DENIED: 'Access denied',
+  VALIDATION_FAILED: 'Invalid payload',
+  TOO_MANY_REQUESTS: 'Too many requests',
+  UNSPECIFIED: 'Authentication error',
 } as const

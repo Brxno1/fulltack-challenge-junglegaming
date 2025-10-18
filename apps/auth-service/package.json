@@ -9,6 +9,7 @@
     "./entities": "./src/entities/index.ts"
   },
   "scripts": {
+    "prestart:dev": "pnpm --filter @jungle/constants build && pnpm --filter @jungle/types build && nest build",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
@@ -23,6 +24,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@jungle/constants": "workspace:*",
+    "@jungle/types": "workspace:*",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.3.0",
     "@nestjs/core": "^10.0.0",

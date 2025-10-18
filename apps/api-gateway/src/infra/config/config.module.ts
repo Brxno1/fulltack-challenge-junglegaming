@@ -9,10 +9,10 @@ import { EnvConfigService } from './env.config'
   imports: [
     NestConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ['../../.env', '.env'],
+      envFilePath: ['.env'],
     }),
   ],
   providers: [AppConfigService, EnvConfigService],
   exports: [AppConfigService, EnvConfigService],
 })
-export class ConfigModule { }
+export class ConfigModule {}

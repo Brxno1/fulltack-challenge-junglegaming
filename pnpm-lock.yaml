@@ -139,6 +139,12 @@ importers:
 
   apps/auth-service:
     dependencies:
+      '@jungle/constants':
+        specifier: workspace:*
+        version: link:../../packages/constants
+      '@jungle/types':
+        specifier: workspace:*
+        version: link:../../packages/types
       '@nestjs/common':
         specifier: ^10.0.0
         version: 10.4.20(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2)
@@ -698,28 +704,6 @@ importers:
       '@jungle/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
-      typescript:
-        specifier: ^5.9.3
-        version: 5.9.3
-
-  packages/utils:
-    dependencies:
-      date-fns:
-        specifier: ^4.1.0
-        version: 4.1.0
-      lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
-    devDependencies:
-      '@jungle/eslint-config':
-        specifier: workspace:*
-        version: link:../eslint-config
-      '@jungle/tsconfig':
-        specifier: workspace:*
-        version: link:../tsconfig
-      '@types/lodash':
-        specifier: ^4.17.13
-        version: 4.17.20
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
@@ -2711,9 +2695,6 @@ packages:
 
   '@types/jsonwebtoken@9.0.5':
     resolution: {integrity: sha512-VRLSGzik+Unrup6BsouBeHsf4d1hOEgYWTm/7Nmw1sXoN1+tRly/Gy/po3yeahnP4jfnQWWAhQAqcNfH7ngOkA==}
-
-  '@types/lodash@4.17.20':
-    resolution: {integrity: sha512-H3MHACvFUEiujabxhaI/ImO6gUrd8oOurg7LQtS7mbwIXA/cUqWrvBsaeJ23aZEPk1TAYkurjfMbSELfoCXlGA==}
 
   '@types/luxon@3.7.1':
     resolution: {integrity: sha512-H3iskjFIAn5SlJU7OuxUmTEpebK6TKB8rxZShDslBMZJ5u9S//KM1sbdAisiSrqwLQncVjnpi2OK2J51h+4lsg==}
@@ -8856,8 +8837,6 @@ snapshots:
   '@types/jsonwebtoken@9.0.5':
     dependencies:
       '@types/node': 24.6.2
-
-  '@types/lodash@4.17.20': {}
 
   '@types/luxon@3.7.1': {}
 

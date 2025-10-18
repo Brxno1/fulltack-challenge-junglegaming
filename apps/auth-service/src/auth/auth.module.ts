@@ -9,6 +9,7 @@ import { TokenService } from '../infra/jwt/token.service'
 import { AuthController } from './auth.controller'
 import { AuthService } from './auth.service'
 import { AuthServiceContract } from './contracts/auht-service.contract'
+import { TokenServiceContract } from './contracts/token.service.contract'
 import { RefreshTokenBlacklist } from './entities/refresh-token-blacklist.entity'
 import { User } from './entities/user.entity'
 import { RefreshTokenBlacklistRepository } from './repositories/refresh-token-blacklist'
@@ -32,6 +33,7 @@ import { RegisterUserUseCase } from './use-cases/register-user'
     RefreshTokenBlacklistService,
     { provide: AuthServiceContract, useClass: AuthService },
     { provide: UsersRepository, useClass: TypeormUserRepository },
+    { provide: TokenServiceContract, useClass: TokenService },
     {
       provide: RefreshTokenBlacklistRepository,
       useClass: TypeormRefreshTokenBlacklistRepository,

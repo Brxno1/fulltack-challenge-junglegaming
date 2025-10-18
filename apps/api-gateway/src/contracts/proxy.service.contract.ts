@@ -1,19 +1,11 @@
-import {
-  GatewayHealthResponse,
-  ProxyRequestOptions,
-  ProxyResponse,
-} from '@/types'
+import { ProxyRequestOptions, ProxyResponse, ServiceHealthInfo } from '@/types'
 
 export abstract class ProxyServiceContract {
-  abstract forwardRequest<TResponse, TData>({
-    serviceName,
-    method,
-    path,
-    data,
-    headers,
-  }: ProxyRequestOptions<TData>): Promise<ProxyResponse<TResponse>>
+  abstract forwardRequest<TData>(
+    options: ProxyRequestOptions,
+  ): Promise<ProxyResponse<TData>>
 
   abstract checkServiceHealth(
     serviceName: string,
-  ): Promise<ProxyResponse<GatewayHealthResponse>>
+  ): Promise<ProxyResponse<ServiceHealthInfo>>
 }

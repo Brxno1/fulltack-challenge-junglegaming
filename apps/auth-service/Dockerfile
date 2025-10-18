@@ -12,6 +12,8 @@ COPY apps/auth-service/package.json ./apps/auth-service/
 
 RUN pnpm install --no-frozen-lockfile
 
+RUN pnpm --filter @jungle/constants build && pnpm --filter @jungle/types build
+
 COPY apps/auth-service/ ./apps/auth-service/
 
 WORKDIR /challenge/apps/auth-service

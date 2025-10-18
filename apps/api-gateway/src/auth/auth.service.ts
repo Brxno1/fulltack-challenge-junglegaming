@@ -1,8 +1,9 @@
 import { AuthResponse, CreateUserData, LoginUserData } from '@jungle/types'
-import { Injectable, UnauthorizedException } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 
 import { AuthServiceContract } from '@/contracts/auth.service.contract'
 import { ProxyServiceContract } from '@/contracts/proxy.service.contract'
+import { AuthErrorMapper } from '@/mappers/auth-error.mapper'
 
 import { AUTH_ENDPOINT, AUTH_SERVICE_NAME } from '../constants/auth.constants'
 
@@ -22,27 +23,34 @@ export class AuthService implements AuthServiceContract {
   }
 
   async refreshTokens(refreshToken: string): Promise<AuthResponse> {
-    return this.proxyAuthRequest<string>(AUTH_ENDPOINT.REFRESH, refreshToken)
+    return this.proxyAuthRequest<{ refreshToken: string }>(
+      AUTH_ENDPOINT.REFRESH,
+      { refreshToken },
+    )
   }
 
   private async proxyAuthRequest<TData>(
     endpoint: string,
-    data: TData,
+    body: TData,
   ): Promise<AuthResponse> {
-    const response = await this.proxyService.forwardRequest<
-      AuthResponse,
-      TData
-    >({
+    const response = await this.proxyService.forwardRequest<AuthResponse>({
       serviceName: AUTH_SERVICE_NAME,
       method: 'POST',
       path: endpoint,
-      data,
+      data: body,
     })
 
     if (response.error) {
-      throw new UnauthorizedException(response.error)
+      const errorData = response.data as { error?: string; message?: string }
+      throw new AuthErrorMapper(
+        {
+          code: errorData?.error || 'UNKNOWN_ERROR',
+          message: errorData?.message || 'Request failed',
+        },
+        response.status,
+      )
     }
 
-    return response.data
+    return response.data as AuthResponse
   }
 }

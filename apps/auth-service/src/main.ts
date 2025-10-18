@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config'
 import { NestFactory } from '@nestjs/core'
 
 import { AppConfigService } from './infra/config/app.config'
+import { HttpExceptionFilter } from './infra/http/http-exception.filter'
 import { MainModule } from './main.module'
 
 async function bootstrap() {
@@ -16,6 +17,7 @@ async function bootstrap() {
   await app.listen(port)
 
   app.useGlobalPipes(appConfig.createValidationPipe())
+  app.useGlobalFilters(new HttpExceptionFilter())
 
   logger.log(`🚀 Auth Service running on port ${port}`)
 }

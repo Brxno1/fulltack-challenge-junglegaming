@@ -1,12 +1,8 @@
+import { AUTH_ERROR_MESSAGES } from '@jungle/constants'
+import type { AuthResponse, CreateUserData, LoginUserData } from '@jungle/types'
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 
-import { TokenService } from '../infra/jwt/token.service'
-import type {
-  AuthResponse,
-  CreateUserData,
-  LoginUserData,
-} from '../types/auth.types'
-import { AUTH_ERROR_MESSAGES } from './constants/error-messages'
+import { TokenServiceContract } from './contracts/token.service.contract'
 import { UsersRepository } from './repositories/user'
 import { LoginUserUseCase } from './use-cases/login-user'
 import { RegisterUserUseCase } from './use-cases/register-user'
@@ -16,7 +12,7 @@ export class AuthService {
   constructor(
     private readonly registerUser: RegisterUserUseCase,
     private readonly loginUser: LoginUserUseCase,
-    private readonly tokenService: TokenService,
+    private readonly tokenService: TokenServiceContract,
     private readonly users: UsersRepository,
   ) {}
 
@@ -26,7 +22,6 @@ export class AuthService {
     password,
   }: CreateUserData): Promise<AuthResponse> {
     const user = await this.registerUser.execute({ email, username, password })
-
     const tokens = await this.tokenService.generate(user.id, user.email)
 
     return { user, ...tokens }

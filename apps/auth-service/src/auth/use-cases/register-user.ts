@@ -1,23 +1,19 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common'
+import { AUTH_ERROR_MESSAGES } from '@jungle/constants'
+import type { CreateUserData, User } from '@jungle/types'
+import { ConflictException, Injectable } from '@nestjs/common'
 import * as bcrypt from 'bcrypt'
 
-import type { CreateUserData, UserResponse } from '../../types/auth.types'
-import { AUTH_ERROR_MESSAGES } from '../constants/error-messages'
 import { UsersRepository } from '../repositories/user'
 
 @Injectable()
 export class RegisterUserUseCase {
   constructor(private readonly users: UsersRepository) {}
 
-  async execute({
-    email,
-    username,
-    password,
-  }: CreateUserData): Promise<UserResponse> {
+  async execute({ email, username, password }: CreateUserData): Promise<User> {
     const exists = await this.users.findByEmail(email)
 
     if (exists) {
-      throw new UnauthorizedException(AUTH_ERROR_MESSAGES.REGISTRATION_FAILED)
+      throw new ConflictException(AUTH_ERROR_MESSAGES.REGISTRATION_FAILED)
     }
 
     const passwordHash = await bcrypt.hash(password, 10)

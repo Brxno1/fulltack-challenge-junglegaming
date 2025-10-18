@@ -2,18 +2,19 @@ import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 
-import { AUTH_ERROR_MESSAGES } from '@/auth/constants/error-messages'
+import { AUTH_ERROR_MESSAGES } from '@jungle/constants'
+import { TokenServiceContract } from '@/auth/contracts/token.service.contract'
 import { RefreshTokenBlacklistService } from '@/auth/services/refresh-token-blacklist.service'
 import type { JwtPayload } from '@/infra/jwt/jwt.strategy'
-import type { TokenPair } from '@/types/auth.types'
+import type { TokenPair } from '@jungle/types'
 
 @Injectable()
-export class TokenService {
+export class TokenService implements TokenServiceContract {
   constructor(
     private readonly jwt: JwtService,
     private readonly config: ConfigService,
     private readonly blacklistService: RefreshTokenBlacklistService,
-  ) {}
+  ) { }
 
   async generate(userId: string, email: string): Promise<TokenPair> {
     const accessToken = await this.jwt.signAsync(

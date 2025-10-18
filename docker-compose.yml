@@ -6,7 +6,7 @@ services:
       dockerfile: ./apps/api-gateway/Dockerfile
       target: development
     ports:
-      - "3001:3001"
+      - '3001:3001'
     volumes:
       - .:/challenge
       - ./packages:/challenge/packages
@@ -40,7 +40,7 @@ services:
       dockerfile: ./apps/auth-service/Dockerfile
       target: development
     ports:
-      - "3002:3002"
+      - '3002:3002'
     volumes:
       - .:/challenge
       - ./packages:/challenge/packages
@@ -57,7 +57,6 @@ services:
       - CHOKIDAR_USEPOLLING=1
     env_file:
       - ./.env
-      - ./apps/auth-service/.env
     depends_on:
       db:
         condition: service_started
@@ -72,7 +71,7 @@ services:
       dockerfile: ./apps/tasks-service/Dockerfile
       target: development
     ports:
-      - "3003:3003"
+      - '3003:3003'
     volumes:
       - .:/challenge
       - ./packages:/challenge/packages
@@ -90,7 +89,6 @@ services:
       - CHOKIDAR_USEPOLLING=1
     env_file:
       - ./.env
-      - ./apps/tasks-service/.env
     depends_on:
       db:
         condition: service_started
@@ -104,7 +102,7 @@ services:
     image: postgres:17.5-alpine3.21
     container_name: db
     ports:
-      - "5432:5432"
+      - '5432:5432'
     networks:
       - challenge-network
     restart: always
@@ -122,8 +120,8 @@ services:
     container_name: rabbitmq
     restart: always
     ports:
-      - "5672:5672"
-      - "15672:15672"
+      - '5672:5672'
+      - '15672:15672'
     networks:
       - challenge-network
     environment:
@@ -131,7 +129,7 @@ services:
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS:-admin}
     env_file:
       - ./.env
-    volumes: ["rabbitmq_data:/var/lib/rabbitmq"]
+    volumes: ['rabbitmq_data:/var/lib/rabbitmq']
 
 volumes:
   postgres_data:

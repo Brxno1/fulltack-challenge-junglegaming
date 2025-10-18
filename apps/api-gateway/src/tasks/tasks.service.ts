@@ -8,7 +8,7 @@ import {
 } from '@/constants/tasks.constants'
 import { ProxyServiceContract } from '@/contracts/proxy.service.contract'
 import { TasksServiceContract } from '@/contracts/tasks.service.contract'
-import { HttpMethod } from '@/types/proxy.types'
+import { ProxyRequestOptions } from '@/types'
 import {
   CreateTaskData,
   ListTasksParams,
@@ -20,15 +20,17 @@ export class TasksService implements TasksServiceContract {
   constructor(private readonly proxyService: ProxyServiceContract) {}
 
   async create(data: CreateTaskData): Promise<{ id: string }> {
+    console.log(data)
     const { createdBy, ...rest } = data
-    return this.proxyTasksRequest(
-      TASKS_ENDPOINT.CREATE,
-      HTTP_METHODS.POST,
-      rest,
-      {
+    return this.proxyTasksRequest({
+      serviceName: TASKS_SERVICE_NAME,
+      method: HTTP_METHODS.POST,
+      path: TASKS_ENDPOINT.CREATE,
+      data: rest,
+      headers: {
         'x-authenticated-user-id': createdBy,
       },
-    )
+    })
   }
 
   async update(
@@ -36,71 +38,63 @@ export class TasksService implements TasksServiceContract {
     actor: string,
     data: UpdateTaskData,
   ): Promise<void> {
-    const response = await this.proxyService.forwardRequest<void, unknown>({
-      serviceName: 'tasks',
-      method: 'PATCH',
+    await this.proxyTasksRequest({
+      serviceName: TASKS_SERVICE_NAME,
+      method: HTTP_METHODS.PATCH,
       path: `/tasks/${taskId}`,
       data,
       headers: {
         'x-authenticated-user-id': actor,
       },
     })
-
-    return response.data
   }
 
   async delete(taskId: string, actor: string): Promise<void> {
-    const response = await this.proxyService.forwardRequest<void, undefined>({
-      serviceName: 'tasks',
-      method: 'DELETE',
+    await this.proxyTasksRequest({
+      serviceName: TASKS_SERVICE_NAME,
+      method: HTTP_METHODS.DELETE,
       path: `/tasks/${taskId}`,
       headers: {
         'x-authenticated-user-id': actor,
       },
     })
-
-    return response.data
   }
 
   async findById(taskId: string): Promise<Task> {
-    const response = await this.proxyService.forwardRequest<Task, unknown>({
-      serviceName: 'tasks',
-      method: 'GET',
+    const response = await this.proxyTasksRequest<Task>({
+      serviceName: TASKS_SERVICE_NAME,
+      method: HTTP_METHODS.GET,
       path: `/tasks/${taskId}`,
     })
 
-    return response.data
+    return response
   }
 
   async list(params: ListTasksParams): Promise<PaginatedTasks> {
     const { page, size } = params
-    const response = await this.proxyService.forwardRequest<
-      PaginatedTasks,
-      ListTasksParams
-    >({
-      serviceName: 'tasks',
-      method: 'GET',
+    const response = await this.proxyTasksRequest<PaginatedTasks>({
+      serviceName: TASKS_SERVICE_NAME,
+      method: HTTP_METHODS.GET,
       path: `${TASKS_ENDPOINT.LIST}?page=${page}&size=${size}`,
     })
 
-    return response.data
+    return response
   }
 
-  private async proxyTasksRequest<TResponse>(
-    endpoint: string,
-    method: HttpMethod,
-    data?: unknown,
-    headers?: Record<string, string>,
-  ): Promise<TResponse> {
-    const response = await this.proxyService.forwardRequest<TResponse, unknown>(
-      {
-        serviceName: TASKS_SERVICE_NAME,
-        method,
-        data,
-        headers,
-        path: endpoint,
-      },
-    )
+  private async proxyTasksRequest<TResponse>({
+    serviceName,
+    method,
+    path,
+    data,
+    headers,
+  }: ProxyRequestOptions): Promise<TResponse> {
+    const response = await this.proxyService.forwardRequest<TResponse>({
+      serviceName,
+      method,
+      data,
+      headers,
+      path,
+    })
 
     return response.data
   }
