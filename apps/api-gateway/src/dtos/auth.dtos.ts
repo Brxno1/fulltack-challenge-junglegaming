@@ -1,12 +1,12 @@
-import type { CreateUserData, LoginUserData } from '@jungle/types'
-import { ApiProperty } from '@nestjs/swagger'
+import type { CreateUserData, LoginUserData } from '@jungle/types';
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEmail,
   IsNotEmpty,
   IsString,
   Matches,
   MinLength,
-} from 'class-validator'
+} from 'class-validator';
 
 export class RegisterUserDto implements CreateUserData {
   @ApiProperty({
@@ -14,7 +14,7 @@ export class RegisterUserDto implements CreateUserData {
     example: 'user@example.com',
   })
   @IsEmail()
-  email: string
+  email: string;
 
   @ApiProperty({
     description: 'Username',
@@ -23,7 +23,7 @@ export class RegisterUserDto implements CreateUserData {
   })
   @IsString()
   @MinLength(3)
-  username: string
+  username: string;
 
   @ApiProperty({
     description: 'User password (min 8 chars, at least one uppercase)',
@@ -35,7 +35,7 @@ export class RegisterUserDto implements CreateUserData {
   @Matches(/(?=.*[A-Z])/, {
     message: 'Password must contain at least one uppercase letter',
   })
-  password: string
+  password: string;
 }
 
 export class LoginUserDto implements LoginUserData {
@@ -44,7 +44,7 @@ export class LoginUserDto implements LoginUserData {
     example: 'user@example.com',
   })
   @IsEmail()
-  email: string
+  email: string;
 
   @ApiProperty({
     description: 'User password',
@@ -53,7 +53,7 @@ export class LoginUserDto implements LoginUserData {
   })
   @IsString()
   @MinLength(8)
-  password: string
+  password: string;
 }
 
 export class RefreshTokenDto {
@@ -63,7 +63,7 @@ export class RefreshTokenDto {
   })
   @IsString()
   @IsNotEmpty()
-  refreshToken: string
+  refreshToken: string;
 }
 
 export class AuthResponseDto {
@@ -71,29 +71,29 @@ export class AuthResponseDto {
     description: 'JWT access token',
     example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
   })
-  accessToken: string
+  accessToken: string;
 
   @ApiProperty({
     description: 'JWT refresh token',
     example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
   })
-  refreshToken: string
+  refreshToken: string;
 
   @ApiProperty({
     description: 'User ID',
     example: '123e4567-e89b-12d3-a456-426614174000',
   })
-  userId: string
+  userId: string;
 
   @ApiProperty({
     description: 'User email',
     example: 'user@example.com',
   })
-  email: string
+  email: string;
 
   @ApiProperty({
     description: 'Username',
     example: 'user123',
   })
-  username: string
+  username: string;
 }

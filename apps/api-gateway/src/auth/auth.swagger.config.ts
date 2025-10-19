@@ -1,12 +1,12 @@
-import { applyDecorators } from '@nestjs/common'
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { applyDecorators } from '@nestjs/common';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import {
   AuthResponseDto,
   LoginUserDto,
   RefreshTokenDto,
   RegisterUserDto,
-} from '../dtos/auth.dtos'
+} from '../dtos/auth.dtos';
 
 export const AuthSwaggerConfig = {
   controller: () => ApiTags('Authentication'),
@@ -33,7 +33,7 @@ export const AuthSwaggerConfig = {
       ApiResponse({
         status: 409,
         description: 'Email or username already exists',
-      }),
+      })
     ),
 
   login: () =>
@@ -58,7 +58,7 @@ export const AuthSwaggerConfig = {
       ApiResponse({
         status: 401,
         description: 'Invalid credentials',
-      }),
+      })
     ),
 
   refresh: () =>
@@ -83,6 +83,6 @@ export const AuthSwaggerConfig = {
       ApiResponse({
         status: 401,
         description: 'Expired or invalid refresh token',
-      }),
+      })
     ),
-}
+};

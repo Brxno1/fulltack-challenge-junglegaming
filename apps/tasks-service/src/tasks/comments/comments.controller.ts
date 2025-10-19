@@ -28,9 +28,13 @@ export class TasksCommentsController {
   ): Promise<{ id: string }> {
     const { content } = body
 
+    console.log('🔍 Tasks Comments Controller - userId recebido:', userId)
+    console.log('🔍 Tasks Comments Controller - taskId:', params.taskId)
+    console.log('🔍 Tasks Comments Controller - content:', content)
+
     const { id } = await this.TasksComments.create({
       taskId: params.taskId,
-      userId,
+      actor: userId,
       content,
     })
 

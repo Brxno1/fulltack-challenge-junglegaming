@@ -1,2 +1,2 @@
-export * from './proxy.types'
-export * from './auth.types'
+export * from './proxy.types';
+export * from './auth.types';

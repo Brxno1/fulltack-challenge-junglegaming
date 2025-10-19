@@ -1,16 +1,18 @@
 import { HttpException } from '@nestjs/common';
 
-interface AuthServiceError {
+import { TASK_MESSAGES } from '@/constants/tasks.constants';
+
+interface TasksServiceError {
   code: string;
   message: string;
   status: number;
 }
 
-export class AuthErrorMapper extends HttpException {
-  constructor(error: AuthServiceError) {
+export class TasksErrorMapper extends HttpException {
+  constructor(error: TasksServiceError) {
     const { code, message, status } = error;
 
-    const { responseBody, httpStatus } = AuthErrorMapper.mapErrorResponse({
+    const { responseBody, httpStatus } = TasksErrorMapper.mapErrorResponse({
       code,
       message,
       status,
@@ -29,38 +31,32 @@ export class AuthErrorMapper extends HttpException {
     status: number;
   }) {
     switch (code) {
-      case 'AUTH.INVALID_CREDENTIALS':
+      case TASK_MESSAGES.TASK_NOT_FOUND:
         return {
           responseBody: { code, message },
           httpStatus: status,
         };
 
-      case 'AUTH.INVALID_TOKEN':
+      case TASK_MESSAGES.NO_CHANGES_TO_UPDATE:
         return {
           responseBody: { code, message },
           httpStatus: status,
         };
 
-      case 'AUTH.REGISTRATION_CONFLICT':
+      case TASK_MESSAGES.DEADLINE_CANNOT_BE_IN_PAST:
         return {
           responseBody: { code, message },
           httpStatus: status,
         };
 
-      case 'AUTH.UNSPECIFIED':
+      case TASK_MESSAGES.INVALID_DEADLINE_FORMAT:
         return {
           responseBody: { code, message },
           httpStatus: status,
         };
 
       default:
-        return {
-          responseBody: {
-            code,
-            message,
-          },
-          httpStatus: status,
-        };
+        return { responseBody: { code, message }, httpStatus: status };
     }
   }
 }
