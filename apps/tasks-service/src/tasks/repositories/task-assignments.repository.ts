@@ -1,8 +1,9 @@
-import type { PaginatedTaskAssignments, TaskAssignment } from '@jungle/types'
 import type {
   CreateTaskAssignmentData,
   ListTaskAssignmentsParams,
-} from '@/types/task-assignments'
+  PaginatedTaskAssignments,
+  TaskAssignment,
+} from '@jungle/types'
 
 export abstract class TaskAssignmentsRepository {
   abstract create(data: CreateTaskAssignmentData): Promise<{ id: string }>

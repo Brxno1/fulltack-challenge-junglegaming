@@ -1,10 +1,9 @@
-import { Injectable } from '@nestjs/common'
-
 import type {
   CreateTaskAuditLogData,
   ListTaskAuditLogsParams,
   PaginatedTaskAuditLogs,
-} from '@/types/task-audit-log'
+} from '@jungle/types'
+import { Injectable } from '@nestjs/common'
 
 import { TaskAuditLogServiceContract } from '../contracts/task-audit-log-service.contract'
 import { CreateTaskAuditLogUseCase } from '../use-cases/create-task-audit-log'

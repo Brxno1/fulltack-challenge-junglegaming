@@ -25,7 +25,7 @@ import { TasksSwaggerConfig } from './tasks.swagger.config';
 @UseGuards(JwtAuthGuard)
 @TasksSwaggerConfig.controller()
 export class TasksController {
-  constructor(private readonly tasksService: TasksServiceContract) { }
+  constructor(private readonly tasksService: TasksServiceContract) {}
 
   @Get()
   @TasksSwaggerConfig.list()

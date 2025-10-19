@@ -10,7 +10,7 @@ import { TransactionManager } from '../repositories/transaction-manager.reposito
 
 @Injectable()
 export class UpdateTaskUseCase {
-  constructor(private readonly transactionManager: TransactionManager) { }
+  constructor(private readonly transactionManager: TransactionManager) {}
 
   async execute(taskId: string, data: UpdateTaskData): Promise<void> {
     await this.transactionManager.runInTransaction(async (repositories) => {

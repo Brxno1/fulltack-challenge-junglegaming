@@ -3,7 +3,7 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 
 import { TASK_MESSAGES } from '@/tasks/constants/tasks.constants'
 import { TasksRepository } from '@/tasks/repositories/tasks.repository'
-import type { ListTaskAssignmentsParams } from '@/types/task-assignments'
+import type { ListTaskAssignmentsParams } from '@jungle/types'
 
 import { TaskAssignmentsRepository } from '../repositories/task-assignments.repository'
 
@@ -12,7 +12,7 @@ export class ListTaskAssignmentsUseCase {
   constructor(
     private readonly taskAssignmentsRepository: TaskAssignmentsRepository,
     private readonly tasksRepository: TasksRepository,
-  ) {}
+  ) { }
 
   async execute({
     taskId,

@@ -1,9 +1,8 @@
-import { Injectable } from '@nestjs/common'
-
 import type {
   ListTaskAuditLogsParams,
   PaginatedTaskAuditLogs,
-} from '@/types/task-audit-log'
+} from '@jungle/types'
+import { Injectable } from '@nestjs/common'
 
 import { TaskAuditLogRepository } from '../repositories/task-audit-log.repository'
 
@@ -11,7 +10,7 @@ import { TaskAuditLogRepository } from '../repositories/task-audit-log.repositor
 export class ListTaskHistoryUseCase {
   constructor(
     private readonly taskAuditLogRepository: TaskAuditLogRepository,
-  ) {}
+  ) { }
 
   async execute({
     taskId,

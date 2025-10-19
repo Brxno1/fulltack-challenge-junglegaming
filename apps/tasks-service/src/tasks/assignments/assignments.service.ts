@@ -24,10 +24,10 @@ export class TaskAssignmentsService implements TaskAssignmentsServiceContract {
 
   async removeUser(
     taskId: string,
-    actor: string,
+    userId: string,
     removedBy: string,
   ): Promise<void> {
-    return this.removeUserFromTaskUseCase.execute(taskId, actor, removedBy)
+    return this.removeUserFromTaskUseCase.execute(taskId, userId, removedBy)
   }
 
   async listByTask(

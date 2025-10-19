@@ -86,7 +86,7 @@ export interface CreateTaskCommentData {
 export interface TaskAssignment {
   id: string
   taskId: string
-  author: string
+  userId: string
   createdAt: Date
 }
 
@@ -103,14 +103,14 @@ export interface ListTaskAssignmentsParams {
 
 export interface CreateTaskAssignmentData {
   taskId: string
-  author: string
+  userId: string
   assignedBy: string
 }
 
 export interface TaskAuditLog {
   id: string
   taskId: string
-  author: string | null
+  author: string
   action: string
   field: string | null
   oldValue: unknown | null
@@ -120,7 +120,7 @@ export interface TaskAuditLog {
 
 export interface CreateTaskAuditLogData {
   taskId: string
-  author: string | null
+  author: string
   action: string
   field: string | null
   oldValue: unknown | null

@@ -2,7 +2,7 @@ import type {
   CreateTaskAuditLogData,
   ListTaskAuditLogsParams,
   PaginatedTaskAuditLogs,
-} from '@/types/task-audit-log'
+} from '@jungle/types'
 
 export abstract class TaskAuditLogServiceContract {
   abstract create(data: CreateTaskAuditLogData): Promise<{ id: string }>

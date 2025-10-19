@@ -1,21 +1,21 @@
+import type {
+  CreateTaskAuditLogData,
+  ListTaskAuditLogsParams,
+  PaginatedTaskAuditLogs,
+} from '@jungle/types'
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 
 import { TaskAuditLog } from '@/tasks/entities/task-audit-log.entity'
 import { TaskAuditLogRepository } from '@/tasks/repositories/task-audit-log.repository'
-import type {
-  CreateTaskAuditLogData,
-  ListTaskAuditLogsParams,
-  PaginatedTaskAuditLogs,
-} from '@/types/task-audit-log'
 
 @Injectable()
 export class TypeormTaskAuditLogRepository implements TaskAuditLogRepository {
   constructor(
     @InjectRepository(TaskAuditLog)
     private readonly taskAuditLogRepository: Repository<TaskAuditLog>,
-  ) {}
+  ) { }
 
   async create({
     taskId,

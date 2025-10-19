@@ -11,7 +11,7 @@ import {
 import { Task } from './tasks.entity'
 
 @Entity('task_assignments')
-@Unique(['task', 'author'])
+@Unique(['task', 'userId'])
 export class TaskAssignment {
   @PrimaryGeneratedColumn('uuid')
   id: string
@@ -24,9 +24,9 @@ export class TaskAssignment {
   @Column({ type: 'varchar' })
   taskId: string
 
-  @Index('IDX_task_assignments_author')
+  @Index('IDX_task_assignments_userId')
   @Column({ type: 'varchar' })
-  author: string
+  userId: string
 
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date

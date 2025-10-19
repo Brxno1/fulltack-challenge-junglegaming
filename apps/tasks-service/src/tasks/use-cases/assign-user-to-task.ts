@@ -12,11 +12,11 @@ import { TransactionManager } from '../repositories/transaction-manager.reposito
 
 @Injectable()
 export class AssignUserToTaskUseCase {
-  constructor(private readonly transactionManager: TransactionManager) { }
+  constructor(private readonly transactionManager: TransactionManager) {}
 
   async execute({
     taskId,
-    author,
+    userId,
     assignedBy,
   }: CreateTaskAssignmentData): Promise<{ id: string }> {
     return this.transactionManager.runInTransaction(async (repositories) => {
@@ -32,7 +32,7 @@ export class AssignUserToTaskUseCase {
       }
 
       const existingAssignment =
-        await repositories.taskAssignments.findByTaskAndUser(taskId, author)
+        await repositories.taskAssignments.findByTaskAndUser(taskId, userId)
       if (existingAssignment) {
         throw new ConflictException(
           TASK_ASSIGNMENT_MESSAGES.USER_ALREADY_ASSIGNED,
@@ -41,7 +41,7 @@ export class AssignUserToTaskUseCase {
 
       const { id } = await repositories.taskAssignments.create({
         taskId,
-        userId: author,
+        userId,
         assignedBy,
       })
 
@@ -51,7 +51,7 @@ export class AssignUserToTaskUseCase {
         data: {
           assignmentId: id,
           taskId,
-          assignedUserId: author,
+          assignedUserId: userId,
           assignedBy,
           taskTitle: existingTask.title,
           assignedAt: new Date(),
