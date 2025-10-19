@@ -28,7 +28,7 @@ export interface Task {
   deadline: Date | null
   priority: TaskPriority
   status: TaskStatus
-  createdBy: string
+  actor: string
   createdAt: Date
   updatedAt: Date
 }
@@ -36,7 +36,7 @@ export interface Task {
 export interface TaskComment {
   id: string
   taskId: string
-  userId: string
+  actor: string
   content: string
   createdAt: Date
   updatedAt: Date
@@ -48,21 +48,94 @@ export interface PaginatedTasks {
   total: number
 }
 
+export interface ListTasksParams {
+  page: number
+  size: number
+}
+
+export interface CreateTaskData {
+  actor: string
+  title: string
+  description?: string | null
+  deadline?: Date | null
+  priority: TaskPriority
+  status: TaskStatus
+}
+
+export interface UpdateTaskData extends Partial<CreateTaskData> {
+  actor: string
+}
+
 export interface PaginatedTaskComments {
   comments: TaskComment[]
   total: number
 }
 
+export interface ListTaskCommentsParams {
+  taskId: string
+  page: number
+  size: number
+}
+
+export interface CreateTaskCommentData {
+  taskId: string
+  actor: string
+  content: string
+}
+
 export interface TaskAssignment {
   id: string
   taskId: string
-  userId: string
+  actor: string
   createdAt: Date
 }
 
 export interface PaginatedTaskAssignments {
   assignments: TaskAssignment[]
   total: number
+}
+
+export interface ListTaskAssignmentsParams {
+  taskId: string
+  page: number
+  size: number
+}
+
+export interface CreateTaskAssignmentData {
+  taskId: string
+  actor: string
+  assignedBy: string
+}
+
+export interface TaskAuditLog {
+  id: string
+  taskId: string
+  actor: string | null
+  action: string
+  field: string | null
+  oldValue: unknown | null
+  newValue: unknown | null
+  createdAt: Date
+}
+
+export interface CreateTaskAuditLogData {
+  taskId: string
+  actor: string | null
+  action: string
+  field: string | null
+  oldValue: unknown | null
+  newValue: unknown | null
+}
+
+export interface PaginatedTaskAuditLogs {
+  auditLogs: TaskAuditLog[]
+  total: number
+}
+
+export interface ListTaskAuditLogsParams {
+  taskId: string
+  page: number
+  size: number
 }
 
 // RabbitMQ Events
@@ -97,7 +170,7 @@ export interface TaskDeletedEvent {
 export interface TaskCommentCreatedEvent {
   commentId: string
   taskId: string
-  userId: string
+  actor: string
   content: string
   createdAt: Date
 }

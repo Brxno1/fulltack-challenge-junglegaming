@@ -13,7 +13,7 @@ import { TransactionManager } from '../repositories/transaction-manager.reposito
 import { CreateTaskCommentUseCase } from '../use-cases/create-task-comment'
 import { ListTaskCommentsUseCase } from '../use-cases/list-task-comments'
 import { TasksCommentsController } from './comments.controller'
-import { TasksComments } from './comments.service'
+import { TasksCommentsService } from './comments.service'
 
 @Module({
   imports: [DatabaseModule, OutboxModule],
@@ -35,7 +35,7 @@ import { TasksComments } from './comments.service'
     },
     {
       provide: TasksCommentsContract,
-      useClass: TasksComments,
+      useClass: TasksCommentsService,
     },
   ],
   exports: [TasksCommentsContract],

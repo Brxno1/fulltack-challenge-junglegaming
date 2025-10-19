@@ -1,10 +1,9 @@
-import { Injectable } from '@nestjs/common'
-
-import type { PaginatedTaskAssignments } from '@jungle/types'
 import type {
   CreateTaskAssignmentData,
   ListTaskAssignmentsParams,
-} from '@/types/task-assignments'
+  PaginatedTaskAssignments,
+} from '@jungle/types'
+import { Injectable } from '@nestjs/common'
 
 import { TaskAssignmentsServiceContract } from '../contracts/task-assignments-service.contract'
 import { AssignUserToTaskUseCase } from '../use-cases/assign-user-to-task'
@@ -17,7 +16,7 @@ export class TaskAssignmentsService implements TaskAssignmentsServiceContract {
     private readonly assignUserToTaskUseCase: AssignUserToTaskUseCase,
     private readonly removeUserFromTaskUseCase: RemoveUserFromTaskUseCase,
     private readonly listTaskAssignmentsUseCase: ListTaskAssignmentsUseCase,
-  ) { }
+  ) {}
 
   async assignUser(data: CreateTaskAssignmentData): Promise<{ id: string }> {
     return this.assignUserToTaskUseCase.execute(data)
@@ -25,10 +24,10 @@ export class TaskAssignmentsService implements TaskAssignmentsServiceContract {
 
   async removeUser(
     taskId: string,
-    userId: string,
+    actor: string,
     removedBy: string,
   ): Promise<void> {
-    return this.removeUserFromTaskUseCase.execute(taskId, userId, removedBy)
+    return this.removeUserFromTaskUseCase.execute(taskId, actor, removedBy)
   }
 
   async listByTask(

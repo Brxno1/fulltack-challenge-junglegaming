@@ -36,13 +36,13 @@ export class TasksController {
 
   @Post()
   async create(
-    @Headers('x-authenticated-user-id') userId: string,
+    @Headers('x-authenticated-user-id') actor: string,
     @Body() body: CreateTaskDto,
   ): Promise<{ id: string }> {
     const { title, description, deadline, priority, status } = body
 
     const { id } = await this.taskService.create({
-      createdBy: userId,
+      actor,
       title,
       description,
       deadline,
@@ -55,13 +55,14 @@ export class TasksController {
 
   @Patch(':taskId')
   async update(
-    @Headers('x-authenticated-user-id') updatedBy: string,
+    @Headers('x-authenticated-user-id') actor: string,
     @Param('taskId') taskId: string,
     @Body() body: UpdateTaskDto,
   ) {
     const { title, description, deadline, priority, status } = body
 
-    await this.taskService.update(taskId, updatedBy, {
+    await this.taskService.update(taskId, {
+      actor,
       title,
       description,
       deadline,

@@ -1,7 +1,5 @@
-import { PaginatedTasks } from '@jungle/types'
+import { ListTasksParams, PaginatedTasks } from '@jungle/types'
 import { Injectable } from '@nestjs/common'
-
-import { ListTasksParams } from '@/types/tasks'
 
 import { TasksRepository } from '../repositories/tasks.repository'
 

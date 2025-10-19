@@ -27,4 +27,4 @@ import { TasksModule } from './tasks/tasks.module'
   controllers: [],
   providers: [],
 })
-export class MainModule { }
+export class MainModule {}

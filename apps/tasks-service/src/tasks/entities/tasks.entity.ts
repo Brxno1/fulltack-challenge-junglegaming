@@ -14,9 +14,9 @@ export class Task {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @Index('IDX_tasks_createdBy')
+  @Index('IDX_tasks_actor')
   @Column({ type: 'uuid' })
-  createdBy: string
+  actor: string
 
   @Column()
   title: string

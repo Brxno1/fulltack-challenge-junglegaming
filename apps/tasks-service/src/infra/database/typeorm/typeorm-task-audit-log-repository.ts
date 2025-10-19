@@ -19,7 +19,7 @@ export class TypeormTaskAuditLogRepository implements TaskAuditLogRepository {
 
   async create({
     taskId,
-    userId,
+    actor,
     field,
     oldValue,
     newValue,
@@ -28,7 +28,7 @@ export class TypeormTaskAuditLogRepository implements TaskAuditLogRepository {
     const auditLog = this.taskAuditLogRepository.create({
       task: { id: taskId },
       taskId,
-      userId: userId ?? undefined,
+      actor: actor ?? undefined,
       field: field ?? undefined,
       oldValue,
       newValue,
@@ -55,7 +55,7 @@ export class TypeormTaskAuditLogRepository implements TaskAuditLogRepository {
       auditLogs: auditLogs.map((log) => ({
         id: log.id,
         taskId: log.taskId,
-        userId: log.userId,
+        actor: log.actor,
         action: log.action,
         field: log.field,
         oldValue: log.oldValue,

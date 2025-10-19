@@ -13,11 +13,7 @@ export abstract class TasksServiceContract {
 
   abstract create(data: CreateTaskData): Promise<{ id: string }>
 
-  abstract update(
-    taskId: string,
-    actor: string,
-    data: UpdateTaskData,
-  ): Promise<void>
+  abstract update(taskId: string, data: UpdateTaskData): Promise<void>
 
   abstract delete(taskId: string, actor: string): Promise<void>
 }

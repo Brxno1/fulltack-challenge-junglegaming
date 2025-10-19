@@ -1,7 +1,7 @@
 export interface TaskAuditLog {
   id: string
   taskId: string
-  userId: string | null
+  actor: string | null
   action: string
   field: string | null
   oldValue: unknown | null
@@ -11,7 +11,7 @@ export interface TaskAuditLog {
 
 export interface CreateTaskAuditLogData {
   taskId: string
-  userId: string | null
+  actor: string | null
   action: string
   field: string | null
   oldValue: unknown | null

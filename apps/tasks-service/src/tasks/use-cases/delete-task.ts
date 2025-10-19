@@ -17,7 +17,7 @@ export class DeleteTaskUseCase {
 
       await repositories.taskAuditLog.create({
         taskId,
-        userId: actor,
+        actor,
         action: 'TASK_DELETED',
         field: null,
         oldValue: {
@@ -26,7 +26,7 @@ export class DeleteTaskUseCase {
           deadline: existingTask.deadline,
           priority: existingTask.priority,
           status: existingTask.status,
-          createdBy: existingTask.createdBy,
+          actor: existingTask.actor,
           createdAt: existingTask.createdAt,
           updatedAt: existingTask.updatedAt,
         },

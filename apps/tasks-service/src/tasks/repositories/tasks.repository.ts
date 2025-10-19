@@ -1,10 +1,10 @@
-import type { PaginatedTasks, Task } from '@jungle/types'
-
 import type {
   CreateTaskData,
   ListTasksParams,
+  PaginatedTasks,
+  Task,
   UpdateTaskData,
-} from '@/types/tasks'
+} from '@jungle/types'
 
 export abstract class TasksRepository {
   abstract findById(id: string): Promise<Task | null>

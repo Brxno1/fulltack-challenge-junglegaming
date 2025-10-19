@@ -1,24 +1,18 @@
-import { TASK_EVENT_TYPES } from '@jungle/types'
+import { TASK_MESSAGES } from '@jungle/constants'
+import { type Task, TASK_EVENT_TYPES, type UpdateTaskData } from '@jungle/types'
 import {
   BadRequestException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common'
 
-import type { Task, UpdateTaskData } from '@/types/tasks'
-
-import { TASK_MESSAGES } from '../constants/tasks.constants'
 import { TransactionManager } from '../repositories/transaction-manager.repository'
 
 @Injectable()
 export class UpdateTaskUseCase {
   constructor(private readonly transactionManager: TransactionManager) {}
 
-  async execute(
-    taskId: string,
-    actor: string,
-    data: UpdateTaskData,
-  ): Promise<void> {
+  async execute(taskId: string, data: UpdateTaskData): Promise<void> {
     await this.transactionManager.runInTransaction(async (repositories) => {
       const existingTask = await repositories.tasks.findById(taskId)
       if (!existingTask) {
@@ -36,12 +30,15 @@ export class UpdateTaskUseCase {
         throw new BadRequestException(TASK_MESSAGES.NO_CHANGES_TO_UPDATE)
       }
 
-      await repositories.tasks.update(taskId, validFields)
+      await repositories.tasks.update(taskId, {
+        actor: data.actor,
+        ...validFields,
+      })
 
       if (detectedFieldChanges) {
         const auditLogData = {
           taskId,
-          userId: actor,
+          actor: data.actor,
           action: 'FIELD_UPDATED',
           field: detectedFieldChanges.field,
           oldValue: detectedFieldChanges.oldValue,
@@ -56,7 +53,7 @@ export class UpdateTaskUseCase {
         type: TASK_EVENT_TYPES.TASK_UPDATED,
         data: {
           taskId,
-          actor,
+          actor: data.actor,
           changes: validFields,
           updatedAt: new Date(),
         },
@@ -64,15 +61,15 @@ export class UpdateTaskUseCase {
     })
   }
 
-  private extractValidFields(data: UpdateTaskData): UpdateTaskData {
+  private extractValidFields(data: UpdateTaskData): Partial<UpdateTaskData> {
     return Object.fromEntries(
       Object.entries(data).filter(([, value]) => value !== undefined),
-    )
+    ) as Partial<UpdateTaskData>
   }
 
   private compareFieldValues(
     existingTask: Task,
-    validFields: UpdateTaskData,
+    validFields: Partial<UpdateTaskData>,
   ): {
     field: string
     oldValue: unknown

@@ -1,6 +1,6 @@
+import type { PaginatedTaskComments } from '@jungle/types'
 import { Injectable } from '@nestjs/common'
 
-import type { PaginatedTaskComments } from '@jungle/types'
 import type {
   CreateTaskCommentData,
   ListTaskCommentsParams,
@@ -11,11 +11,11 @@ import { CreateTaskCommentUseCase } from '../use-cases/create-task-comment'
 import { ListTaskCommentsUseCase } from '../use-cases/list-task-comments'
 
 @Injectable()
-export class TasksComments implements TasksCommentsContract {
+export class TasksCommentsService implements TasksCommentsContract {
   constructor(
     private readonly createTaskCommentUseCase: CreateTaskCommentUseCase,
     private readonly listTaskCommentsUseCase: ListTaskCommentsUseCase,
-  ) { }
+  ) {}
 
   async create(data: CreateTaskCommentData): Promise<{ id: string }> {
     const { taskId, userId, content } = data

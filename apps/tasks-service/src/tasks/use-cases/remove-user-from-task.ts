@@ -12,7 +12,7 @@ import { TransactionManager } from '../repositories/transaction-manager.reposito
 
 @Injectable()
 export class RemoveUserFromTaskUseCase {
-  constructor(private readonly transactionManager: TransactionManager) {}
+  constructor(private readonly transactionManager: TransactionManager) { }
 
   async execute(
     taskId: string,
@@ -26,7 +26,7 @@ export class RemoveUserFromTaskUseCase {
         throw new NotFoundException(TASK_MESSAGES.TASK_NOT_FOUND)
       }
 
-      if (existingTask.createdBy !== removedBy) {
+      if (existingTask.actor !== removedBy) {
         throw new ConflictException(
           TASK_ASSIGNMENT_MESSAGES.ONLY_CREATOR_CAN_REMOVE,
         )
