@@ -191,7 +191,7 @@ export class TaskResponseDto {
     description: 'User ID who created the task',
     example: '123e4567-e89b-12d3-a456-426614174000',
   })
-  actor: string;
+  author: string;
 
   @ApiProperty({
     description: 'Task creation timestamp',

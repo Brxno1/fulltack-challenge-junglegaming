@@ -23,9 +23,9 @@ export class TaskAuditLog {
   @Column({ type: 'uuid' })
   taskId: string
 
-  @Index('IDX_task_audit_log_actor')
+  @Index('IDX_task_audit_log_author')
   @Column({ type: 'varchar' })
-  actor: string
+  author: string
 
   @Column({ type: 'varchar', length: 64 })
   action: string

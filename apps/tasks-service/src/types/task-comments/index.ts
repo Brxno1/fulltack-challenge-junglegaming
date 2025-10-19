@@ -20,6 +20,6 @@ export interface ListTaskCommentsParams {
 
 export interface CreateTaskCommentData {
   taskId: string
-  actor: string
+  author: string
   content: string
 }

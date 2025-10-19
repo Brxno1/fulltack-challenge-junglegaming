@@ -5,15 +5,15 @@ import { TransactionManager } from '../repositories/transaction-manager.reposito
 
 @Injectable()
 export class CreateTaskUseCase {
-  constructor(private readonly transactionManager: TransactionManager) {}
+  constructor(private readonly transactionManager: TransactionManager) { }
 
   async execute(input: CreateTaskData) {
-    const { actor, title, description, deadline, priority, status } = input
+    const { author, title, description, deadline, priority, status } = input
 
     return this.transactionManager.runInTransaction(
       async ({ tasks, outbox }) => {
         const { id } = await tasks.create({
-          actor,
+          author,
           title,
           description,
           deadline,
@@ -26,7 +26,7 @@ export class CreateTaskUseCase {
           type: TASK_EVENT_TYPES.TASK_CREATED,
           data: {
             taskId: id,
-            actor,
+            author,
             title,
             priority,
             status,

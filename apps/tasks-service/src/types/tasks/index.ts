@@ -23,7 +23,7 @@ export interface ListTasksParams {
 }
 
 export interface CreateTaskData {
-  actor: string
+  author: string
   title: string
   description?: string | null
   deadline?: Date | null
@@ -32,5 +32,5 @@ export interface CreateTaskData {
 }
 
 export type UpdateTaskData = Partial<CreateTaskData> & {
-  actor: string
+  author: string
 }

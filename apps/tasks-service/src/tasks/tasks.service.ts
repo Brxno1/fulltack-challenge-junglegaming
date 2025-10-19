@@ -22,7 +22,7 @@ export class TasksService implements TasksServiceContract {
     private readonly listTasksUseCase: ListTasksUseCase,
     private readonly getTaskByIdUseCase: GetTaskByIdUseCase,
     private readonly deleteTaskUseCase: DeleteTaskUseCase,
-  ) {}
+  ) { }
 
   async findById(id: string): Promise<Task> {
     const task = await this.getTaskByIdUseCase.execute(id)
@@ -42,10 +42,12 @@ export class TasksService implements TasksServiceContract {
   }
 
   async create(data: CreateTaskData): Promise<{ id: string }> {
-    const { actor, title, description, deadline, priority, status } = data
+    const { author, title, description, deadline, priority, status } = data
+
+    console.log('🔍 Tasks Service - CREATE - author:', author)
 
     const { id } = await this.createTaskUseCase.execute({
-      actor,
+      author,
       title,
       description,
       deadline,
@@ -57,10 +59,12 @@ export class TasksService implements TasksServiceContract {
   }
 
   async update(taskId: string, data: UpdateTaskData): Promise<void> {
-    const { actor, title, description, deadline, priority, status } = data
+    const { author, title, description, deadline, priority, status } = data
+
+    console.log('🔍 Tasks Service - UPDATE - author:', author)
 
     await this.updateTaskUseCase.execute(taskId, {
-      actor,
+      author,
       title,
       description,
       deadline,
@@ -69,7 +73,8 @@ export class TasksService implements TasksServiceContract {
     })
   }
 
-  async delete(taskId: string, actor: string): Promise<void> {
-    return this.deleteTaskUseCase.execute(taskId, actor)
+  async delete(taskId: string, author: string): Promise<void> {
+    console.log('🔍 Tasks Service - DELETE - author:', author)
+    return this.deleteTaskUseCase.execute(taskId, author)
   }
 }

@@ -10,7 +10,7 @@ import { TransactionManager } from '../repositories/transaction-manager.reposito
 
 @Injectable()
 export class UpdateTaskUseCase {
-  constructor(private readonly transactionManager: TransactionManager) {}
+  constructor(private readonly transactionManager: TransactionManager) { }
 
   async execute(taskId: string, data: UpdateTaskData): Promise<void> {
     await this.transactionManager.runInTransaction(async (repositories) => {
@@ -31,14 +31,14 @@ export class UpdateTaskUseCase {
       }
 
       await repositories.tasks.update(taskId, {
-        actor: data.actor,
+        author: data.author,
         ...validFields,
       })
 
       if (detectedFieldChanges) {
         const auditLogData = {
           taskId,
-          actor: data.actor,
+          author: data.author,
           action: 'FIELD_UPDATED',
           field: detectedFieldChanges.field,
           oldValue: detectedFieldChanges.oldValue,
@@ -53,7 +53,7 @@ export class UpdateTaskUseCase {
         type: TASK_EVENT_TYPES.TASK_UPDATED,
         data: {
           taskId,
-          actor: data.actor,
+          author: data.author,
           changes: validFields,
           updatedAt: new Date(),
         },

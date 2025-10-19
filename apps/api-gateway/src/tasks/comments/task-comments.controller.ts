@@ -27,7 +27,7 @@ import { TaskCommentsSwaggerConfig } from './task-comments.swagger.config'
 export class TaskCommentsController {
   constructor(
     private readonly taskCommentsService: TaskCommentsServiceContract,
-  ) {}
+  ) { }
 
   @Post()
   @TaskCommentsSwaggerConfig.create()
@@ -38,11 +38,10 @@ export class TaskCommentsController {
   ): Promise<CreateTaskCommentResponseDto> {
     const { content } = body
 
-    console.log({ content })
 
     const { id } = await this.taskCommentsService.create({
       taskId: params.taskId,
-      actor: user.userId,
+      author: user.userId,
       content,
     })
 

@@ -26,7 +26,7 @@ export class RemoveUserFromTaskUseCase {
         throw new NotFoundException(TASK_MESSAGES.TASK_NOT_FOUND)
       }
 
-      if (existingTask.actor !== removedBy) {
+      if (existingTask.author !== removedBy) {
         throw new ConflictException(
           TASK_ASSIGNMENT_MESSAGES.ONLY_CREATOR_CAN_REMOVE,
         )

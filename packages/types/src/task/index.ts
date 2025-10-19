@@ -28,7 +28,7 @@ export interface Task {
   deadline: Date | null
   priority: TaskPriority
   status: TaskStatus
-  actor: string
+  author: string
   createdAt: Date
   updatedAt: Date
 }
@@ -36,7 +36,7 @@ export interface Task {
 export interface TaskComment {
   id: string
   taskId: string
-  actor: string
+  author: string
   content: string
   createdAt: Date
   updatedAt: Date
@@ -54,7 +54,7 @@ export interface ListTasksParams {
 }
 
 export interface CreateTaskData {
-  actor: string
+  author: string
   title: string
   description?: string | null
   deadline?: Date | null
@@ -63,7 +63,7 @@ export interface CreateTaskData {
 }
 
 export interface UpdateTaskData extends Partial<CreateTaskData> {
-  actor: string
+  author: string
 }
 
 export interface PaginatedTaskComments {
@@ -79,14 +79,14 @@ export interface ListTaskCommentsParams {
 
 export interface CreateTaskCommentData {
   taskId: string
-  actor: string
+  author: string
   content: string
 }
 
 export interface TaskAssignment {
   id: string
   taskId: string
-  actor: string
+  author: string
   createdAt: Date
 }
 
@@ -103,14 +103,14 @@ export interface ListTaskAssignmentsParams {
 
 export interface CreateTaskAssignmentData {
   taskId: string
-  actor: string
+  author: string
   assignedBy: string
 }
 
 export interface TaskAuditLog {
   id: string
   taskId: string
-  actor: string | null
+  author: string | null
   action: string
   field: string | null
   oldValue: unknown | null
@@ -120,7 +120,7 @@ export interface TaskAuditLog {
 
 export interface CreateTaskAuditLogData {
   taskId: string
-  actor: string | null
+  author: string | null
   action: string
   field: string | null
   oldValue: unknown | null

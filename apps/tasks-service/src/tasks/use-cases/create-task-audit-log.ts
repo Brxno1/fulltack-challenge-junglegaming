@@ -11,7 +11,7 @@ export class CreateTaskAuditLogUseCase {
 
   async execute({
     taskId,
-    actor,
+    author,
     field,
     oldValue,
     newValue,
@@ -19,7 +19,7 @@ export class CreateTaskAuditLogUseCase {
   }: CreateTaskAuditLogData): Promise<{ id: string }> {
     return this.taskAuditLogRepository.create({
       taskId,
-      actor,
+      author,
       field,
       oldValue,
       newValue,

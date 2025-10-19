@@ -15,5 +15,5 @@ export abstract class TasksServiceContract {
 
   abstract update(taskId: string, data: UpdateTaskData): Promise<void>;
 
-  abstract delete(taskId: string, actor: string): Promise<void>;
+  abstract delete(taskId: string, author: string): Promise<void>;
 }

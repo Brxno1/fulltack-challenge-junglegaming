@@ -8,11 +8,11 @@ import { TransactionManager } from '../repositories/transaction-manager.reposito
 
 @Injectable()
 export class CreateTaskCommentUseCase {
-  constructor(private readonly transactionManager: TransactionManager) {}
+  constructor(private readonly transactionManager: TransactionManager) { }
 
   async execute({
     taskId,
-    actor,
+    author,
     content,
   }: CreateTaskCommentData): Promise<{ id: string }> {
     return this.transactionManager.runInTransaction(async (repositories) => {
@@ -23,7 +23,7 @@ export class CreateTaskCommentUseCase {
 
       const { id } = await repositories.taskComments.create({
         taskId,
-        actor,
+        author,
         content,
       })
 
@@ -33,7 +33,7 @@ export class CreateTaskCommentUseCase {
         data: {
           commentId: id,
           taskId,
-          userId: actor,
+          userId: author,
           content,
           createdAt: new Date(),
         },

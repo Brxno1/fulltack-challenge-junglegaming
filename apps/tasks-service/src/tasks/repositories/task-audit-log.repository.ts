@@ -1,4 +1,5 @@
-import type { PaginatedTaskAuditLogs } from '@/types/task-audit-log'
+import type { PaginatedTaskAuditLogs } from '@jungle/types'
+
 import type {
   CreateTaskAuditLogData,
   ListTaskAuditLogsParams,

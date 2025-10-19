@@ -24,9 +24,9 @@ export class TaskComment {
   @JoinColumn({ name: 'taskId' })
   task: Task
 
-  @Index('IDX_task_comments_actor')
+  @Index('IDX_task_comments_author')
   @Column({ type: 'uuid' })
-  actor: string
+  author: string
 
   @Column({ type: 'text' })
   content: string

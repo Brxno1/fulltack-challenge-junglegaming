@@ -42,7 +42,7 @@ export class TaskAssignmentsController {
 
     const { id } = await this.taskAssignments.assignUser({
       taskId,
-      actor: userId,
+      author: userId,
       assignedBy,
     })
 

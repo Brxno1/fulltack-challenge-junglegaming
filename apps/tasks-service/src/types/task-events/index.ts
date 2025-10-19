@@ -3,7 +3,7 @@ import { TaskPriority, TaskStatus } from '@/tasks/constants/task.enums'
 // Task Events
 export interface TaskCreatedEvent {
   taskId: string
-  actor: string
+  author: string
   title: string
   priority: TaskPriority
   status: TaskStatus
@@ -12,7 +12,7 @@ export interface TaskCreatedEvent {
 
 export interface TaskUpdatedEvent {
   taskId: string
-  actor: string
+  author: string
   changes: Partial<{
     title: string
     description: string | null
@@ -25,7 +25,7 @@ export interface TaskUpdatedEvent {
 
 export interface TaskDeletedEvent {
   taskId: string
-  actor: string
+  author: string
   deletedAt: Date
 }
 

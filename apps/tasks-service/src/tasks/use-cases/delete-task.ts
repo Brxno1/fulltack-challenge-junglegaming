@@ -6,9 +6,9 @@ import { TransactionManager } from '../repositories/transaction-manager.reposito
 
 @Injectable()
 export class DeleteTaskUseCase {
-  constructor(private readonly transactionManager: TransactionManager) {}
+  constructor(private readonly transactionManager: TransactionManager) { }
 
-  async execute(taskId: string, actor: string): Promise<void> {
+  async execute(taskId: string, author: string): Promise<void> {
     await this.transactionManager.runInTransaction(async (repositories) => {
       const existingTask = await repositories.tasks.findById(taskId)
       if (!existingTask) {
@@ -17,7 +17,7 @@ export class DeleteTaskUseCase {
 
       await repositories.taskAuditLog.create({
         taskId,
-        actor,
+        author,
         action: 'TASK_DELETED',
         field: null,
         oldValue: {
@@ -26,7 +26,7 @@ export class DeleteTaskUseCase {
           deadline: existingTask.deadline,
           priority: existingTask.priority,
           status: existingTask.status,
-          actor: existingTask.actor,
+          author: existingTask.author,
           createdAt: existingTask.createdAt,
           updatedAt: existingTask.updatedAt,
         },
@@ -40,7 +40,7 @@ export class DeleteTaskUseCase {
         type: TASK_EVENT_TYPES.TASK_DELETED,
         data: {
           taskId,
-          actor,
+          author,
           deletedAt: new Date(),
         },
       })

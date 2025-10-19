@@ -25,7 +25,7 @@ import { TasksSwaggerConfig } from './tasks.swagger.config';
 @UseGuards(JwtAuthGuard)
 @TasksSwaggerConfig.controller()
 export class TasksController {
-  constructor(private readonly tasksService: TasksServiceContract) {}
+  constructor(private readonly tasksService: TasksServiceContract) { }
 
   @Get()
   @TasksSwaggerConfig.list()
@@ -50,7 +50,7 @@ export class TasksController {
   ) {
     const { title, description, deadline, priority, status } = body;
     return this.tasksService.create({
-      actor: user.userId,
+      author: user.userId,
       title,
       description,
       deadline,
@@ -69,7 +69,7 @@ export class TasksController {
     const { title, description, deadline, priority, status } = body;
 
     await this.tasksService.update(taskId, {
-      actor: user.userId,
+      author: user.userId,
       title,
       description,
       deadline,

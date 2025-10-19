@@ -89,7 +89,7 @@ export class TaskCommentResponseDto {
     description: 'User ID who created the comment',
     example: '123e4567-e89b-12d3-a456-426614174000',
   })
-  actor: string;
+  author: string;
 
   @ApiProperty({
     description: 'Comment content',

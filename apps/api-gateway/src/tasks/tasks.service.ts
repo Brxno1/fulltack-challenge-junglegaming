@@ -19,41 +19,41 @@ import { ProxyRequestOptions } from '@/types';
 
 @Injectable()
 export class TasksService implements TasksServiceContract {
-  constructor(private readonly proxyService: ProxyServiceContract) {}
+  constructor(private readonly proxyService: ProxyServiceContract) { }
 
   async create(data: CreateTaskData): Promise<{ id: string }> {
-    const { actor, ...rest } = data;
+    const { author, ...rest } = data;
     return this.proxyTasksRequest({
       serviceName: TASKS_SERVICE_NAME,
       method: HTTP_METHODS.POST,
       path: TASKS_ENDPOINT.CREATE,
       data: rest,
       headers: {
-        'x-authenticated-user-id': actor,
+        'x-authenticated-user-id': author,
       },
     });
   }
 
   async update(taskId: string, data: UpdateTaskData): Promise<void> {
-    const { actor, ...rest } = data;
+    const { author, ...rest } = data;
     await this.proxyTasksRequest({
       serviceName: TASKS_SERVICE_NAME,
       method: HTTP_METHODS.PATCH,
       path: `/tasks/${taskId}`,
       data: rest,
       headers: {
-        'x-authenticated-user-id': actor,
+        'x-authenticated-user-id': author,
       },
     });
   }
 
-  async delete(taskId: string, actor: string): Promise<void> {
+  async delete(taskId: string, author: string): Promise<void> {
     await this.proxyTasksRequest({
       serviceName: TASKS_SERVICE_NAME,
       method: HTTP_METHODS.DELETE,
       path: `/tasks/${taskId}`,
       headers: {
-        'x-authenticated-user-id': actor,
+        'x-authenticated-user-id': author,
       },
     });
   }

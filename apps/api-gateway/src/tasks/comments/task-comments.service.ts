@@ -16,14 +16,14 @@ export class TaskCommentsService implements TaskCommentsServiceContract {
   constructor(private readonly proxyService: ProxyServiceContract) {}
 
   async create(data: CreateTaskCommentData): Promise<{ id: string }> {
-    const { taskId, actor, content } = data
+    const { taskId, author, content } = data
     return this.proxyTaskCommentsRequest({
       serviceName: TASKS_SERVICE_NAME,
       method: HTTP_METHODS.POST,
       path: `/tasks/${taskId}/comments`,
       data: { content },
       headers: {
-        'x-authenticated-user-id': actor,
+        'x-authenticated-user-id': author,
       },
     })
   }
@@ -53,8 +53,6 @@ export class TaskCommentsService implements TaskCommentsServiceContract {
       headers,
       path,
     })
-
-    console.log({ response })
 
     if (response.error) {
       const errorData = response.data as unknown as {
