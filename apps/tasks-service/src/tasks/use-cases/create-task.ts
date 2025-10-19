@@ -1,7 +1,5 @@
-import { TASK_EVENT_TYPES } from '@jungle/types'
+import { type CreateTaskData, TASK_EVENT_TYPES } from '@jungle/types'
 import { Injectable } from '@nestjs/common'
-
-import { type CreateTaskData } from '@/types/tasks'
 
 import { TransactionManager } from '../repositories/transaction-manager.repository'
 
@@ -10,12 +8,12 @@ export class CreateTaskUseCase {
   constructor(private readonly transactionManager: TransactionManager) {}
 
   async execute(input: CreateTaskData) {
-    const { createdBy, title, description, deadline, priority, status } = input
+    const { actor, title, description, deadline, priority, status } = input
 
     return this.transactionManager.runInTransaction(
       async ({ tasks, outbox }) => {
         const { id } = await tasks.create({
-          createdBy,
+          actor,
           title,
           description,
           deadline,
@@ -28,7 +26,7 @@ export class CreateTaskUseCase {
           type: TASK_EVENT_TYPES.TASK_CREATED,
           data: {
             taskId: id,
-            actor: createdBy,
+            actor,
             title,
             priority,
             status,

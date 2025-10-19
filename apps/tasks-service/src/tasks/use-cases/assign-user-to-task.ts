@@ -1,4 +1,4 @@
-import { TASK_EVENT_TYPES } from '@jungle/types'
+import { type CreateTaskAssignmentData, TASK_EVENT_TYPES } from '@jungle/types'
 import {
   ConflictException,
   Injectable,
@@ -7,7 +7,6 @@ import {
 
 import { TASK_ASSIGNMENT_MESSAGES } from '@/tasks/constants/assignment.constants'
 import { TASK_MESSAGES } from '@/tasks/constants/tasks.constants'
-import { type CreateTaskAssignmentData } from '@/types/task-assignments'
 
 import { TransactionManager } from '../repositories/transaction-manager.repository'
 
@@ -17,7 +16,7 @@ export class AssignUserToTaskUseCase {
 
   async execute({
     taskId,
-    userId,
+    actor,
     assignedBy,
   }: CreateTaskAssignmentData): Promise<{ id: string }> {
     return this.transactionManager.runInTransaction(async (repositories) => {
@@ -26,14 +25,14 @@ export class AssignUserToTaskUseCase {
         throw new NotFoundException(TASK_MESSAGES.TASK_NOT_FOUND)
       }
 
-      if (existingTask.createdBy !== assignedBy) {
+      if (existingTask.actor !== assignedBy) {
         throw new ConflictException(
           TASK_ASSIGNMENT_MESSAGES.ONLY_CREATOR_CAN_ASSIGN,
         )
       }
 
       const existingAssignment =
-        await repositories.taskAssignments.findByTaskAndUser(taskId, userId)
+        await repositories.taskAssignments.findByTaskAndUser(taskId, actor)
       if (existingAssignment) {
         throw new ConflictException(
           TASK_ASSIGNMENT_MESSAGES.USER_ALREADY_ASSIGNED,
@@ -42,7 +41,7 @@ export class AssignUserToTaskUseCase {
 
       const { id } = await repositories.taskAssignments.create({
         taskId,
-        userId,
+        userId: actor,
         assignedBy,
       })
 
@@ -52,7 +51,7 @@ export class AssignUserToTaskUseCase {
         data: {
           assignmentId: id,
           taskId,
-          assignedUserId: userId,
+          assignedUserId: actor,
           assignedBy,
           taskTitle: existingTask.title,
           assignedAt: new Date(),

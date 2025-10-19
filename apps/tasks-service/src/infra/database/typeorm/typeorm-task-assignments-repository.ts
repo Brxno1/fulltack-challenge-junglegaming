@@ -29,10 +29,10 @@ export class TypeormTaskAssignmentsRepository
 
   async findByTaskAndUser(
     taskId: string,
-    userId: string,
+    actor: string,
   ): Promise<TaskAssignmentData | null> {
     const assignment = await this.taskAssignmentRepository.findOne({
-      where: { taskId, userId },
+      where: { taskId, actor },
     })
 
     return assignment
@@ -59,10 +59,10 @@ export class TypeormTaskAssignmentsRepository
     }
   }
 
-  async delete(taskId: string, userId: string): Promise<void> {
+  async delete(taskId: string, actor: string): Promise<void> {
     await this.taskAssignmentRepository.delete({
       taskId,
-      userId,
+      actor,
     })
   }
 }

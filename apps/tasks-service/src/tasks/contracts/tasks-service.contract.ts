@@ -1,6 +1,10 @@
-import { PaginatedTasks, Task } from '@jungle/types'
-
-import { CreateTaskData, ListTasksParams, UpdateTaskData } from '@/types/tasks'
+import {
+  CreateTaskData,
+  ListTasksParams,
+  PaginatedTasks,
+  Task,
+  UpdateTaskData,
+} from '@jungle/types'
 
 export abstract class TasksServiceContract {
   abstract findById(taskId: string): Promise<Task>
@@ -9,11 +13,7 @@ export abstract class TasksServiceContract {
 
   abstract create(data: CreateTaskData): Promise<{ id: string }>
 
-  abstract update(
-    taskId: string,
-    actor: string,
-    data: UpdateTaskData,
-  ): Promise<void>
+  abstract update(taskId: string, data: UpdateTaskData): Promise<void>
 
   abstract delete(taskId: string, actor: string): Promise<void>
 }

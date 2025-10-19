@@ -20,29 +20,25 @@ export class TasksService implements TasksServiceContract {
   constructor(private readonly proxyService: ProxyServiceContract) {}
 
   async create(data: CreateTaskData): Promise<{ id: string }> {
-    console.log(data)
-    const { createdBy, ...rest } = data
+    const { actor, ...rest } = data
     return this.proxyTasksRequest({
       serviceName: TASKS_SERVICE_NAME,
       method: HTTP_METHODS.POST,
       path: TASKS_ENDPOINT.CREATE,
       data: rest,
       headers: {
-        'x-authenticated-user-id': createdBy,
+        'x-authenticated-user-id': actor,
       },
     })
   }
 
-  async update(
-    taskId: string,
-    actor: string,
-    data: UpdateTaskData,
-  ): Promise<void> {
+  async update(taskId: string, data: UpdateTaskData): Promise<void> {
+    const { actor, ...rest } = data
     await this.proxyTasksRequest({
       serviceName: TASKS_SERVICE_NAME,
       method: HTTP_METHODS.PATCH,
       path: `/tasks/${taskId}`,
-      data,
+      data: rest,
       headers: {
         'x-authenticated-user-id': actor,
       },
@@ -86,7 +82,7 @@ export class TasksService implements TasksServiceContract {
     method,
     path,
     data,
-    headers,
+    headers = {},
   }: ProxyRequestOptions): Promise<TResponse> {
     const response = await this.proxyService.forwardRequest<TResponse>({
       serviceName,

@@ -20,7 +20,7 @@ import { TypeormTasksRepository } from './typeorm-tasks-repository'
 
 @Injectable()
 export class TypeormTransactionManager implements TransactionManager {
-  constructor(@InjectDataSource() private readonly dataSource: DataSource) { }
+  constructor(@InjectDataSource() private readonly dataSource: DataSource) {}
 
   async runInTransaction<T>(
     operation: (repositories: TransactionRepositories) => Promise<T>,

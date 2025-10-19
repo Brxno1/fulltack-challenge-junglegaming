@@ -372,6 +372,9 @@ importers:
 
   apps/tasks-service:
     dependencies:
+      '@jungle/constants':
+        specifier: workspace:*
+        version: link:../../packages/constants
       '@jungle/types':
         specifier: workspace:*
         version: link:../../packages/types
