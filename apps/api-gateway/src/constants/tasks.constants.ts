@@ -3,7 +3,7 @@ export const TASK_MESSAGES = {
   NO_CHANGES_TO_UPDATE: 'No changes to update',
   DEADLINE_CANNOT_BE_IN_PAST: 'Deadline cannot be in the past',
   INVALID_DEADLINE_FORMAT: 'Invalid deadline format',
-} as const
+} as const;
 
 export const TASK_COMMENT_MESSAGES = {
   COMMENT_CREATED: 'Comment created successfully',
@@ -13,12 +13,12 @@ export const TASK_COMMENT_MESSAGES = {
   CONTENT_REQUIRED: 'Comment content is required',
   CONTENT_TOO_LONG: 'Comment content is too long',
   UNAUTHORIZED_COMMENT_ACCESS: 'Unauthorized access to comment',
-} as const
+} as const;
 
 export const TASK_COMMENT_VALIDATION = {
   CONTENT_MAX_LENGTH: 2000,
   CONTENT_MIN_LENGTH: 1,
-} as const
+} as const;
 
 export const TASKS_ENDPOINT = {
   CREATE: '/tasks',
@@ -26,13 +26,13 @@ export const TASKS_ENDPOINT = {
   DELETE: '/tasks/:taskId',
   FIND_BY_ID: '/tasks/:taskId',
   LIST: '/tasks',
-} as const
+} as const;
 
 export const HTTP_METHODS = {
   POST: 'POST',
   PATCH: 'PATCH',
   DELETE: 'DELETE',
   GET: 'GET',
-} as const
+} as const;
 
-export const TASKS_SERVICE_NAME = 'tasks' as const
+export const TASKS_SERVICE_NAME = 'tasks' as const;

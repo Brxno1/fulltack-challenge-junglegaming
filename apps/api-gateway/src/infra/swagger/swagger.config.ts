@@ -1,12 +1,12 @@
-import { INestApplication } from '@nestjs/common'
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
+import { INestApplication } from '@nestjs/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 export class SwaggerConfig {
   static setup(app: INestApplication): void {
     const config = new DocumentBuilder()
       .setTitle('Jungle Task Manager — API Gateway')
       .setDescription(
-        'Collaborative Task Management system: Auth, Tasks CRUD, Comments, Notifications. This document describes the HTTP Gateway surface for microservices.',
+        'Collaborative Task Management system: Auth, Tasks CRUD, Comments, Notifications. This document describes the HTTP Gateway surface for microservices.'
       )
       .setVersion('1.0')
       .addServer('/api')
@@ -19,15 +19,15 @@ export class SwaggerConfig {
           description: 'Enter JWT token',
           in: 'header',
         },
-        'JWT-auth',
+        'JWT-auth'
       )
-      .build()
+      .build();
 
-    const document = SwaggerModule.createDocument(app, config)
+    const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('api/docs', app, document, {
       swaggerOptions: {
         persistAuthorization: true,
       },
-    })
+    });
   }
 }

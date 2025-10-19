@@ -18,11 +18,11 @@ export class TasksCommentsService implements TasksCommentsContract {
   ) {}
 
   async create(data: CreateTaskCommentData): Promise<{ id: string }> {
-    const { taskId, userId, content } = data
+    const { taskId, actor, content } = data
 
     const { id } = await this.createTaskCommentUseCase.execute({
       taskId,
-      userId,
+      actor,
       content,
     })
 

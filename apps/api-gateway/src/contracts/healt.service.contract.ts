@@ -1,5 +1,5 @@
-import { GatewayHealthResponse } from '@/types'
+import { GatewayHealthResponse } from '@/types';
 
 export abstract class HealthServiceContract {
-  abstract getHealth(): Promise<GatewayHealthResponse>
+  abstract getHealth(): Promise<GatewayHealthResponse>;
 }

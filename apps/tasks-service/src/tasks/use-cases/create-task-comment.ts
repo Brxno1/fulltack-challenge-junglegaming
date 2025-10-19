@@ -12,7 +12,7 @@ export class CreateTaskCommentUseCase {
 
   async execute({
     taskId,
-    userId,
+    actor,
     content,
   }: CreateTaskCommentData): Promise<{ id: string }> {
     return this.transactionManager.runInTransaction(async (repositories) => {
@@ -23,7 +23,7 @@ export class CreateTaskCommentUseCase {
 
       const { id } = await repositories.taskComments.create({
         taskId,
-        userId,
+        actor,
         content,
       })
 
@@ -33,7 +33,7 @@ export class CreateTaskCommentUseCase {
         data: {
           commentId: id,
           taskId,
-          userId,
+          userId: actor,
           content,
           createdAt: new Date(),
         },

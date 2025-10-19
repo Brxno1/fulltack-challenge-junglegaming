@@ -1,7 +1,7 @@
-import { Controller, Get } from '@nestjs/common'
+import { Controller, Get } from '@nestjs/common';
 
-import { HealthServiceContract } from '@/contracts/healt.service.contract'
-import { GatewayHealthResponse } from '@/types'
+import { HealthServiceContract } from '@/contracts/healt.service.contract';
+import { GatewayHealthResponse } from '@/types';
 
 @Controller('/health')
 export class HealthController {
@@ -9,6 +9,6 @@ export class HealthController {
 
   @Get()
   getHealth(): Promise<GatewayHealthResponse> {
-    return this.healthService.getHealth()
+    return this.healthService.getHealth();
   }
 }
