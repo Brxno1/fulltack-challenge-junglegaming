@@ -1,8 +1,8 @@
 import { TASK_EVENT_TYPES } from '@jungle/types'
+import { type CreateTaskCommentData } from '@jungle/types'
 import { Injectable, NotFoundException } from '@nestjs/common'
 
 import { TASK_MESSAGES } from '@/tasks/constants/tasks.constants'
-import { type CreateTaskCommentData } from '@/types/task-comments'
 
 import { TransactionManager } from '../repositories/transaction-manager.repository'
 

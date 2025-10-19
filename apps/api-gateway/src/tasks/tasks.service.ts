@@ -19,7 +19,7 @@ import { ProxyRequestOptions } from '@/types';
 
 @Injectable()
 export class TasksService implements TasksServiceContract {
-  constructor(private readonly proxyService: ProxyServiceContract) { }
+  constructor(private readonly proxyService: ProxyServiceContract) {}
 
   async create(data: CreateTaskData): Promise<{ id: string }> {
     const { author, ...rest } = data;

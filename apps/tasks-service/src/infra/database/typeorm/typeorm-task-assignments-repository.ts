@@ -11,16 +11,15 @@ import { TaskAssignmentsRepository } from '@/tasks/repositories/task-assignments
 import type {
   CreateTaskAssignmentData,
   ListTaskAssignmentsParams,
-} from '@/types/task-assignments'
+} from '@jungle/types'
 
 @Injectable()
 export class TypeormTaskAssignmentsRepository
-  implements TaskAssignmentsRepository
-{
+  implements TaskAssignmentsRepository {
   constructor(
     @InjectRepository(TaskAssignment)
     private readonly taskAssignmentRepository: Repository<TaskAssignment>,
-  ) {}
+  ) { }
 
   async create(data: CreateTaskAssignmentData): Promise<{ id: string }> {
     const { id } = await this.taskAssignmentRepository.save(data)
@@ -29,10 +28,10 @@ export class TypeormTaskAssignmentsRepository
 
   async findByTaskAndUser(
     taskId: string,
-    author: string,
+    userId: string,
   ): Promise<TaskAssignmentData | null> {
     const assignment = await this.taskAssignmentRepository.findOne({
-      where: { taskId, author },
+      where: { taskId, userId },
     })
 
     return assignment
@@ -59,10 +58,10 @@ export class TypeormTaskAssignmentsRepository
     }
   }
 
-  async delete(taskId: string, author: string): Promise<void> {
+  async delete(taskId: string, userId: string): Promise<void> {
     await this.taskAssignmentRepository.delete({
       taskId,
-      author,
+      userId,
     })
   }
 }

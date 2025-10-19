@@ -16,7 +16,7 @@ import { ListTaskAssignmentsQueryDto } from '../dtos/assignment.dtos'
 export class TaskAssignmentsController {
   constructor(
     private readonly taskAssignments: TaskAssignmentsServiceContract,
-  ) {}
+  ) { }
 
   @Get()
   async list(
@@ -40,9 +40,13 @@ export class TaskAssignmentsController {
   ): Promise<{ id: string }> {
     const { userId } = body
 
+    console.log('🔍 Assignments Controller - taskId:', taskId)
+    console.log('🔍 Assignments Controller - assignedBy:', assignedBy)
+    console.log('🔍 Assignments Controller - userId:', userId)
+
     const { id } = await this.taskAssignments.assignUser({
       taskId,
-      author: userId,
+      userId,
       assignedBy,
     })
 
