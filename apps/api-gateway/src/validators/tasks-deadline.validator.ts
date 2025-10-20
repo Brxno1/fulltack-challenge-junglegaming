@@ -3,32 +3,32 @@ import {
   ValidationOptions,
   ValidatorConstraint,
   ValidatorConstraintInterface,
-} from 'class-validator';
+} from 'class-validator'
 
-import { TASK_MESSAGES } from '@/constants/tasks.constants';
+import { TASK_MESSAGES } from '@/constants/tasks.constants'
 
 @ValidatorConstraint({ async: false })
 export class IsNotPastDateConstraint implements ValidatorConstraintInterface {
   validate(value: unknown): boolean {
     if (value === null || value === undefined) {
-      return true;
+      return true
     }
 
     if (!(value instanceof Date)) {
-      return false;
+      return false
     }
 
-    const now = new Date();
-    now.setHours(0, 0, 0, 0);
+    const now = new Date()
+    now.setHours(0, 0, 0, 0)
 
-    const deadline = new Date(value);
-    deadline.setHours(0, 0, 0, 0);
+    const deadline = new Date(value)
+    deadline.setHours(0, 0, 0, 0)
 
-    return deadline >= now;
+    return deadline >= now
   }
 
   defaultMessage(): string {
-    return TASK_MESSAGES.DEADLINE_CANNOT_BE_IN_PAST;
+    return TASK_MESSAGES.DEADLINE_CANNOT_BE_IN_PAST
   }
 }
 
@@ -40,6 +40,6 @@ export function IsNotPastDate(validationOptions?: ValidationOptions) {
       options: validationOptions,
       constraints: [],
       validator: IsNotPastDateConstraint,
-    });
-  };
+    })
+  }
 }
