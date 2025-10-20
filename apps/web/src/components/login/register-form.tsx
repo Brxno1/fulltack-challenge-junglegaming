@@ -1,11 +1,12 @@
 'use client'
 
 import { useMutation } from '@tanstack/react-query'
-import axios, { AxiosError } from 'axios'
+import { AxiosError } from 'axios'
 import { LoaderCircle, RotateCw } from 'lucide-react'
 
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
+import { api } from '@/lib/axios'
 
 import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button'
 import { Button } from '@/components/ui/button'
@@ -56,15 +57,13 @@ export function RegisterForm() {
   })
 
   const { mutateAsync: onCreateAccount } = useMutation({
-    mutationFn: ({ username, email, password }: RegisterFormProps) => {
-      return axios.post('http://localhost:3002/auth/register', { username, email, password })
+    mutationFn: async ({ username, email, password }: RegisterFormProps) => {
+      const response = await api.post('/auth/register', { username, email, password })
+      return response.data
     },
     onSuccess: () => {
-      form.reset({
-        username: '',
-        email: '',
-        password: '',
-      })
+      toast(`Conta criada com sucesso`)
+      return
     },
     onError: (err) => {
       if (err instanceof AxiosError) {

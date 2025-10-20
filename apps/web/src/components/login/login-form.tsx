@@ -1,11 +1,10 @@
 
 import { useMutation } from '@tanstack/react-query'
-import { LoaderCircle, Undo2 } from 'lucide-react'
+import { LoaderCircle } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
 import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button'
-import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -25,7 +24,9 @@ import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import axios, { AxiosError } from 'axios'
+import { AxiosError } from 'axios'
+import { login as loginClient } from '@/lib/auth-client'
+import { useNavigate } from '@tanstack/react-router'
 
 const loginFormSchema = z.object({
   email: z.string().email(),
@@ -38,6 +39,8 @@ interface LoginFormProps {
 }
 
 export function LoginForm() {
+  const navigate = useNavigate()
+
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
     mode: 'onChange',
@@ -49,33 +52,17 @@ export function LoginForm() {
 
   const { mutateAsync: loginFn } = useMutation({
     mutationFn: async ({ email, password }: LoginFormProps) => {
-      const response = await axios.post('http://localhost:3002/auth/login', { email, password })
-      return response.data
+      const user = await loginClient({ email, password })
+      return { user }
     },
     onSuccess: async () => {
-      toast(`Login realizado com sucesso`, {
-        action: (
-          <Button className="ml-2" size="icon" form="login-form">
-            <Undo2 size={16} />
-          </Button>
-        ),
-      })
-      form.reset({
-        email: '',
-        password: '',
-      })
+      toast(`Login realizado com sucesso`)
+      navigate({ to: '/' })
       return
     },
     onError: (err) => {
       if (err instanceof AxiosError) {
-        toast.error('Erro ao fazer login', {
-          action: (
-            <Button className="ml-2" size="icon" form="login-form">
-              <Undo2 size={16} />
-
-            </Button>
-          ),
-        })
+        toast.error('Erro ao fazer login')
         form.reset({
           email: '',
           password: '',
@@ -117,7 +104,7 @@ export function LoginForm() {
                       </span>
                     </FormLabel>
                     <FormControl>
-                      <Input type="email" {...field} placeholder=" " />
+                      <Input type="email" autoComplete="email" {...field} placeholder=" " />
                     </FormControl>
                   </div>
                   <FormMessage className="ml-2 text-red-500" />
@@ -147,7 +134,7 @@ export function LoginForm() {
                       </span>
                     </FormLabel>
                     <FormControl>
-                      <Input type="text" {...field} placeholder=" " />
+                      <Input type="password" autoComplete="current-password" {...field} placeholder=" " />
                     </FormControl>
                   </div>
                   <FormMessage className="ml-2 text-red-500" />
