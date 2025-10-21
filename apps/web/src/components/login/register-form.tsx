@@ -29,6 +29,8 @@ import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useNavigate } from '@tanstack/react-router'
+import { useAuthStore } from '@/store/auth-store'
 
 const registerFormSchema = z.object({
   username: z.string().min(3, 'Username deve ter pelo menos 3 caracteres'),
@@ -46,6 +48,7 @@ interface RegisterFormProps {
 }
 
 export function RegisterForm() {
+  const navigate = useNavigate()
   const form = useForm<z.infer<typeof registerFormSchema>>({
     resolver: zodResolver(registerFormSchema),
     mode: 'onChange',
@@ -61,9 +64,10 @@ export function RegisterForm() {
       const response = await api.post('/auth/register', { username, email, password })
       return response.data
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      useAuthStore.getState().setAuth(data.user)
       toast(`Conta criada com sucesso`)
-      return
+      navigate({ to: '/' })
     },
     onError: (err) => {
       if (err instanceof AxiosError) {

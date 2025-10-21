@@ -1,4 +1,4 @@
-import { History } from 'lucide-react'
+import { TabsContent } from '../ui/tabs'
 
 interface HistoryTaskProps {
  taskId: string
@@ -6,9 +6,8 @@ interface HistoryTaskProps {
 
 export function HistoryTask({ taskId }: HistoryTaskProps) {
  return (
-  <div className="text-center py-8 text-muted-foreground h-full">
-   <History className="size-12 mx-auto mb-4 opacity-50" />
-   <p>Histórico da tarefa será implementado em breve</p>
-  </div>
+  <TabsContent value="history" className="flex flex-col items-center justify-center flex-1">
+   
+  </TabsContent>
  )
 }

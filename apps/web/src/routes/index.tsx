@@ -5,8 +5,8 @@ import { useTasksList } from '@/hooks/useTasksList';
 import { useAuthStore } from '@/store/auth-store';
 import { TasksHeader } from '@/components/tasks/tasks-header';
 import { TasksTable } from '@/components/tasks/tasks-table';
-import { TaskInfo } from '@/components/tasks/tasks-info';
 import { tasksColumns } from '@/components/tasks/columns/tasks-columns';
+import { TaskInfo } from '@/components/tasks/tasks-info';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { Task } from '@jungle/types';
@@ -48,8 +48,8 @@ export const Route = createFileRoute('/')({
     return (
       <SidebarProvider>
         <AppSidebar />
-        <div className={`grid bg-background flex-1 h-full transition-all duration-300 ${isInfoOpen
-          ? 'grid-cols-[1fr_38rem]'
+        <div className={`grid flex-1 h-full transition-all duration-300 ${isInfoOpen
+          ? 'grid-cols-[1fr_36rem]'
           : 'grid-cols-1'
           }`}>
           <main className="p-4 min-w-0">
@@ -80,3 +80,4 @@ export const Route = createFileRoute('/')({
     )
   },
 });
+

@@ -1,12 +1,12 @@
-import { applyDecorators } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { applyDecorators } from '@nestjs/common'
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import {
   AuthResponseDto,
   LoginUserDto,
   RefreshTokenDto,
   RegisterUserDto,
-} from '../dtos/auth.dtos';
+} from '../dtos/auth.dtos'
 
 export const AuthSwaggerConfig = {
   controller: () => ApiTags('Authentication'),
@@ -33,7 +33,7 @@ export const AuthSwaggerConfig = {
       ApiResponse({
         status: 409,
         description: 'Email or username already exists',
-      })
+      }),
     ),
 
   login: () =>
@@ -58,7 +58,7 @@ export const AuthSwaggerConfig = {
       ApiResponse({
         status: 401,
         description: 'Invalid credentials',
-      })
+      }),
     ),
 
   refresh: () =>
@@ -83,6 +83,27 @@ export const AuthSwaggerConfig = {
       ApiResponse({
         status: 401,
         description: 'Expired or invalid refresh token',
-      })
+      }),
     ),
-};
+
+  logout: () =>
+    applyDecorators(
+      ApiOperation({
+        summary: 'User logout',
+        description: 'Logs out the user and clears authentication cookies',
+      }),
+      ApiResponse({
+        status: 200,
+        description: 'Logout successfully performed',
+        schema: {
+          type: 'object',
+          properties: {
+            message: {
+              type: 'string',
+              example: 'Logout realizado com sucesso',
+            },
+          },
+        },
+      }),
+    ),
+}

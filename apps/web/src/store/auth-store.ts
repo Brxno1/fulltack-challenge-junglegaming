@@ -15,6 +15,7 @@ interface AuthState {
 interface AuthActions {
  setAuth: (user: User) => void
  logout: () => void
+ clearCache: () => void
 }
 
 export const useAuthStore = create<AuthState & AuthActions>()(
@@ -24,6 +25,10 @@ export const useAuthStore = create<AuthState & AuthActions>()(
    isAuthenticated: false,
 
    setAuth: (user) => {
+    try {
+     localStorage.removeItem('auth-storage')
+    } catch { }
+
     const safeUser = {
      id: user.id,
      username: user.username,
@@ -45,6 +50,16 @@ export const useAuthStore = create<AuthState & AuthActions>()(
      if (typeof window !== 'undefined') {
       window.location.href = '/login'
      }
+    } catch { }
+   },
+
+   clearCache: () => {
+    try {
+     localStorage.removeItem('auth-storage')
+     set({
+      user: null,
+      isAuthenticated: false,
+     })
     } catch { }
    },
   }),

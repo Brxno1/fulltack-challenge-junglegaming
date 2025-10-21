@@ -4,10 +4,16 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 import { Button } from "./ui/button"
 import { ChevronDown, LogOut } from "lucide-react"
 import { useAuthStore } from "@/store/auth-store"
+import { api } from "@/lib/axios"
 
 export function UserDrodown() {
   const [open, setOpen] = React.useState(false)
   const { user, logout } = useAuthStore()
+
+  const handleLogout = async () => {
+    logout()
+    await api.post('/auth/logout')
+  }
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
@@ -39,7 +45,7 @@ export function UserDrodown() {
           </div>
         </DropdownMenuItem>
 
-        <DropdownMenuItem className="p-2 flex items-center space-x-2 hover:bg-accent" onClick={() => logout()}>
+        <DropdownMenuItem className="p-2 flex items-center space-x-2 hover:bg-accent" onClick={handleLogout}>
           <LogOut className="w-4 h-4 mr-2" />
           Logout
         </DropdownMenuItem>

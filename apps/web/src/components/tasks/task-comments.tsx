@@ -1,98 +1,101 @@
-import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Send } from 'lucide-react'
-import { formatDistanceToNow } from '@/lib/date-utils'
 import { cn } from '@/lib/utils'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
 import { api } from '@/lib/axios'
 import { TaskComment } from '@jungle/types'
+import { useAuthStore } from '@/store/auth-store'
+import { TabsContent } from '../ui/tabs'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+
+const schema = z.object({
+  content: z.string().min(1).max(100),
+})
 
 interface TaskCommentsProps {
- taskId: string
+  taskId: string
 }
 
 export function TaskComments({ taskId }: TaskCommentsProps) {
- const [newComment, setNewComment] = useState('')
- const queryClient = useQueryClient()
+  const form = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
+    mode: 'onChange',
+  })
+  const queryClient = useQueryClient()
 
- const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault()
-  if (!newComment.trim()) return
+  const user = useAuthStore((state) => state.user)
 
-  try {
-   await api.post(`/tasks/${taskId}/comments`, {
-    content: newComment,
-   })
-
-   queryClient.invalidateQueries({ queryKey: ['comments', taskId] })
-   setNewComment('')
-  } catch (error) {
-   console.error('Erro ao criar comentário:', error)
+  const onSubmit = async (data: z.infer<typeof schema>) => {
+    await api.post(`/tasks/${taskId}/comments`, data)
+    queryClient.invalidateQueries({ queryKey: ['comments', taskId] })
+    form.reset()
   }
- }
 
- const { data: commentsData, isLoading, error } = useQuery({
-  queryKey: ['comments', taskId],
-  queryFn: async () => {
-   const response = await api.get(`/tasks/${taskId}/comments`)
-   return response.data
-  },
-  enabled: !!taskId,
- })
+  const { data: commentsData, isLoading, error } = useSuspenseQuery({
+    queryKey: ['comments', taskId],
+    queryFn: async () => {
+      const response = await api.get(`/tasks/${taskId}/comments`)
+      return response.data
+    },
+  })
 
- const comments = commentsData?.comments || []
+  const comments = commentsData?.comments || []
 
- if (isLoading) {
-  return <div className="p-4 text-center text-muted-foreground">Carregando comentários...</div>
- }
+  if (isLoading) {
+    return <div className="p-4 text-center text-muted-foreground">Carregando comentários...</div>
+  }
 
- if (error) {
-  return <div className="p-4 text-center text-destructive">Erro ao carregar comentários</div>
- }
+  if (error) {
+    return <div className="p-4 text-center text-destructive">Erro ao carregar comentários</div>
+  }
 
- return (
-  <div className="flex flex-col h-full bg-background p-2">
-   <div className="h-[330px] space-y-3 overflow-y-auto">
-    {comments.length === 0 ? (
-     <div className="p-4 text-center text-muted-foreground">Nenhum comentário ainda</div>
-    ) : (
-     comments.map((comment: TaskComment) => (
-      <div key={comment.id} className="flex gap-3 p-1 bg-accent w-fit rounded-lg">
-       <Avatar className="size-8">
-        <AvatarFallback className="text-xs bg-primary text-primary-foreground">
-         {comment.authorName?.split(' ').map((n: string) => n[0]).join('') || 'U'}
-        </AvatarFallback>
-       </Avatar>
-       <div className="flex-1 space-y-1">
-        <div className="flex items-center gap-2">
-         <span className="text-sm font-medium">{comment.authorName || comment.author || 'Usuário'}</span>
-         <span className="text-xs text-muted-foreground">•</span>
-         <span className="text-xs text-muted-foreground">
-          {formatDistanceToNow(new Date(comment.createdAt))}
-         </span>
-        </div>
-        <p className={cn("text-sm text-foreground")}>{comment.content}</p>
-       </div>
+  return (
+    <TabsContent value="comments" className="flex flex-col h-[400px]">
+      <div className="space-y-3 flex-1 overflow-y-auto p-2">
+        {comments.length === 0 ? (
+          <div className="p-4 text-center text-muted-foreground">Nenhum comentário ainda</div>
+        ) : (
+          comments.map((comment: TaskComment) => (
+            <div key={comment.id} className={cn("flex max-w-[60%] gap-3 p-3 w-fit rounded-lg bg-secondary text-secondary-foreground", {
+              'ml-auto bg-primary text-primary-foreground': comment.author === user?.id,
+            })}>
+              <Avatar className="size-8 flex-shrink-0">
+                <AvatarFallback className="text-xs bg-background text-foreground">
+                  {comment.authorName?.slice(0, 2).toUpperCase() || 'US'}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex-1 space-y-1 min-w-0">
+                <div className="flex items-center gap-1">
+                  <span className="text-sm font-medium">{comment.authorName ?? 'Usuário'}</span>
+                  <span className="text-xs">•</span>
+                  <span className="text-xs">
+                    {new Intl.DateTimeFormat('pt-BR', {
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: 'numeric'
+                    }).format(new Date(comment.createdAt))}
+                  </span>
+                </div>
+                <p className="text-sm whitespace-pre-wrap break-words">{comment.content}</p>
+              </div>
+            </div>
+          ))
+        )}
       </div>
-     ))
-    )}
-   </div>
-
-   <div className="border-t mt-12">
-    <form onSubmit={handleSubmit} className="flex gap-2 p-2 bg-card border border-input rounded-md">
-     <Input
-      value={newComment}
-      onChange={(e) => setNewComment(e.target.value)}
-      placeholder="Adicionar comentário..."
-      className="flex-1 border border-transparent rounded-md"
-     />
-     <Button type="submit" size="sm" disabled={!newComment.trim()}>
-      <Send className="size-4" />
-     </Button>
-    </form>
-   </div>
-  </div>
- )
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-2 p-2">
+        <Input
+          {...form.register('content')}
+          placeholder="Adicionar comentário..."
+          className="flex-1"
+        />
+        <Button type="submit" size="sm" disabled={!form.formState.isValid || form.formState.isSubmitting}>
+          <Send className="size-4" />
+        </Button>
+      </form>
+    </TabsContent>
+  )
 }

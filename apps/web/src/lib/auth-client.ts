@@ -11,4 +11,14 @@ export async function login(payload: LoginPayload) {
  return data.user
 }
 
+export async function logout() {
+ try {
+  await api.post('/auth/logout')
+ } catch (error) {
+  console.error('Erro ao fazer logout:', error)
+ } finally {
+  useAuthStore.getState().logout()
+ }
+}
+
 
