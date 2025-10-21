@@ -1,12 +1,11 @@
+import { AUTH_ERROR_MESSAGES } from '@jungle/constants'
+import type { JwtPayload, TokenPair } from '@jungle/types'
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 
-import { AUTH_ERROR_MESSAGES } from '@jungle/constants'
 import { TokenServiceContract } from '@/auth/contracts/token.service.contract'
 import { RefreshTokenBlacklistService } from '@/auth/services/refresh-token-blacklist.service'
-import type { JwtPayload } from '@/infra/jwt/jwt.strategy'
-import type { TokenPair } from '@jungle/types'
 
 @Injectable()
 export class TokenService implements TokenServiceContract {
@@ -14,11 +13,15 @@ export class TokenService implements TokenServiceContract {
     private readonly jwt: JwtService,
     private readonly config: ConfigService,
     private readonly blacklistService: RefreshTokenBlacklistService,
-  ) { }
+  ) {}
 
-  async generate(userId: string, email: string): Promise<TokenPair> {
+  async generate(
+    userId: string,
+    email: string,
+    username: string,
+  ): Promise<TokenPair> {
     const accessToken = await this.jwt.signAsync(
-      { sub: userId, email },
+      { sub: userId, email, username },
       {
         secret: this.config.get<string>('JWT_SECRET'),
         expiresIn: this.config.get<string>('JWT_EXPIRES_IN') || '15m',
@@ -26,7 +29,7 @@ export class TokenService implements TokenServiceContract {
     )
 
     const refreshToken = await this.jwt.signAsync(
-      { sub: userId, email, type: 'refresh' },
+      { sub: userId, email, username, type: 'refresh' },
       {
         secret: this.config.get<string>('JWT_SECRET'),
         expiresIn: this.config.get<string>('REFRESH_TOKEN_EXPIRES_IN') || '7d',

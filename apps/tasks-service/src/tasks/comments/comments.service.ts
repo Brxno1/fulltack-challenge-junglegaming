@@ -14,16 +14,17 @@ export class TasksCommentsService implements TasksCommentsContract {
   constructor(
     private readonly createTaskCommentUseCase: CreateTaskCommentUseCase,
     private readonly listTaskCommentsUseCase: ListTaskCommentsUseCase,
-  ) { }
+  ) {}
 
   async create(data: CreateTaskCommentData): Promise<{ id: string }> {
-    const { taskId, author, content } = data
+    const { taskId, author, authorName, content } = data
 
     console.log('🔍 Comments Service - author:', author)
 
     const { id } = await this.createTaskCommentUseCase.execute({
       taskId,
       author,
+      authorName,
       content,
     })
 

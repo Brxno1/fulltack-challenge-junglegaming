@@ -37,6 +37,7 @@ export interface TaskComment {
   id: string
   taskId: string
   author: string
+  authorName?: string
   content: string
   createdAt: Date
   updatedAt: Date
@@ -80,6 +81,7 @@ export interface ListTaskCommentsParams {
 export interface CreateTaskCommentData {
   taskId: string
   author: string
+  authorName?: string
   content: string
 }
 

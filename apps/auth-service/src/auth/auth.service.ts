@@ -22,7 +22,11 @@ export class AuthService {
     password,
   }: CreateUserData): Promise<AuthResponse> {
     const user = await this.registerUser.execute({ email, username, password })
-    const tokens = await this.tokenService.generate(user.id, user.email)
+    const tokens = await this.tokenService.generate(
+      user.id,
+      user.email,
+      user.username,
+    )
 
     return { user, ...tokens }
   }
@@ -30,7 +34,11 @@ export class AuthService {
   async login({ email, password }: LoginUserData): Promise<AuthResponse> {
     const user = await this.loginUser.execute({ email, password })
 
-    const tokens = await this.tokenService.generate(user.id, user.email)
+    const tokens = await this.tokenService.generate(
+      user.id,
+      user.email,
+      user.username,
+    )
 
     return { user, ...tokens }
   }
@@ -49,7 +57,11 @@ export class AuthService {
 
       const { password: _, ...userWithoutPassword } = user
 
-      const tokens = await this.tokenService.generate(user.id, user.email)
+      const tokens = await this.tokenService.generate(
+        user.id,
+        user.email,
+        user.username,
+      )
 
       return { user: userWithoutPassword, ...tokens }
     } catch {

@@ -28,6 +28,9 @@ export class TaskComment {
   @Column({ type: 'uuid' })
   author: string
 
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  authorName: string
+
   @Column({ type: 'text' })
   content: string
 
