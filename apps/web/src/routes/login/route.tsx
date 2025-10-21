@@ -1,14 +1,17 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, redirect } from '@tanstack/react-router'
 import { AuthTabs } from '@/components/login'
+import { useAuthStore } from '@/store/auth-store'
 
 export const Route = createFileRoute('/login')({
+  beforeLoad: () => {
+    const { user } = useAuthStore.getState()
+    if (user) {
+      throw redirect({ to: '/' })
+    }
+  },
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  return (
-    <div className="flex items-center justify-center h-screen">
-      <AuthTabs />
-    </div>
-  )
+  return <AuthTabs />
 }

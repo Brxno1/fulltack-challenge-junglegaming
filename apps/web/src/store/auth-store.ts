@@ -1,6 +1,5 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { api } from '@/lib/axios'
 
 interface User {
  id: string
@@ -42,13 +41,11 @@ export const useAuthStore = create<AuthState & AuthActions>()(
      isAuthenticated: false,
     })
     try {
-     delete (api.defaults.headers).common?.Authorization
      localStorage.removeItem('auth-storage')
+     if (typeof window !== 'undefined') {
+      window.location.href = '/login'
+     }
     } catch { }
-
-    if (typeof window !== 'undefined') {
-     window.location.href = '/login'
-    }
    },
   }),
   {

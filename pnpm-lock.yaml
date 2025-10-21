@@ -81,6 +81,9 @@ importers:
       class-validator:
         specifier: ^0.14.1
         version: 0.14.2
+      cookie-parser:
+        specifier: ^1.4.7
+        version: 1.4.7
       passport:
         specifier: ^0.7.0
         version: 0.7.0
@@ -112,6 +115,9 @@ importers:
       '@types/amqplib':
         specifier: ^0.10.5
         version: 0.10.7
+      '@types/cookie-parser':
+        specifier: ^1.4.9
+        version: 1.4.9(@types/express@5.0.3)
       '@types/express':
         specifier: ^5.0.0
         version: 5.0.3
@@ -175,9 +181,6 @@ importers:
       class-validator:
         specifier: ^0.14.2
         version: 0.14.2
-      cookie-parser:
-        specifier: ^1.4.7
-        version: 1.4.7
       passport:
         specifier: ^0.7.0
         version: 0.7.0
@@ -215,9 +218,6 @@ importers:
       '@types/bcrypt':
         specifier: ^6.0.0
         version: 6.0.0
-      '@types/cookie-parser':
-        specifier: ^1.4.9
-        version: 1.4.9(@types/express@5.0.3)
       '@types/express':
         specifier: ^5.0.0
         version: 5.0.3
@@ -493,6 +493,9 @@ importers:
       '@hookform/resolvers':
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.63.0(react@18.3.1))
+      '@jungle/types':
+        specifier: workspace:*
+        version: link:../../packages/types
       '@radix-ui/react-accordion':
         specifier: ^1.2.12
         version: 1.2.12(@types/react-dom@18.3.7(@types/react@18.3.25))(@types/react@18.3.25)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)

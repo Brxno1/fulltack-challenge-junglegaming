@@ -28,9 +28,9 @@ export function SidebarContentSection({ onNavigate }: Props) {
   { icon: Inbox, label: 'Caixa de entrada', href: '/inbox', disabled: true },
   { icon: Settings, label: 'Configurações', href: '/settings', disabled: true },
  ]
- 
+
  return (
-  <SidebarContent className="w-full">
+  <SidebarContent className="w-full bg-card">
    <SidebarGroup>
     <SidebarGroupContent>
      <SidebarMenu>

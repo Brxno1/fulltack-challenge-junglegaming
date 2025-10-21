@@ -49,8 +49,8 @@ export interface PaginatedTasks {
 }
 
 export interface ListTasksParams {
-  page: number
-  size: number
+  page?: number
+  size?: number
 }
 
 export interface CreateTaskData {
