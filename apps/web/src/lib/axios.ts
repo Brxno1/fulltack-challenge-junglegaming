@@ -27,15 +27,23 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     if (error.response?.status === 401) {
-      if (!error.config._retry) {
-        error.config._retry = true
+      const originalRequest = error.config
 
+      if (originalRequest?.url?.includes('/auth/refresh')) {
+        const { useAuthStore } = await import('@/store/auth-store')
+        useAuthStore.getState().logout()
+        return Promise.reject(error)
+      }
+
+      if (!originalRequest?._retry) {
+        originalRequest._retry = true
         try {
           await api.post('/auth/refresh', {})
-          return api(error.config)
+          return api(originalRequest)
         } catch (refreshError) {
           const { useAuthStore } = await import('@/store/auth-store')
           useAuthStore.getState().logout()
+          return Promise.reject(refreshError)
         }
       }
     }

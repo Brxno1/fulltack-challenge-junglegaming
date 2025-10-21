@@ -30,7 +30,7 @@ export class TypeormTaskCommentsRepository implements TaskCommentsRepository {
     const [comments, total] = await this.taskCommentRepository.findAndCount({
       where: { taskId },
       order: {
-        createdAt: 'DESC',
+        createdAt: 'ASC',
       },
       skip: (page - 1) * size,
       take: size,
