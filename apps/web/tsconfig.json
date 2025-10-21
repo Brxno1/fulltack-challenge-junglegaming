@@ -23,6 +23,9 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "@jungle/types": [
+        "../../packages/types/src/index.ts"
       ]
     }
   },

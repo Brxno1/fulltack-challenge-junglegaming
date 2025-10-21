@@ -7,7 +7,7 @@ import { SidebarFooterSection } from './footer'
 export function AppSidebar() {
  const navigate = useNavigate()
  return (
-  <Sidebar className="bg-background text-foreground border-border" collapsible="icon">
+  <Sidebar className="border border-input bg-card" collapsible="icon">
    <SidebarHeaderSection />
    <SidebarContentSection
     onNavigate={(href) => navigate({ to: href })}

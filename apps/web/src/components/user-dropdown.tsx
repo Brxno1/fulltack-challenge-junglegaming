@@ -39,7 +39,7 @@ export function UserDrodown() {
           </div>
         </DropdownMenuItem>
 
-        <DropdownMenuItem className="p-2 flex items-center space-x-2 hover:bg-accent" onClick={logout}>
+        <DropdownMenuItem className="p-2 flex items-center space-x-2 hover:bg-accent" onClick={() => logout()}>
           <LogOut className="w-4 h-4 mr-2" />
           Logout
         </DropdownMenuItem>
