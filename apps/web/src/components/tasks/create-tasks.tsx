@@ -57,10 +57,6 @@ export function CreateTaskDialog() {
  const queryClient = useQueryClient()
  const user = useAuthStore((state) => state.user)
 
- if (!user) {
-  return null
- }
-
  const form = useForm<CreateTaskForm>({
   resolver: zodResolver(createTaskSchema),
   defaultValues: {
@@ -86,6 +82,9 @@ export function CreateTaskDialog() {
  })
 
  const onSubmit = async (data: CreateTaskForm) => {
+  if (!user) {
+   return
+  }
 
   await createTaskMutation({
    ...data,

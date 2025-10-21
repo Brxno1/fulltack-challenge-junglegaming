@@ -1,15 +1,12 @@
-'use client'
-
 import { useMutation } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
-import { LoaderCircle, RotateCw } from 'lucide-react'
+import { LoaderCircle } from 'lucide-react'
 
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { api } from '@/lib/axios'
 
 import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button'
-import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -49,6 +46,8 @@ interface RegisterFormProps {
 
 export function RegisterForm() {
   const navigate = useNavigate()
+  const setAuth = useAuthStore((state) => state.setAuth)
+
   const form = useForm<z.infer<typeof registerFormSchema>>({
     resolver: zodResolver(registerFormSchema),
     mode: 'onChange',
@@ -59,30 +58,35 @@ export function RegisterForm() {
     },
   })
 
-  const { mutateAsync: onCreateAccount } = useMutation({
+  const { mutateAsync: onCreateAccount, isPending } = useMutation({
     mutationFn: async ({ username, email, password }: RegisterFormProps) => {
-      const response = await api.post('/auth/register', { username, email, password })
-      return response.data
+      console.log('Sending register request...')
+      try {
+        const response = await api.post('/auth/register', { username, email, password })
+        console.log('Register response:', response.data)
+        return response.data
+      } catch (error) {
+        console.error('Register request failed:', error)
+        throw error
+      }
     },
     onSuccess: (data) => {
-      useAuthStore.getState().setAuth(data.user)
-      toast(`Conta criada com sucesso`)
-      navigate({ to: '/' })
+      console.log('Register onSuccess called with:', data)
+      if (data && data.user) {
+        setAuth(data.user)
+        toast(`Conta criada com sucesso`)
+        setTimeout(() => {
+          navigate({ to: '/' })
+        }, 100)
+      } else {
+        console.error('Invalid data structure:', data)
+        toast.error('Erro: dados do usuário não recebidos')
+      }
     },
     onError: (err) => {
+      console.error('Register onError called with:', err)
       if (err instanceof AxiosError) {
-        toast.error('Erro ao criar conta', {
-          action: (
-            <Button
-              form="form-auth"
-              variant={'ghost'}
-              type="submit"
-              className="ml-auto transition-all hover:bg-red-950/40"
-            >
-              <RotateCw className="h-4 w-4 text-rose-300" />
-            </Button>
-          ),
-        })
+        toast.error('Erro ao criar conta')
         form.reset({
           username: '',
           email: '',
@@ -92,14 +96,10 @@ export function RegisterForm() {
     },
   })
 
-  const handleCreateAccount = async ({ username, email, password }: RegisterFormProps) => {
-    await onCreateAccount({ username, email, password })
-  }
-
   return (
     <Card className="relative overflow-hidden">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleCreateAccount)} id="form-auth">
+        <form onSubmit={form.handleSubmit((data) => onCreateAccount(data))} id="form-auth">
           <CardHeader className="text-center">
             <CardDescription>
               Crie uma conta para continuar.
@@ -189,7 +189,7 @@ export function RegisterForm() {
                       </span>
                     </FormLabel>
                     <FormControl>
-                      <Input type="text" {...field} placeholder=" " />
+                      <Input type="password" {...field} placeholder=" " />
                     </FormControl>
                   </div>
                   <FormMessage className="ml-2 text-red-500" />
@@ -201,9 +201,9 @@ export function RegisterForm() {
             <InteractiveHoverButton
               type="submit"
               className="mx-auto flex w-[12rem] items-center justify-center rounded-2xl font-semibold"
-              disabled={form.formState.isSubmitting || !form.formState.isValid}
+              disabled={isPending || !form.formState.isValid}
             >
-              {form.formState.isSubmitting ? (
+              {isPending ? (
                 <span className="flex items-center gap-2">
                   Criando conta
                   <LoaderCircle className="ml-1 animate-spin font-semibold" />

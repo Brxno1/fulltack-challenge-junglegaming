@@ -5,14 +5,17 @@ import { Button } from "./ui/button"
 import { ChevronDown, LogOut } from "lucide-react"
 import { useAuthStore } from "@/store/auth-store"
 import { api } from "@/lib/axios"
+import { useNavigate } from "@tanstack/react-router"
 
 export function UserDrodown() {
   const [open, setOpen] = React.useState(false)
   const { user, logout } = useAuthStore()
+  const navigate = useNavigate()
 
   const handleLogout = async () => {
     logout()
     await api.post('/auth/logout')
+    navigate({ to: '/login' })
   }
 
   return (
