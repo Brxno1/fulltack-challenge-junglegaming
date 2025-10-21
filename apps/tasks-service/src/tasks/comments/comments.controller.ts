@@ -23,14 +23,16 @@ export class TasksCommentsController {
   @Post()
   async create(
     @Param() params: TaskIdParamDto,
-    @Headers('x-authenticated-user-id') userId: string,
+    @Headers('x-authenticated-user') userInfo: string,
     @Body() body: CreateTaskCommentDto,
   ): Promise<{ id: string }> {
     const { content } = body
+    const user = JSON.parse(userInfo)
 
     const { id } = await this.TasksComments.create({
       taskId: params.taskId,
-      author: userId,
+      author: user.id,
+      authorName: user.username,
       content,
     })
 

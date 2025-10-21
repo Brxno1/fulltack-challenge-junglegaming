@@ -7,13 +7,7 @@ import { formatDistanceToNow } from '@/lib/date-utils'
 import { cn } from '@/lib/utils'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { api } from '@/lib/axios'
-
-interface Comment {
- id: string
- content: string
- author: string
- createdAt: Date
-}
+import { TaskComment } from '@jungle/types'
 
 interface TaskCommentsProps {
  taskId: string
@@ -64,16 +58,16 @@ export function TaskComments({ taskId }: TaskCommentsProps) {
     {comments.length === 0 ? (
      <div className="p-4 text-center text-muted-foreground">Nenhum comentário ainda</div>
     ) : (
-     comments.map((comment: Comment) => (
+     comments.map((comment: TaskComment) => (
       <div key={comment.id} className="flex gap-3 p-1 bg-accent w-fit rounded-lg">
        <Avatar className="size-8">
         <AvatarFallback className="text-xs bg-primary text-primary-foreground">
-         {comment.author?.split(' ').map(n => n[0]).join('') || 'U'}
+         {comment.authorName?.split(' ').map((n: string) => n[0]).join('') || 'U'}
         </AvatarFallback>
        </Avatar>
        <div className="flex-1 space-y-1">
         <div className="flex items-center gap-2">
-         <span className="text-sm font-medium">{comment.author || 'Usuário'}</span>
+         <span className="text-sm font-medium">{comment.authorName || comment.author || 'Usuário'}</span>
          <span className="text-xs text-muted-foreground">•</span>
          <span className="text-xs text-muted-foreground">
           {formatDistanceToNow(new Date(comment.createdAt))}
