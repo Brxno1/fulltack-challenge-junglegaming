@@ -48,7 +48,7 @@ export const Route = createFileRoute('/')({
     return (
       <SidebarProvider>
         <AppSidebar />
-        <div className={`grid flex-1 h-full transition-all duration-300 ${isInfoOpen
+        <div className={`grid flex-1 h-screen transition-all duration-300 ${isInfoOpen
           ? 'grid-cols-[1fr_36rem]'
           : 'grid-cols-1'
           }`}>

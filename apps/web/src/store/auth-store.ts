@@ -9,7 +9,6 @@ interface User {
 
 interface AuthState {
  user: User | null
- isAuthenticated: boolean
 }
 
 interface AuthActions {
@@ -22,7 +21,6 @@ export const useAuthStore = create<AuthState & AuthActions>()(
  persist(
   (set) => ({
    user: null,
-   isAuthenticated: false,
 
    setAuth: (user) => {
     try {
@@ -36,20 +34,15 @@ export const useAuthStore = create<AuthState & AuthActions>()(
     }
     set({
      user: safeUser,
-     isAuthenticated: true,
     })
    },
 
    logout: () => {
     set({
      user: null,
-     isAuthenticated: false,
     })
     try {
      localStorage.removeItem('auth-storage')
-     if (typeof window !== 'undefined') {
-      window.location.href = '/login'
-     }
     } catch { }
    },
 
@@ -58,7 +51,6 @@ export const useAuthStore = create<AuthState & AuthActions>()(
      localStorage.removeItem('auth-storage')
      set({
       user: null,
-      isAuthenticated: false,
      })
     } catch { }
    },

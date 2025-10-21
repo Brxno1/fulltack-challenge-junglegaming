@@ -18,6 +18,7 @@ export async function logout() {
   console.error('Erro ao fazer logout:', error)
  } finally {
   useAuthStore.getState().logout()
+  // A navegação será feita pelo componente que chama esta função
  }
 }
 

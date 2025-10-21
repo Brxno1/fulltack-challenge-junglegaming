@@ -1,4 +1,23 @@
 services:
+  web:
+    container_name: web
+    build:
+      context: .
+      dockerfile: ./apps/web/Dockerfile
+      target: development
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/challenge
+      - ./packages:/challenge/packages
+      - /challenge/node_modules
+      - /challenge/apps/web/node_modules
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=1
+    networks:
+      - challenge-network
+    restart: unless-stopped
   api-gateway:
     container_name: api-gateway
     build:
